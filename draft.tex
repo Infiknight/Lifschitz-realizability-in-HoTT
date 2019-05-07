@@ -1,0 +1,195 @@
+\documentclass[12pt]{article}
+
+\usepackage{answers}
+
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{tikz-cd}
+
+\usepackage{multicol}
+\usepackage{mathrsfs}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{ textcomp }
+\usepackage{ wasysym }
+\usepackage{bookmark}
+\usepackage{accents}
+\usepackage[parfill]{parskip}
+
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\nin}{\not \in}
+
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\csch}{csch}
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{definition}[2][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{solution}[2][Solution]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+ 
+\newenvironment{bprooftree}
+  {\leavevmode\hbox\bgroup}
+  {\DisplayProof\egroup}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{ill}[thm]{Illustration}
+
+\begin{document}
+ \pagenumbering{gobble}
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Draft}%replace with the appropriate homework number
+\author{Dimitrios Koutsoulis\\ %replace with your name
+11838639} %if necessary, replace with your course title
+ 
+\maketitle
+%Below is an example of the problem environment
+\section{Type Theory}
+\subsection{Introduction}
+Type theory is a formal language and deductive system, that is self sufficient in the sense that it need not be formulated as a collection of axioms on top of some other formal system like First Order Logic, instead its deductive system can be built on top of its own formal language. 
+
+Central to Type Theory is the notion of \textit{Type}. Every construction $a$ in Type Theory we come across, must lie in some type $A$, which we denote as $a : A$. Note that the relation $:$ is transitive, so $a : A$ and $A : B$ imply $a : B$. 
+This induces the cummulative hierarchy shape of the universe of types $\mathcal{U}$, wherein every level of the universe includes all lower levels and their types.
+
+For the deductive part of Type Theory, we interpret propositions as types. Proving proposition $P$ amounts to providing some inhabitant $p : P$. 
+
+
+\subsection{Type Construction Operations}
+Let's have a look at some important type constructions.
+\begin{itemize}
+	\item Given types $A, B : \mathcal{U}$ we can define the type $A \rightarrow B$ of functions from $A$ to $B$. 
+		We can use $\lambda$-abstraction to construct elements of this type. $\lambda x. \Phi$ lies in $A \rightarrow B$ iff for $a : A$ we have $\Phi[a/x] : B$. 
+		For $f : A \rightarrow B$ and $a : A$ we have that the application of $f$ on $a$, denoted as $f(a)$ or $f\;a$, lies in $B$.
+	\item Given some type $A : \mathcal{U}$ and a family of types $B$ over $A$, $B : A \rightarrow \mathcal{U}$, we have the type of dependent functions $$\prod_{a : A} B(a)$$
+	where for $f : \prod_{a : A} B(a)$ and $x : A$ we have $f(x) : B(x)$. 
+	As in the case of non-dependent functions, we can use lambda abstraction to construct elements of a dependently-typed function type.
+	\item Given $A, B : \mathcal{U}$ we can define the product type $A \times B : \mathcal{U}$. 
+	For $a : A$ and $b : B$ we have the pair $(a,b) : A \times B$. 
+	We also have the projection functions 
+	$$\textnormal{pr}_1 : A \times B \rightarrow A : (a,b) \mapsto a$$
+	$$\textnormal{pr}_2 : A \times B \rightarrow B : (a,b) \mapsto b$$
+	\item Given $A : \mathcal{U}$ and family of types $B$ over $A$, $B : A \rightarrow \mathcal{U}$, we can define the dependent pair type $$\sum_{a : A} B(a)$$
+	Given $x : A$ and $b : B(x)$ we can construct the pair $(x,b) : \sum_{a : A} B(a)$. 
+	We have two projection functions, similar to the case of the product type.
+	\item Given $A, B : \mathcal{U}$ we can construct the coproduct type $A + B$. 
+	We can construct elements of $A + B$ using the functions
+	$$\textnormal{inl} : A \rightarrow A+B$$
+	$$\textnormal{inr} : B \rightarrow A+B$$
+	This induces the induction principle
+	$$\textnormal{ind}_{A+B} : \prod_{C : A+B \rightarrow U} \Big(\prod_{a : A}C(\textnormal{inl }a)\Big) \rightarrow \Big(\prod_{b : A}C(\textnormal{inr }b)\Big) \rightarrow \prod_{x : A+ B}C(x)$$
+	\item Given $x, y : A$ we have the \textbf{identity type} $x =_A y$. 
+	An element of this type amounts to a proof that $x$ and $y$ are equal. 
+	Say $x$ and $y$ are judgmentally equal. 
+	This is captured by the element $\textnormal{idp}_x : x =_A y$. 
+	The relevant induction principle describes how we can use elements of an identity type
+	$$\textnormal{ind}_{=_{A}} : \prod_{C : \prod_{x,y : A} (x =_A y) \rightarrow \mathcal{U}} \Big( \prod_{x : A}C(x,x,\textnormal{idp}_x) \Big) \rightarrow \prod_{x,y : A} \prod_{(p : x =_A y)} C(x,y,p)$$
+	We can concatenate those paths whose domains and codomains allow for it. 
+	Paths are equivalences. That is if $p : x = y$ is such a  path, we can provide its inverse $p^{-1}$ for which we have in turn a path between $p\cdot p^{-1}$ and $\textnormal{idp}_y$ and another one between $p^{-1}\cdot p$ and idp$_x$. 
+
+
+\end{itemize}
+We are now well-equipped to view types as $(\infty, 1)$-categories.\\
+Under this view 
+\begin{itemize}
+	\item elements of the type are objects (or $0$-morphisms) of the category
+	\item identity paths between elements are $1$-morphisms
+	\item paths between $n$-paths are $(n+1)$-morphisms
+	\item all paths are reversible
+\end{itemize}
+
+\section{LLPO}
+\begin{defn} 
+The Lesser Limited Principle of Omniscience, states that given binary sequence $s : \mathbb{N} \rightarrow \mathbf{2}$ and the fact that there is at most one occurence of $1$ in the sequence, formally 
+$$\textnormal{atMost1one} :\prod_{n_1 : \mathbb{N}} \prod_{n_2 : \mathbb{N}} s(n_1) = 1 \rightarrow s(n_2)= 1 \rightarrow n_1 = n_2$$
+we can then have by the LLPO a witness for $p_\textnormal{odd} \vee p_\textnormal{even}$, where $p_\textnormal{odd}$ is the statement that for all odd positions $n$, $s(n) = 0$, formally $p_\textnormal{odd} \equiv \prod_{n : \mathbb{N}} \textnormal{odd}(n) \rightarrow s(n) = 0$. 
+Similarly for $p_\textnormal{even}$. 
+\end{defn}
+LLPO can be viewed as a weaker form of the Law of Excluded Middle. 
+
+\begin{lem} 
+The Law of Excluded Middle implies the Limited Principle of Omniscience.
+\end{lem}
+
+\begin{proof}
+By LEM we have a witness $ l_1 :p_\textnormal{odd} \vee \neg p_\textnormal{odd}$. 
+Since this is a coproduct, by the relevant principle of induction, it's enough to prove LLPO from the disjuncts. 
+\begin{itemize}
+	\item $p_\textnormal{odd} \Rightarrow $ LLPO, trivially.
+
+	\item $\neg p$, alongside LEM, implies that there exists odd $n_e : \mathbb{N}$ such that $s(n_e) = 1$. 
+	We can now provide $\prod_{n : \mathbb{N}} even(n) \rightarrow s(n) = 0$. 
+	Let $n : \mathbb{N}$. 
+	By the definition of $s$, $s(n) = 0 \vee s(n) = 1$.
+	We invoke the principle of induction of coproducts and prove LLPO from the disjuncts. 
+	\begin{itemize}
+		\item $s(n) = 0$, in this case we are done.
+		\item $s(n) = 1$. 
+		By atMost1one we have $n = n_e \Rightarrow $ $n$ even and odd which is a contradiction $c : \bot$. 
+		By LEM we have Reductio Ad Absurdum  $\textnormal{raa} : \bot \rightarrow s(n) = 0$. 
+		Then raa$(c) : s(n) = 0$.
+	\end{itemize}
+
+\end{itemize}
+
+
+\end{proof}
+
+
+
+
+
+\section{Modalities}
+%Under the view of types as $(\infty, 1)$-categories, functions between them are functors. 
+%We can then view the universe $\mathcal{U}$ itslef as a category. 
+\begin{defn}
+A \textbf{modality} is a function $\bigcirc : \mathcal{U} \rightarrow \mathcal{U}$ with the following properties.
+\begin{enumerate}
+	\item For every type $A$ we have a function $\eta_A^\bigcirc : A \rightarrow \bigcirc\; A$
+	\item for every $A : \mathcal{U}$ and every type family $B : \bigcirc A \rightarrow \mathcal{U}$ we have a function
+	$$ind_\bigcirc : \Big( \prod_{a : A}\bigcirc (B (\eta_A^\bigcirc\; a)) \Big) \rightarrow \prod_{z : \bigcirc A} \bigcirc (B\; z)$$
+	\item For every $f : \prod_{a : A} \bigcirc (B(\eta_A^\bigcirc\; a))$ there is a path $ind_\bigcirc (f)(\eta_A^\bigcirc\; a) = f\; a$
+	\item For all $z,z' : \bigcirc \; A$, the function $\eta_{z=z'}^\bigcirc : (z = z') \rightarrow \bigcirc (z = z')$ is an equivalence.
+
+\end{enumerate}
+\end{defn}
+A modality $\bigcirc$ induces a $\Sigma$-closed reflective subuniverse.
+
+\begin{defn}
+Given modality $\bigcirc : \mathcal{U} \rightarrow \mathcal{U}$, a \textbf{reflective subuniverse} is a "subset" of $\mathcal{U}$ encoded by a family of h-propositions $P : \mathcal{U} \rightarrow \textnormal{Prop}$ such that the following conditions hold. 
+\begin{itemize}
+	\item For $A : \mathcal{U}$, we have $P(\bigcirc A)$.
+	\item For $A : \mathcal{U}$ and $B$ such that $P(B)$, the function
+	$$\lambda f.f \circ \eta_A : (\bigcirc A \rightarrow B) \rightarrow (A \rightarrow B)$$
+	is an equivalence.
+
+\end{itemize}
+The subuniverse is $\Sigma$\textbf{-closed} if for $X$ such that $P(X)$ and $Q : X \rightarrow \mathcal{U}$ such that $\prod_{x : X} P(Q(x))$, we have $P(\Sigma_{x : X} Q(x))$.
+\end{defn}
+
+
+\end{document}
