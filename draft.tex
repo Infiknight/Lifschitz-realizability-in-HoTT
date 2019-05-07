@@ -113,14 +113,6 @@ Let's have a look at some important type constructions.
 
 
 \end{itemize}
-We are now well-equipped to view types as $(\infty, 1)$-categories.\\
-Under this view 
-\begin{itemize}
-	\item elements of the type are objects (or $0$-morphisms) of the category
-	\item identity paths between elements are $1$-morphisms
-	\item paths between $n$-paths are $(n+1)$-morphisms
-	\item all paths are reversible
-\end{itemize}
 
 \section{LLPO}
 \begin{defn} 
@@ -184,11 +176,33 @@ Given modality $\bigcirc : \mathcal{U} \rightarrow \mathcal{U}$, a \textbf{refle
 \begin{itemize}
 	\item For $A : \mathcal{U}$, we have $P(\bigcirc A)$.
 	\item For $A : \mathcal{U}$ and $B$ such that $P(B)$, the function
-	$$\lambda f.f \circ \eta_A : (\bigcirc A \rightarrow B) \rightarrow (A \rightarrow B)$$
+	$$\lambda f.f \circ \eta_A^\bigcirc : (\bigcirc A \rightarrow B) \rightarrow (A \rightarrow B)$$
 	is an equivalence.
 
 \end{itemize}
 The subuniverse is $\Sigma$\textbf{-closed} if for $X$ such that $P(X)$ and $Q : X \rightarrow \mathcal{U}$ such that $\prod_{x : X} P(Q(x))$, we have $P(\Sigma_{x : X} Q(x))$.
+\end{defn}
+
+\begin{thm}
+Reflective subuniverses are closed under products. 
+That is for subuniverse $P$ and $B : A \rightarrow \mathcal{U}$ such that $\prod_{a : A}P(B(a))$, we have that $P(\prod_{a : A} B(a))$. 
+\end{thm}
+
+\begin{proof}
+For $a : A$, consider ev$_a: (\prod_{a: A}B(a)) \rightarrow B(a)$ defined by ev$_a (f) : \equiv f(x)$. 
+Since $P(B(a))$, we have 
+$$(\lambda f.f \circ \eta_{\prod_{a: A}B(a)}^\bigcirc)^{-1} (ev_a) : \bigcirc\big(\prod_{a: A}B(a)\big) \rightarrow B(a)$$
+We can now define the retraction of $\eta^\bigcirc_{\prod_{a : A} B(a)}$ by pattern matching as such:\\
+For $z: (\prod_{a: A}B(a))$ and $a : A$ we have 
+$$(\lambda f.f \circ \eta_{\prod_{a: A}B(a)}^\bigcirc)^{-1} (ev_a) (z) : B(a)$$
+
+\end{proof}
+
+\begin{defn}
+For $B : A \rightarrow \mathcal{U}$, we call $X$ $B$\textbf{-null} if the map 
+$$\lambda x. \lambda b.x : X \rightarrow (B(a) \rightarrow X)$$
+is an equivalence for all $a : A$.
+
 \end{defn}
 
 
