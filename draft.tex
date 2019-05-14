@@ -73,11 +73,10 @@
 \subsection{Introduction}
 Type theory is a formal language and deductive system, that is self sufficient in the sense that it need not be formulated as a collection of axioms on top of some other formal system like First Order Logic, instead its deductive system can be built on top of its own formal language. 
 
-Central to Type Theory is the notion of \textit{Type}. Every construction $a$ in Type Theory we come across, must lie in some type $A$, which we denote as $a : A$. Note that the relation $:$ is transitive, so $a : A$ and $A : B$ imply $a : B$. 
-This induces the cummulative hierarchy shape of the universe of types $\mathcal{U}$, wherein every level of the universe includes all lower levels and their types.
+Central to Type Theory is the notion of \textit{Type}. Every term $a$ in Type Theory we come across, must lie in some type $A$, which we denote as $a : A$. Note that the relation $:$ is transitive, so $a : A$ and $A : B$ imply $a : B$. 
+%This induces the cummulative hierarchy shape of the universe of types $\mathcal{U}$, wherein every level of the universe includes all lower levels and their types.
 
 For the deductive part of Type Theory, we interpret propositions as types. Proving proposition $P$ amounts to providing some inhabitant $p : P$. 
-
 
 \subsection{Type Construction Operations}
 Let's have a look at some important type constructions.
@@ -91,69 +90,60 @@ Let's have a look at some important type constructions.
 	\item Given $A, B : \mathcal{U}$ we can define the product type $A \times B : \mathcal{U}$. 
 	For $a : A$ and $b : B$ we have the pair $(a,b) : A \times B$. 
 	We also have the projection functions 
-	$$\textnormal{pr}_1 : A \times B \rightarrow A : (a,b) \mapsto a$$
-	$$\textnormal{pr}_2 : A \times B \rightarrow B : (a,b) \mapsto b$$
+	$$\mathtt{pr}_1 : A \times B \rightarrow A : (a,b) \mapsto a$$
+	$$\mathtt{pr}_2 : A \times B \rightarrow B : (a,b) \mapsto b$$
 	\item Given $A : \mathcal{U}$ and family of types $B$ over $A$, $B : A \rightarrow \mathcal{U}$, we can define the dependent pair type $$\sum_{a : A} B(a)$$
 	Given $x : A$ and $b : B(x)$ we can construct the pair $(x,b) : \sum_{a : A} B(a)$. 
 	We have two projection functions, similar to the case of the product type.
 	\item Given $A, B : \mathcal{U}$ we can construct the coproduct type $A + B$. 
 	We can construct elements of $A + B$ using the functions
-	$$\textnormal{inl} : A \rightarrow A+B$$
-	$$\textnormal{inr} : B \rightarrow A+B$$
+	$$\mathtt{inl} : A \rightarrow A+B$$
+	$$\mathtt{inr} : B \rightarrow A+B$$
 	This induces the induction principle
-	$$\textnormal{ind}_{A+B} : \prod_{C : A+B \rightarrow U} \Big(\prod_{a : A}C(\textnormal{inl }a)\Big) \rightarrow \Big(\prod_{b : A}C(\textnormal{inr }b)\Big) \rightarrow \prod_{x : A+ B}C(x)$$
+	$$\mathtt{ind}_{A+B} : \prod_{C : A+B \rightarrow U} \Big(\prod_{a : A}C(\mathtt{inl}\;a)\Big) \rightarrow \Big(\prod_{b : A}C(\mathtt{inr}\;b)\Big) \rightarrow \prod_{x : A+ B}C(x)$$
 	\item Given $x, y : A$ we have the \textbf{identity type} $x =_A y$. 
 	An element of this type amounts to a proof that $x$ and $y$ are equal. 
 	Say $x$ and $y$ are judgmentally equal. 
-	This is captured by the element $\textnormal{idp}_x : x =_A y$. 
+	This is captured by the element $\mathtt{idp}_x : x =_A y$. 
 	The relevant induction principle describes how we can use elements of an identity type
-	$$\textnormal{ind}_{=_{A}} : \prod_{C : \prod_{x,y : A} (x =_A y) \rightarrow \mathcal{U}} \Big( \prod_{x : A}C(x,x,\textnormal{idp}_x) \Big) \rightarrow \prod_{x,y : A} \prod_{(p : x =_A y)} C(x,y,p)$$
+	$$\mathtt{ind}_{=_{A}} : \prod_{C : \prod_{x,y : A} (x =_A y) \rightarrow \mathcal{U}} \Big( \prod_{x : A}C(x,x,\mathtt{idp}_x) \Big) \rightarrow \prod_{x,y : A} \prod_{(p : x =_A y)} C(x,y,p)$$
+	The relevant computation gives us the judgmental equality 
+	$$\mathtt{ind}_{=_A} (C,c,x,x,\mathtt{idp_x}) \equiv c\; x$$
 	We can concatenate those paths whose domains and codomains allow for it. 
-	Paths are equivalences. That is if $p : x = y$ is such a  path, we can provide its inverse $p^{-1}$ for which we have in turn a path between $p\cdot p^{-1}$ and $\textnormal{idp}_y$ and another one between $p^{-1}\cdot p$ and idp$_x$. 
+	Paths are equivalences. That is if $p : x = y$ is such a  path, we can provide its inverse $p^{-1}$ for which we have in turn a path between $p\cdot p^{-1}$ and $\mathtt{idp}_y$ and another one between $p^{-1}\cdot p$ and $\mathtt{idp}_x$. 
+	\item For every type $A$ there is its \textbf{propositional truncation} $\| A \|$. 
+	For every element $a : A$ there exists $|a| : \| A\|$. 
+	For every $x, y : \| A\|$ we have $x = y$. 
+	Given mere proposition $B$ and $f : A \rightarrow B$, the recursion principle gives us $g : \|A\| \rightarrow B$ such that $g(|a|) \equiv f(a)$ for all $a : A$.
 
 
 \end{itemize}
 
-\section{LLPO}
-\begin{defn} 
-The Lesser Limited Principle of Omniscience, states that given binary sequence $s : \mathbb{N} \rightarrow \mathbf{2}$ and the fact that there is at most one occurence of $1$ in the sequence, formally 
-$$\textnormal{atMost1one} :\prod_{n_1 : \mathbb{N}} \prod_{n_2 : \mathbb{N}} s(n_1) = 1 \rightarrow s(n_2)= 1 \rightarrow n_1 = n_2$$
-we can then have by the LLPO a witness for $p_\textnormal{odd} \vee p_\textnormal{even}$, where $p_\textnormal{odd}$ is the statement that for all odd positions $n$, $s(n) = 0$, formally $p_\textnormal{odd} \equiv \prod_{n : \mathbb{N}} \textnormal{odd}(n) \rightarrow s(n) = 0$. 
-Similarly for $p_\textnormal{even}$. 
+\subsection{Important types}
+\begin{defn}
+We call a type $A$ a \textbf{mere proposition} if for every $a,b : A$ we have $a = b$.
 \end{defn}
-LLPO can be viewed as a weaker form of the Law of Excluded Middle. 
 
-\begin{lem} 
-The Law of Excluded Middle implies the Limited Principle of Omniscience.
-\end{lem}
+\begin{defn}
+We call a type $A$ a \textbf{set} if for every $a,b : A$ we have that $a =_A b$ is a mere proposition.
+\end{defn}
 
-\begin{proof}
-By LEM we have a witness $ l_1 :p_\textnormal{odd} \vee \neg p_\textnormal{odd}$. 
-Since this is a coproduct, by the relevant principle of induction, it's enough to prove LLPO from the disjuncts. 
+\begin{defn}
+We call a type $A$ \textbf{contractible} if there exists $a : A$ such that for all $x : A$ it holds that $x = a$.
+\end{defn}
+
+\subsection{Logic}
+Our informal deductions in Type Theory will be reminiscent of First Order Logic ones. 
+To be able to use a similar verbiage, we will set down a handful of types, corresponding to the connectives that let us form well-formed formulas in FOL. 
+These types need to be mere propositions, so that we can form non-constructive deductions. 
+This approach is called `propositions as h-propositions' in the HoTT book. 
+In the following, $A$ and $B$ are mere propositions.
 \begin{itemize}
-	\item $p_\textnormal{odd} \Rightarrow $ LLPO, trivially.
-
-	\item $\neg p$, alongside LEM, implies that there exists odd $n_e : \mathbb{N}$ such that $s(n_e) = 1$. 
-	We can now provide $\prod_{n : \mathbb{N}} even(n) \rightarrow s(n) = 0$. 
-	Let $n : \mathbb{N}$. 
-	By the definition of $s$, $s(n) = 0 \vee s(n) = 1$.
-	We invoke the principle of induction of coproducts and prove LLPO from the disjuncts. 
-	\begin{itemize}
-		\item $s(n) = 0$, in this case we are done.
-		\item $s(n) = 1$. 
-		By atMost1one we have $n = n_e \Rightarrow $ $n$ even and odd which is a contradiction $c : \bot$. 
-		By LEM we have Reductio Ad Absurdum  $\textnormal{raa} : \bot \rightarrow s(n) = 0$. 
-		Then raa$(c) : s(n) = 0$.
-	\end{itemize}
-
+\item When we talk of conjunction $A \wedge B$, we mean the product $A \times B$. 
+\item We interpret $A \vee B$, as the truncation $\| A + B\|$.
+\item We interpret $\forall a\in A,\; P(a)$, where $P(a)$ is a mere proposition for all $a \in A$, as $\prod_{a : A}P(a)$. 
+\item We interpret $ \exists a \in A,\; P(a)$, where $P(a)$ is a mere proposition for all $a \in A$, as $\| \Sigma_{a : A} P(a) \|$
 \end{itemize}
-
-
-\end{proof}
-
-
-
-
 
 \section{Modalities}
 %Under the view of types as $(\infty, 1)$-categories, functions between them are functors. 
@@ -163,8 +153,8 @@ A \textbf{modality} is a function $\bigcirc : \mathcal{U} \rightarrow \mathcal{U
 \begin{enumerate}
 	\item For every type $A$ we have a function $\eta_A^\bigcirc : A \rightarrow \bigcirc\; A$
 	\item for every $A : \mathcal{U}$ and every type family $B : \bigcirc A \rightarrow \mathcal{U}$ we have a function
-	$$ind_\bigcirc : \Big( \prod_{a : A}\bigcirc (B (\eta_A^\bigcirc\; a)) \Big) \rightarrow \prod_{z : \bigcirc A} \bigcirc (B\; z)$$
-	\item For every $f : \prod_{a : A} \bigcirc (B(\eta_A^\bigcirc\; a))$ there is a path $ind_\bigcirc (f)(\eta_A^\bigcirc\; a) = f\; a$
+	$$\mathtt{ind}_\bigcirc : \Big( \prod_{a : A}\bigcirc (B (\eta_A^\bigcirc\; a)) \Big) \rightarrow \prod_{z : \bigcirc A} \bigcirc (B\; z)$$
+	\item For every $f : \prod_{a : A} \bigcirc (B(\eta_A^\bigcirc\; a))$ there is a path $\mathtt{ind}_\bigcirc (f)(\eta_A^\bigcirc\; a) = f\; a$
 	\item For all $z,z' : \bigcirc \; A$, the function $\eta_{z=z'}^\bigcirc : (z = z') \rightarrow \bigcirc (z = z')$ is an equivalence.
 
 \end{enumerate}
@@ -172,7 +162,7 @@ A \textbf{modality} is a function $\bigcirc : \mathcal{U} \rightarrow \mathcal{U
 A modality $\bigcirc$ induces a $\Sigma$-closed reflective subuniverse.
 
 \begin{defn}
-Given modality $\bigcirc : \mathcal{U} \rightarrow \mathcal{U}$, a \textbf{reflective subuniverse} is a "subset" of $\mathcal{U}$ encoded by a family of h-propositions $P : \mathcal{U} \rightarrow \textnormal{Prop}$ such that the following conditions hold. 
+Given modality $\bigcirc : \mathcal{U} \rightarrow \mathcal{U}$, a \textbf{reflective subuniverse} is a `subset' of $\mathcal{U}$ encoded by a family of h-propositions $P : \mathcal{U} \rightarrow \mathtt{Prop}$ such that the following conditions hold. 
 \begin{itemize}
 	\item For $A : \mathcal{U}$, we have $P(\bigcirc A)$.
 	\item For $A : \mathcal{U}$ and $B$ such that $P(B)$, the function
@@ -189,12 +179,12 @@ That is for subuniverse $P$ and $B : A \rightarrow \mathcal{U}$ such that $\prod
 \end{thm}
 
 \begin{proof}
-For $a : A$, consider ev$_a: (\prod_{a: A}B(a)) \rightarrow B(a)$ defined by ev$_a (f) : \equiv f(x)$. 
+For $a : A$, consider $\mathtt{ev}_a: (\prod_{a: A}B(a)) \rightarrow B(a)$ defined by $\mathtt{ev}_a (f) : \equiv f(x)$. 
 Since $P(B(a))$, we have 
-$$(\lambda f.f \circ \eta_{\prod_{a: A}B(a)}^\bigcirc)^{-1} (ev_a) : \bigcirc\big(\prod_{a: A}B(a)\big) \rightarrow B(a)$$
+$$(\lambda f.f \circ \eta_{\prod_{a: A}B(a)}^\bigcirc)^{-1} (\mathtt{ev}_a) : \bigcirc\big(\prod_{a: A}B(a)\big) \rightarrow B(a)$$
 We can now define the retraction of $\eta^\bigcirc_{\prod_{a : A} B(a)}$ by pattern matching as such:\\
 For $z: (\prod_{a: A}B(a))$ and $a : A$ we have 
-$$(\lambda f.f \circ \eta_{\prod_{a: A}B(a)}^\bigcirc)^{-1} (ev_a) (z) : B(a)$$
+$$(\lambda f.f \circ \eta_{\prod_{a: A}B(a)}^\bigcirc)^{-1} (\mathtt{ev}_a) (z) : B(a)$$
 
 \end{proof}
 
@@ -205,5 +195,43 @@ is an equivalence for all $a : A$.
 
 \end{defn}
 
+\section{LLPO}
+\begin{defn} 
+The Lesser Limited Principle of Omniscience, states that given binary sequence $s : \mathbb{N} \rightarrow \mathbf{2}$ and the fact that there is at most one occurence of $1$ in the sequence, formally 
+$$\mathtt{atMost1one} :\prod_{n_1 : \mathbb{N}} \prod_{n_2 : \mathbb{N}} s(n_1) = 1 \rightarrow s(n_2)= 1 \rightarrow n_1 = n_2$$
+we can then have by the LLPO a witness for $\mathtt{p_{odd}} \vee \mathtt{p_{even}}$, where $\mathtt{p_{odd}}$ is the statement that for all odd positions $n$, $s(n) = 0$, formally $\mathtt{p_{odd}} \equiv \prod_{n : \mathbb{N}} \mathtt{odd}(n) \rightarrow s(n) = 0$. 
+Similarly for $\mathtt{p_{even}}$. 
+\end{defn}
+LLPO can be viewed as a weaker form of the Law of Excluded Middle. 
+
+\begin{lem} 
+The Law of Excluded Middle implies the Limited Principle of Omniscience.
+\end{lem}
+
+\begin{proof}
+By LEM we have a witness $ l_1 :\mathtt{p_{odd}} \vee \neg \mathtt{p_{odd}}$. 
+Since this is a coproduct, by the relevant principle of induction, it's enough to prove LLPO from the disjuncts. 
+\begin{itemize}
+	\item $\mathtt{p_{odd}} \Rightarrow $ LLPO, trivially.
+
+	\item $\neg \mathtt{p}$, alongside LEM, implies that there exists odd $n_e : \mathbb{N}$ such that $s(n_e) = 1$. 
+	We can now provide $\prod_{n : \mathbb{N}} \mathtt{even}(n) \rightarrow s(n) = 0$. 
+	Let $n : \mathbb{N}$. 
+	By the definition of $s$, $s(n) = 0 \vee s(n) = 1$.
+	We invoke the principle of induction of coproducts and prove LLPO from the disjuncts. 
+	\begin{itemize}
+		\item $s(n) = 0$, in this case we are done.
+		\item $s(n) = 1$. 
+		By $\mathtt{atMost1one}$ we have $n = n_e \Rightarrow $ $n$ even and odd which is a contradiction $c : \bot$. 
+		Ex Falso,  $\mathtt{efq} : \bot \rightarrow s(n) = 0$. 
+		Then $\mathtt{efq}(c) : s(n) = 0$.
+	\end{itemize}
+
+\end{itemize}
+
+
+\end{proof}
+
 
 \end{document}
+
