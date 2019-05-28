@@ -1,12 +1,13 @@
 \documentclass[12pt]{article}
 
-\usepackage{answers}
+
+%\usepackage{answers}
 
 \usepackage{setspace}
-\usepackage{graphicx}
+%\usepackage{graphicx}
 \usepackage{enumitem}
-\usepackage{tikz-cd}
-
+%\usepackage{tikz-cd}
+%\usepackage{todonotes}
 \usepackage{multicol}
 \usepackage{mathrsfs}
 \usepackage[margin=1in]{geometry} 
@@ -44,10 +45,13 @@
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
 \newenvironment{corollary}[2][Corollary]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\usepackage{xcolor}
+\newcommand\todo[1]{\textcolor{red}{#1}}
  
-\newenvironment{bprooftree}
-  {\leavevmode\hbox\bgroup}
-  {\DisplayProof\egroup}
+%\newenvironment{bprooftree}
+ % {\leavevmode\hbox\bgroup}
+  %{\DisplayProof\egroup}
 
 \newtheorem{thm}{Theorem}[section]
 \newtheorem{defn}[thm]{Definition}
@@ -56,6 +60,8 @@
 \newtheorem{prop}[thm]{Proposition}
 \newtheorem{rem}[thm]{Remark}
 \newtheorem{ill}[thm]{Illustration}
+
+
 
 \begin{document}
  \pagenumbering{gobble}
@@ -72,6 +78,7 @@
 \section{Type Theory}
 \subsection{Introduction}
 Type theory is a formal language and deductive system, that is self sufficient in the sense that it need not be formulated as a collection of axioms on top of some other formal system like First Order Logic, instead its deductive system can be built on top of its own formal language. 
+\todo{longer sentence to check formating }
 
 Central to Type Theory is the notion of \textit{Type}. Every term $a$ in Type Theory we come across, must lie in some type $A$, which we denote as $a : A$. Note that the relation $:$ is transitive, so $a : A$ and $A : B$ imply $a : B$. 
 %This induces the cummulative hierarchy shape of the universe of types $\mathcal{U}$, wherein every level of the universe includes all lower levels and their types.
@@ -199,7 +206,7 @@ is an equivalence for all $a : A$.
 \begin{defn} 
 The Lesser Limited Principle of Omniscience, states that given binary sequence $s : \mathbb{N} \rightarrow \mathbf{2}$ and the fact that there is at most one occurence of $1$ in the sequence, formally 
 $$\mathtt{atMost1one} :\prod_{n_1 : \mathbb{N}} \prod_{n_2 : \mathbb{N}} s(n_1) = 1 \rightarrow s(n_2)= 1 \rightarrow n_1 = n_2$$
-we can then have by the LLPO a witness for $\mathtt{p_{odd}} \vee \mathtt{p_{even}}$, where $\mathtt{p_{odd}}$ is the statement that for all odd positions $n$, $s(n) = 0$, formally $\mathtt{p_{odd}} \equiv \prod_{n : \mathbb{N}} \mathtt{odd}(n) \rightarrow s(n) = 0$. 
+we can then have by the LLPO a witness for $\mathtt{p_{odd}} \vee \mathtt{p_{even}}$, where $\mathtt{p_{odd}}$ (with $s$ as an implicit argument) is the statement that for all odd positions $n$, $s(n) = 0$, formally $\mathtt{p_{odd}} \equiv \prod_{n : \mathbb{N}} \mathtt{odd}(n) \rightarrow s(n) = 0$. 
 Similarly for $\mathtt{p_{even}}$. 
 \end{defn}
 LLPO can be viewed as a weaker form of the Law of Excluded Middle. 
@@ -214,7 +221,7 @@ Since this is a coproduct, by the relevant principle of induction, it's enough t
 \begin{itemize}
 	\item $\mathtt{p_{odd}} \Rightarrow $ LLPO, trivially.
 
-	\item $\neg \mathtt{p}$, alongside LEM, implies that there exists odd $n_e : \mathbb{N}$ such that $s(n_e) = 1$. 
+	\item $\neg \mathtt{p_{odd}}$, alongside LEM, implies that there exists odd $n_e : \mathbb{N}$ such that $s(n_e) = 1$. 
 	We can now provide $\prod_{n : \mathbb{N}} \mathtt{even}(n) \rightarrow s(n) = 0$. 
 	Let $n : \mathbb{N}$. 
 	By the definition of $s$, $s(n) = 0 \vee s(n) = 1$.
@@ -226,11 +233,44 @@ Since this is a coproduct, by the relevant principle of induction, it's enough t
 		Ex Falso,  $\mathtt{efq} : \bot \rightarrow s(n) = 0$. 
 		Then $\mathtt{efq}(c) : s(n) = 0$.
 	\end{itemize}
-
 \end{itemize}
-
-
 \end{proof}
+
+\begin{lem}
+If we replace the consequent of LLPO with its double negation, let's call it $\neg\neg$LLPO, then we can prove it in Type Theory. 
+\end{lem}
+\begin{proof}
+From LEM$\;\Rightarrow\;$LLPO we have LEM$\;\Rightarrow\neg\neg$LLPO by effectively the same proof. 
+Since we invoke LEM only finitely many times, we can use their finite conjunction to prove $\neg\neg$LLPO. 
+The double negations of those instances are provable in Type Theory \todo{(include the proof of this?)}.
+We can leverage the fact that double negation is a modality, to construct a function that assumes the double negations of the LEM instances and concludes $\neg\neg$LLPO.
+\end{proof}
+
+\section{unassigned}
+
+\begin{defn}
+The Independence Principle for $X : \mathcal{U}$ and family of propositions $Q: X \rightarrow N \rightarrow \mathtt{Prop}$ is the following statement
+$$\mathtt{IP}_{X,Q} : \Big(\prod_{x : X}\| \Sigma_{n : \mathbb{N}} Q(x,n) \| \Big) \rightarrow \| \Sigma_{n : \mathbb{N}}\prod_{x : X} Q(x,n) \|$$
+\end{defn}
+We know that there exists model of extensional type theory that validates IP. 
+We would like a variant of IP to which we can apply Theorem 6.1 of CTCA. 
+We can then reach the desired form by omitting the truncation in the antecedent of IP. 
+\begin{defn}
+We define $\mathtt{IP'}_{X,Q}$ with $X : \mathcal{U}$ and family of propositions $Q: X \rightarrow N \rightarrow \mathtt{Prop}$ 
+$$\mathtt{IP}_{X,Q} : \Big(\prod_{x : X} \Sigma_{n : \mathbb{N}} Q(x,n)  \Big) \rightarrow \| \Sigma_{n : \mathbb{N}}\prod_{x : X} Q(x,n) \|$$
+\end{defn}
+Firstly, $\mathtt{IP}_{X,Q} \Rightarrow \mathtt{IP'}_{X,Q}$. 
+Secondly, $\mathtt{IP'}$ is strong enough to prove that $\mathbb{N}$ is $B$-null, where 
+$$B : A \rightarrow \mathcal{U}$$
+$$S :\equiv \mathbb{N} \rightarrow \mathbf{2}$$
+$$A : \Sigma_{s : S}\mathtt({atMost1one}\; s)$$
+$$B : \prod_{a : A}\|\mathtt{p_{odd}}\; a.\mathtt{fst} + \mathtt{p_{even}}\; a.\mathtt{fst}\|$$
+Specifically, it is enough to make sure that 
+$$\prod_{a : A}\prod_{f : B'(a) \rightarrow \mathbb{N}} \mathtt{IP}_{B'(a),Q(a, f)}$$
+where $B'(a)$ is the untruncation of $B(a)$ and
+$$Q(a, f) : \prod_{b : B'(a)} \prod_{n : \mathbb{N}} \mathcal{U}$$
+and is defined as 
+$$Q(a, f)\; b\; n \equiv f(b) =_{\mathbb{N}} n$$
 
 
 \end{document}
