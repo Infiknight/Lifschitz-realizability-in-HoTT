@@ -11,6 +11,8 @@
 %\usepackage{multicol}
 %\usepackage{mathrsfs}
 %\usepackage[margin=1in]{geometry} 
+\usepackage{hyperref}% http://ctan.org/pkg/hyperref
+\usepackage{cleveref}% http://ctan.org/pkg/cleveref
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amssymb}
@@ -62,11 +64,12 @@
 \newtheorem{prop}[thm]{Proposition}
 \newtheorem{rem}[thm]{Remark}
 \newtheorem{ill}[thm]{Illustration}
+\crefname{thm}{Lemma}{Lemmas}
 
 
 
 \begin{document}
- \pagenumbering{gobble}
+ %\pagenumbering{gobble}
 % --------------------------------------------------------------
 %                         Start here
 % --------------------------------------------------------------
@@ -153,6 +156,8 @@ In the following, $A$ and $B$ are mere propositions.
 \item We interpret $\forall a\in A,\; P(a)$, where $P(a)$ is a mere proposition for all $a \in A$, as $\prod_{a : A}P(a)$. 
 \item We interpret $ \exists a \in A,\; P(a)$, where $P(a)$ is a mere proposition for all $a \in A$, as $\| \Sigma_{a : A} P(a) \|$
 \end{itemize}
+The use of the above notation is interchangeable in the sections to follow.
+
 
 \section{Modalities}
 %Under the view of types as $(\infty, 1)$-categories, functions between them are functors. 
@@ -214,7 +219,7 @@ Similarly for $\mathtt{p_{even}}$.
 LLPO can be viewed as a weaker form of the Law of Excluded Middle. 
 
 \begin{lem} 
-The Law of Excluded Middle implies the Limited Principle of Omniscience.
+The Law of Excluded Middle implies the Lesser Limited Principle of Omniscience.
 \end{lem}
 
 \begin{proof}
@@ -238,7 +243,7 @@ Since this is a coproduct, by the relevant principle of induction, it's enough t
 \end{itemize}
 \end{proof}
 
-\begin{lem}
+\begin{lem}\label{llponeg}
 If we replace the consequent of LLPO with its double negation, let's call it $\neg\neg$LLPO, then we can prove it in Type Theory. 
 \end{lem}
 \begin{proof}
@@ -250,10 +255,10 @@ We can leverage the fact that double negation is a modality, to construct a func
 
 \section{Extensional Type Theory}
 There exists a model of extensional type theory that validates the following `Independence Principle'
-$$\bigg( \prod_{s : \mathbf{2}^\mathbb{N}} P\; s \rightarrow \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbf{2}} Q\; s\; z \Big\rVert \bigg)$$
+$$\bigg( \prod_{s : \mathbf{2}^\mathbb{N}} P\; s \rightarrow \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}} Q\; s\; z \Big\rVert \bigg)$$
 $$\rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} P\; s \rightarrow  \Big\lVert \sum_{z : \mathbf{2}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow Q \; s\; z\Big\rVert \bigg)$$
-where $P: \mathbf{2}^\mathbb{N} \rightarrow \mathtt{Prop}$ and $Q : \mathbf{2}^\mathbb{N} \rightarrow \mathbf{2} \rightarrow \mathtt{Prop} $ are families of propositions. 
-Putting it plainly, if the left hand side of the above is true, then $z : \mathbf{2}$ does not depend on the proof of the constantness of $s$ to $0$.
+where $P: \mathbf{2}^\mathbb{N} \rightarrow \mathtt{Prop}$ and $Q : \mathbf{2}^\mathbb{N} \rightarrow \mathbb{N} \rightarrow \mathtt{Prop} $ are families of propositions. 
+Putting it plainly, if the left hand side of the above is true, then $z : \mathbb{N}$ does not depend on the proof of the constantness of $s$ to $0$.
 
 The same model also validates Markov's Principle
 $$\Big(\prod_{a : A}(P\; a \vee \neg P\; a)\Big) \rightarrow  \Big(\neg \prod_{a : A}\neg P\; a\Big)\rightarrow \Big\lVert \sum_{a : A} P\; a \Big\rVert$$
@@ -268,22 +273,22 @@ Let
 $$B : A \rightarrow \mathtt{Prop}$$
 $$B :\equiv \lambda\; a.\; \mathtt{p_{odd}}\; a \vee \mathtt{p_{even}}\; a$$
 \begin{lem}
-$\mathbf{2}$ is $B$-null.
+$\mathbb{N}$ is $B$-null.
 \end{lem}
 \begin{proof}
-Given $a : A$ and $f : B\; a \rightarrow \mathbf{2}$ we need to prove that there exists unique $f' : \mathbf{1} \rightarrow \mathbf{2}$ through which $f$ factors, in the sense that $f = f' \circ g$, where $g : B\; a \rightarrow \mathbf{1}$ is the sole inhabitant of its function space. 
+Given $a : A$ and $f : B\; a \rightarrow \mathbb{N}$ we need to prove that there exists unique $f' : \mathbf{1} \rightarrow \mathbb{N}$ through which $f$ factors, in the sense that $f = f' \circ g$, where $g : B\; a \rightarrow \mathbf{1}$ is the sole inhabitant of its function space. 
 Functions with $\mathbf{1}$ as their domain are constant. 
-We therefore need to find some $z : \mathbf{2}$ so that $\lambda\; \_.\; z$ is $f'$. 
+We therefore need to find some $z : \mathbb{N}$ so that $\lambda\; \_.\; z$ is $f'$. 
 To that end, we will use the following instance of the Independence Principle
-$$\bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbf{2}}\prod_{p : B\; a} f\; p = z\Big\rVert \bigg)$$
-$$\rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow  \Big\lVert \sum_{z : \mathbf{2}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow\prod_{p : B\; a} f\; p = z\Big\rVert \bigg)$$
+$$\bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}}\prod_{p : B\; a} f\; p = z\Big\rVert \bigg)$$
+$$\rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow  \Big\lVert \sum_{z : \mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow\prod_{p : B\; a} f\; p = z\Big\rVert \bigg)$$
 Note that the left hand side is provable. 
-By providing the odd $s_1$ and even $s_2$ subsequences of $a$ to the right hand side, we get hold of $z_1 : \mathbf{2}$ and $z_2 : \mathbf{2} $ respectively. 
-Equality on $\mathbf{2}$ is decidable, therefore $z_1 = z_2 \vee z_1 \neq z_2$ is provable. 
+By providing the odd $s_1$ and even $s_2$ subsequences of $a$ to the right hand side, we get hold of $z_1 : \mathbb{N}$ and $z_2 : \mathbb{N} $ respectively. 
+Equality on $\mathbb{N}$ is decidable, therefore $z_1 = z_2 \vee z_1 \neq z_2$ is provable. 
 Since our goal is a proposition, we can drop the truncation of the disjunction. 
 This leaves us with a coproduct. 
 
-We will prove that the fact $\mathbf{2}$ is $B$-null follows from both constituents of the coproduct.
+We will first prove that the existence of a candidate for $f'$ follows from both constituents of the coproduct.
 \begin{itemize}
 \item First the case where $z_1= z_2$. 
 We arbitrarily pick $z_1$ and propose $f' : \equiv \lambda \;\_.\; z_1$. 
@@ -303,7 +308,7 @@ Suppose that $\prod_{n :
 \mathbb{N}} a\; n \neq 1$. 
 Then $a$ and by extension $s_1$ and $s_2$ are constantly $0$. 
 By the rhs of the IP we then have $z_1 = f\; b = z_2$ where $b : B\; a$ is clearly available to us at this point. 
-This constradicts $z_1 \neq z_2$. 
+This contradicts $z_1 \neq z_2$. 
 We have proven $\neg \prod_{n : 
 \mathbb{N}} a\; n \neq 1$. 
 By Markov's Principle there exists $n_1 : \mathbb{N}$ such that $a\; n_1 = 1$. 
@@ -312,6 +317,24 @@ We prove $\prod_{n : \mathbb{N}} s_0\; n = 0$ by induction on $\mathbb{N}$ and c
 In the case where $s_0\; n = 1$ we can reach falsum because $n$ will have to be both even and odd (in $a$) by $\mathtt{atMost1one} \; a$. Ex falso trivializes this case. 
 Now that we have established this too, we have enough arguments for the rhs of IP to output the desired equality $f\; b = z_0$ which proves homotopy between $f$ and $(\lambda\;\_.\; z_0) \circ g$.
 \end{itemize}
+We still need to prove the uniqueness of $f'$. 
+Since $\mathbf{1}$ is finite and equality on $\mathbb{N}$ is decidable, we can decide equality on the function space 
+$$p : \prod_{f_1,f_2 : \mathbf{1}\rightarrow \mathbb{N}} f_1 = f_2 + f_1 \neq f_2$$
+We will use this to prove that $\sum_{h : \mathbf{1}\rightarrow \mathbb{N}} f= h \circ g$ is a mere proposition, which entails the uniqueness of $f'$. 
+Consider $h_1,h_2 : \mathbf{1}\rightarrow \mathbb{N}$ such that $f= h_i \circ g,\; i \in \{1,2\}$. 
+By $p$ we have $(h_1 = h_2) + (h_1 \neq h_2)$. 
+We use induction on the coproduct. 
+The left case is trivial. 
+For the right case we have $q : h_1 \neq h_2$ and we will first try to prove $B\; a \rightarrow \bot$ as a stepping stone. 
+Consider $b : B\; a$. 
+Since $h_1 \circ g = f = h_2 \circ g$, by homotopy $h_1 (g\; b) = h_2 (g\; b)$. 
+We can then prove $\prod_{*: \mathbf{1}} h_1 (*) = h_2 (*)$. 
+By function extensionality $h_1 = h_2$. 
+But this contradicts $q$, so we reach $\bot$. 
+We've just proven $r : B\;a \rightarrow \bot$. 
+We still have to prove $h_1 = h_2$, the main goal. 
+By \cref{llponeg} we have $(B\; a \rightarrow \bot) \rightarrow \bot$ and by $r$ we get $\bot$. 
+We conclude the proof by Ex Falso.
 \end{proof}
 
 \end{document}
