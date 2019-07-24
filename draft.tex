@@ -1,8 +1,9 @@
-\documentclass[12pt]{article}
+\documentclass[12pt]{report}
 
-
+\usepackage{tikz-cd}
 %\usepackage{answers}
-
+\usepackage{biblatex}
+\addbibresource{bibliography.bib}
 \usepackage{setspace}
 %\usepackage{graphicx}
 \usepackage{enumitem}
@@ -12,8 +13,9 @@
 %\usepackage{mathrsfs}
 %\usepackage[margin=1in]{geometry} 
 \usepackage{hyperref}% http://ctan.org/pkg/hyperref
-\usepackage{cleveref}% http://ctan.org/pkg/cleveref
+
 \usepackage{amsmath}
+\usepackage{cleveref}% http://ctan.org/pkg/cleveref
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{ textcomp }
@@ -78,10 +80,15 @@
 \author{Dimitrios Koutsoulis\\ %replace with your name
 11838639} %if necessary, replace with your course title
  
+\begin{titlepage}
+\hypersetup{pageanchor=false}
 \maketitle
+\thispagestyle{empty}
+\end{titlepage}
+\hypersetup{pageanchor=true}
 %Below is an example of the problem environment
-\section{Type Theory}
-\subsection{Introduction}
+\chapter{Type Theory}
+\section{Introduction}
 Type theory is a formal language and deductive system, that is self sufficient in the sense that it need not be formulated as a collection of axioms on top of some other formal system like First Order Logic, instead its deductive system can be built on top of its own formal language. 
 \todo{longer sentence to check formating }
 
@@ -90,7 +97,7 @@ Central to Type Theory is the notion of \textit{Type}. Every term $a$ in Type Th
 
 For the deductive part of Type Theory, we interpret propositions as types. Proving proposition $P$ amounts to providing some inhabitant $p : P$. 
 
-\subsection{Type Construction Operations}
+\section{Type Construction Operations}
 Let's have a look at some important type constructions.
 \begin{itemize}
 	\item Given types $A, B : \mathcal{U}$ we can define the type $A \rightarrow B$ of functions from $A$ to $B$. 
@@ -131,7 +138,7 @@ Let's have a look at some important type constructions.
 
 \end{itemize}
 
-\subsection{Important types}
+\section{Important types}
 \begin{defn}
 We call a type $A$ a \textbf{mere proposition} if for every $a,b : A$ we have $a = b$.
 \end{defn}
@@ -144,7 +151,7 @@ We call a type $A$ a \textbf{set} if for every $a,b : A$ we have that $a =_A b$ 
 We call a type $A$ \textbf{contractible} if there exists $a : A$ such that for all $x : A$ it holds that $x = a$.
 \end{defn}
 
-\subsection{Logic}
+\section{Logic}
 Our informal deductions in Type Theory will be reminiscent of First Order Logic ones. 
 To be able to use a similar verbiage, we will set down a handful of types, corresponding to the connectives that let us form well-formed formulas in FOL. 
 These types need to be mere propositions, so that we can form non-constructive deductions. 
@@ -159,7 +166,7 @@ In the following, $A$ and $B$ are mere propositions.
 The use of the above notation is interchangeable in the sections to follow.
 
 
-\section{Modalities}
+\chapter{Modalities}
 %Under the view of types as $(\infty, 1)$-categories, functions between them are functors. 
 %We can then view the universe $\mathcal{U}$ itslef as a category. 
 \begin{defn}
@@ -209,7 +216,7 @@ is an equivalence for all $a : A$.
 
 \end{defn}
 
-\section{LLPO}
+\chapter{LLPO}
 \begin{defn} 
 The Lesser Limited Principle of Omniscience, states that given binary sequence $s : \mathbb{N} \rightarrow \mathbf{2}$ and the fact that there is at most one occurence of $1$ in the sequence, formally 
 $$\mathtt{atMost1one} :\prod_{n_1 : \mathbb{N}} \prod_{n_2 : \mathbb{N}} s(n_1) = 1 \rightarrow s(n_2)= 1 \rightarrow n_1 = n_2$$
@@ -219,7 +226,7 @@ Similarly for $\mathtt{p_{even}}$.
 LLPO can be viewed as a weaker form of the Law of Excluded Middle. 
 
 \begin{lem} 
-The Law of Excluded Middle implies the Lesser Limited Principle of Omniscience.
+The Law of Excluded Middle and Markov's Principle implies the Lesser Limited Principle of Omniscience.
 \end{lem}
 
 \begin{proof}
@@ -229,8 +236,8 @@ Since this is a coproduct, by the relevant principle of induction, it's enough t
 	\item $\mathtt{p_{odd}} \Rightarrow $ LLPO, trivially.
 
 	\item $\neg \mathtt{p_{odd}}$, alongside LEM, implies that there exists odd $n_e : \mathbb{N}$ such that $s(n_e) = 1$. 
-	We can now provide $\prod_{n : \mathbb{N}} \mathtt{even}(n) \rightarrow s(n) = 0$. 
-	Let $n : \mathbb{N}$. 
+	We can now prove $\prod_{n : \mathbb{N}} \mathtt{even}(n) \rightarrow s(n) = 0$. 
+	Let $n : \mathbb{N}$ such that $\mathtt{even}(n)$ is true. 
 	By the definition of $s$, $s(n) = 0 \vee s(n) = 1$.
 	We invoke the principle of induction of coproducts and prove LLPO from the disjuncts. 
 	\begin{itemize}
@@ -253,10 +260,10 @@ The double negations of those instances are provable in Type Theory \todo{(inclu
 We can leverage the fact that double negation is a modality, to construct a function that assumes the double negations of the LEM instances and concludes $\neg\neg$LLPO.
 \end{proof}
 
-\section{Extensional Type Theory}
+\chapter{Extensional Type Theory}
 There exists a model of extensional type theory that validates the following `Independence Principle'
 $$\bigg( \prod_{s : \mathbf{2}^\mathbb{N}} P\; s \rightarrow \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}} Q\; s\; z \Big\rVert \bigg)$$
-$$\rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} P\; s \rightarrow  \Big\lVert \sum_{z : \mathbf{2}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow Q \; s\; z\Big\rVert \bigg)$$
+$$\rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} P\; s \rightarrow  \Big\lVert \sum_{z : \mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow Q \; s\; z\Big\rVert \bigg)$$
 where $P: \mathbf{2}^\mathbb{N} \rightarrow \mathtt{Prop}$ and $Q : \mathbf{2}^\mathbb{N} \rightarrow \mathbb{N} \rightarrow \mathtt{Prop} $ are families of propositions. 
 Putting it plainly, if the left hand side of the above is true, then $z : \mathbb{N}$ does not depend on the proof of the constantness of $s$ to $0$.
 
@@ -265,39 +272,79 @@ $$\Big(\prod_{a : A}(P\; a \vee \neg P\; a)\Big) \rightarrow  \Big(\neg \prod_{a
 where $P : A \rightarrow \mathtt{Prop}$ is a family of propositions over $A : \mathcal{U}$. 
 Informally, Markov's Principle states that if we have a collection of decidable propositions and the fact that not all of them are false, then one of them must be true.
 
-In this section we will be working in the context of this model.
+In this section we work in the context of this model of Extensional Type Theory.
 
 Let $A :\equiv \sum_{a: \mathbf{2}^\mathbb{N}}\mathtt{atMost1one}\;a$. 
 When referring to elements of $A$ we implicitly mean the first part of the pair. 
 Let
-$$B : A \rightarrow \mathtt{Prop}$$
-$$B :\equiv \lambda\; a.\; \mathtt{p_{odd}}\; a \vee \mathtt{p_{even}}\; a$$
-\begin{lem}
-$\mathbb{N}$ is $B$-null.
+$$B : A \rightarrow \mathcal{U}$$
+$$B :\equiv \lambda\; a.\; \mathtt{p_{odd}}\; a + \mathtt{p_{even}}\; a$$
+
+We would like to have access to the following instance of IP in our intensional model as well.
+\begin{multline*}
+\prod_{a: A} \prod_{f: B\; a \rightarrow \mathbb{N}} \Bigg( \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
+	 \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f^*\; p = z \Big\rVert \bigg)
+\end{multline*}
+\begin{multline*}
+\rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
+	  \Big\lVert \sum_{z : \mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{p : B\; a} f^*\; p = z \Big\rVert \bigg) \Bigg)
+\end{multline*}
+The fact that $\mathbb{N}$ is modal, follows from this in Intensional Type Theory. 
+Our plan of action shall be to find a consequent of it, IP', strong enough for our purposes, that has the right form so that by Theorem 6.1 of \cite{1905.03014} we have a model of intensional type theory that satisfies IP'. 
+
+We drop the truncation around $\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f^*\; p = z \rVert$ and since this is the consequent of the antecedent, the resulting statement is weaker than the original IP. We then uncurry 4 times to reach what we propose as our IP', a function that takes four arguments in the form of a quaternary dependent pair
+
+\begin{align*}
+&a: &A
+\\
+&f: &B\; a \rightarrow \mathbb{N}
+\\ &\_ :
+\begin{split}
+\bigg( \prod_{\bar{s} : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
+	\quad \Big(\prod_{n : \mathbb{N}}\bar{s}\; n = 0 \Big) \rightarrow  \sum_{z : \mathbb{N}} \prod_{p : B\; a} f^*\; p = z  \bigg)
+\end{split}
+\\
+&r : & \sum_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big)
+\end{align*}
+and has return type
+$$\Big\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f^*\; p = z \Big\rVert$$
+
+\begin{lem}\label{NisBnull}
+$\mathbb{N}$ is $\lVert B \rVert$-null.
 \end{lem}
 \begin{proof}
-Given $a : A$ and $f : B\; a \rightarrow \mathbb{N}$ we need to prove that there exists unique $f' : \mathbf{1} \rightarrow \mathbb{N}$ through which $f$ factors, in the sense that $f = f' \circ g$, where $g : B\; a \rightarrow \mathbf{1}$ is the sole inhabitant of its function space. 
+Given $a : A$ and $f : \lVert B \rVert \; a \rightarrow \mathbb{N}$ we need to prove that there exists unique $f' : \mathbf{1} \rightarrow \mathbb{N}$ through which $f$ factors, in the sense that $f = f' \circ g$, where $g : C\; a \rightarrow \mathbf{1}$ is the sole inhabitant of its function space. 
 Functions with $\mathbf{1}$ as their domain are constant. 
 We therefore need to find some $z : \mathbb{N}$ so that $\lambda\; \_.\; z$ is $f'$. 
 To that end, we will use the following instance of the Independence Principle
-$$\bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}}\prod_{p : B\; a} f\; p = z\Big\rVert \bigg)$$
-$$\rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow  \Big\lVert \sum_{z : \mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow\prod_{p : B\; a} f\; p = z\Big\rVert \bigg)$$
-Note that the left hand side is provable. 
-By providing the odd $s_1$ and even $s_2$ subsequences of $a$ to the right hand side, we get hold of $z_1 : \mathbb{N}$ and $z_2 : \mathbb{N} $ respectively. 
-Equality on $\mathbb{N}$ is decidable, therefore $z_1 = z_2 \vee z_1 \neq z_2$ is provable. 
-Since our goal is a proposition, we can drop the truncation of the disjunction. 
-This leaves us with a coproduct. 
+\begin{multline} \label{IPlhs}
+\bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
+	 \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f^*\; p = z \Big\rVert \bigg)
+\end{multline}
+\begin{multline} \label{IPrhs}
+\rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
+	  \Big\lVert \sum_{z : \mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{p : B\; a} f^*\; p = z \Big\rVert \bigg)
+\end{multline}
+where $f^*$ is the composition $f \circ C^B$, with $C^B$ being the canonical function $B\; a \rightarrow C\; a$. 
+Note that the left hand side \ref{IPlhs} is provable. 
+So we have a witness of the right hand side \ref{IPrhs}.
+By providing the odd $s_1$ and even $s_2$ subsequences of $a$ to it, we get hold of $z_1 : \mathbb{N}$ and $z_2 : \mathbb{N} $ respectively. 
+Equality on $\mathbb{N}$ is decidable, therefore $(z_1 = z_2) + (z_1 \neq z_2)$ is provable. 
+
 
 We will first prove that the existence of a candidate for $f'$ follows from both constituents of the coproduct.
 \begin{itemize}
 \item First the case where $z_1= z_2$. 
-We arbitrarily pick $z_1$ and propose $f' : \equiv \lambda \;\_.\; z_1$. 
-By axiom K we have function extensionality, so we reduce proving $f= f' \circ g$ to proving $f\; b = f'\circ g\; b$ for arbitrary $b : B\; a$. \\
-$b$ is a truncated coproduct witness. 
-As before we can ignore the truncation and take cases on the coproduct. 
+We arbitrarily pick $z_1$ and propose $f' : \equiv \lambda \;\_.\; z_1 : \mathbf{1} \rightarrow \mathbb{N}$. 
+By function extensionality we reduce proving $f= f' \circ g$ to proving $f\; c = f'\circ g\; c$ for arbitrary $c : C\; a$. \\
+Since our goal is a mere proposition, we can act as if we have access to an actual $b : B\; a$. 
+We then take cases on $b$.  
 \begin{itemize}
 \item We first consider the case $\mathtt{p_{odd}}\; a$. 
-This tells us that the odd subsequence is constantly $0$, which we can provide to the rhs of the IP alongside with $b$  itself (and $s_1$ as the first argument) to get $f\; = z_1$. We concatenate this with $f' \circ g \; b = z_1$ to conclude this case. 
+Through this we can still get access to some actual $b' : B\; a$. 
+The odd subsequence is constantly $0$, which we can provide to the rhs of the IP alongside with $b'$ (and $s_1$ as the first argument) to deduce $f^*\; b' = z_1$. 
+Using this we then prove $f\; c = z_1$. 
+We concatenate this with $f' \circ g \; c = z_1$ to conclude this case. 
 \item The $\mathtt{p_{even}}$ case is very similar. 
 The only difference is that we provide $s_2$ as the first argument to the rhs of the IP and then have $z_1=z_2$ be part of the concatenation of paths when we prove homotopy between $f$ and $f' \circ g$. 
 \end{itemize}
@@ -337,5 +384,87 @@ By \cref{llponeg} we have $(B\; a \rightarrow \bot) \rightarrow \bot$ and by $r$
 We conclude the proof by Ex Falso.
 \end{proof}
 
-\end{document}
+\begin{lem}
+If $C, D$ are $\lVert B \rVert$-null then so is $C + D$.
+\end{lem}
+\begin{proof}
+We need to show that for $f : \lVert B\; a\rVert \rightarrow C+D$ there exists unique $f' : \mathbf{1} \rightarrow C+D$ such that $f = f' \circ e$, where $e : \lVert B\; a\rVert \rightarrow \mathbf{1}$ is the sole inhabitant of its function space. 
+We define $$g : C + D \rightarrow \mathbf{2}$$ 
+using components
+$$g_C :\equiv \lambda\; \_.\; 0 : C \rightarrow \mathbf{2}$$
+$$g_D :\equiv \lambda\; \_.\; 1 : D \rightarrow \mathbf{2}$$
+Same as we did for \cref{NisBnull} we can lift a variant of IP, that will help us in our endeavor, from the model of Extensional Type Theory. 
+This variant takes the following arguments in the form of a 4-product
+\begin{align*}
+&a: &A
+\\
+&\bar{f}: &B\; a \rightarrow C+D
+\\ &\_ :
+\begin{split}
+\bigg( \prod_{\bar{s} : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
+	\quad \Big(\prod_{n : \mathbb{N}}\bar{s}\; n = 0 \Big) \rightarrow  \sum_{z : \mathbf{2}} \prod_{b : B\; a} g(\bar{f}\; b) = z  \bigg)
+\end{split}
+\\
+&r : & \sum_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big)
+\end{align*}
+and returns
+$$\Big\lVert \sum_{z : \mathbf{2}} \prod_{b : B\; a} g(\bar{f}\; b) = z \Big\rVert$$
+We provide this with the arguments required, where $\bar{f}$ is $f$ composed with the truncation map $|*| : B\; a \rightarrow \lVert B\; a\rVert$, to get a witness 
+$$\bar{z} : \sum_{z : \mathbf{2}} \prod_{b : B\; a} g(\bar{f}\; b) = z$$ 
+Note that we dropped the truncation since our goal is a mere proposition, therefore we can act as if we have an actual $\bar{z}$. 
+Using $\bar{z}$ we can prove that
+$$y : \sum_{z : \mathbf{2}} \prod_{b : \lVert B\; a\rVert} g(f\; b) = z$$
+We can prove that 
+$$y= 0 + y = 1$$ 
+We use induction on this coproduct to prove our goal. 
+Without loss of generality, we argue only for the case of $y = 0$. 
+As a first step towards providing a candidate for $f'$, we will try to construct some $h : \lVert B\; a\rVert \rightarrow C$ such that $\mathtt{inl} \circ h = f$. 
+\begin{center}
+\begin{tikzcd}
+                                                             & \mathbf{1} \arrow[rdd, "f'", dashed, bend left] \arrow[d, "h'"', dashed]              &                    &            \\
+                                                             & C \arrow[rd, "\mathtt{inl}"]                                                          &                    &            \\
+B\; a \arrow[rr, "\bar{f}"', bend right=49] \arrow[r, "|*|"] & \lVert B\;a\rVert \arrow[r, "f"] \arrow[u, "h", dashed] \arrow[uu, "e", bend left=49] & C+D \arrow[r, "g"] & \mathbf{2}
+\end{tikzcd}
+\end{center}
+Let $b : \lVert B\; a\rVert$. 
+First, note that we can prove 
+$$\zeta : \prod_{a: C+D} \Big(\big(\sum_{c : C} \mathtt{inl}\; c = a\big) + \big( \sum_{d:D} \mathtt{inr}\; d = a \big) \Big)$$
+by induction on $C+D$. 
+We then take cases on 
+$$\zeta (f\; b) : \big(\sum_{c : C} \mathtt{inl}\; c = f\; b\big) + \big( \sum_{d:D} \mathtt{inr}\; d = f\; b \big)$$
+\begin{itemize}
+	\item If $\bar{c} : \sum_{c : C} \mathtt{inl}\; c = f\; b$, we define $h\; b :\equiv \bar{c}$.
+	Clearly $\mathtt{inl} \circ h = f$.
+	\item If $\sum_{d : D} \mathtt{inl}\; d = f\; b$, then $g(f\;b) = 1$ but since $y=0$ we also have $g(f\;b) = 0$. Contradiction. 
+	This case is resolved by Ex Falso.
+\end{itemize}
+Since $C$ is $\lVert B \rVert$-null, there exists $h' : \mathbf{1} \rightarrow C$ such that $h = h' \circ e$. 
+Observe that $\mathtt{inl} \circ h' : \mathbf{1} \rightarrow C+D$, furthermore $(\mathtt{inl} \circ h') \circ e= f$. 
+We have found a valid candidate for $f'$, what is left is to show it's unique. 
+% We reduce this to showing that $\sum_{f' : \mathbf{1} \rightarrow C+D} f' \circ e = f$ is a mere proposition. 
 
+% Let $f_1', f_2' : \sum_{f' : \mathbf{1} \rightarrow C+D} f' \circ e = f$. 
+% We can prove that for $* : \mathbf{1}$, we have 
+% $$\big(\sum_{c: C} f_i'\;* = \mathtt{inl}\; c\big) + \big(\sum_{d: D} f_i'\;* = \mathtt{inr}\; d\big)$$
+% for $i \in \{ 0,1 \}$. 
+% We then distinguish cases:
+% \begin{itemize}
+% \item If $c_1 : \sum_{c: C} f_1'\;* = \mathtt{inl}\; c$ and $c_2 : \sum_{c: C} f_2'\;* = \mathtt{inl}\; c$, 
+% then 
+% \end{itemize}
+Consider any $f'$ candidate. 
+We can construct a $f'_C : \mathbf{1} \rightarrow C$ so that $f'$ factors through it, $f' = \mathtt{inl} \circ f'_C$, with our construction being similar to that of $h$ earlier. 
+We want to show that $f' = \mathtt{inl} \circ h'$ or $\mathtt{inl} \circ f'_C = \mathtt{inl} \circ h'$. 
+We will show that $h' = f'_C$. 
+Since $C$ is $\lVert B \rVert$-null, $\sum_{k : \mathbf{1} \rightarrow C} k \circ e = h$ is a mere proposition. 
+Therefore showing $h' = f'_C$ is reduced to showing $f'_C \circ e = h$. 
+We use function extensionality. 
+We know that for arbitrary $b : \lVert B\; a \rVert$, $\mathtt{inl} (f'_C \circ e\; b ) = \mathtt{inl} (h\; b)$. 
+By 2.12.1 of \cite{hottbook} we have $(\mathtt{inl}\; a_1 = \mathtt{inl}\; a_2) \simeq (a_1 = a_2)$. 
+We can then deduce that $f'_C\circ e\; b = h\; b$. This concludes the proof of uniqueness of $h'$.
+
+\end{proof}
+
+\printbibliography
+
+\end{document}
