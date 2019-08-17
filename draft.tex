@@ -216,17 +216,42 @@ is an equivalence for all $a : A$.
 
 \end{defn}
 
+\chapter{Computability}
+In this chapter we will give an overview of basic definitions and results of Recursion theory and formalize them in Type theory. 
+The reader is expected to be somewhat familiar with Turing machines, as we will not be delving into their technical details. 
+%Instead, we follow a similar approach to that of \cite{bridges_richman_1987} and assume an effective enumeration of 
+
+\begin{defn}
+A \textbf{partial function} is a function with a subset of the naturals as its domain.\\
+Formally 
+$$f : \Big(\sum_{n : \mathbb{N}} P\; n \Big) \rightarrow \mathbb{N}$$
+where $P : \mathbb{N} \rightarrow \mathbf{Prop}$ is a family of propositions over $\mathbb{N}$, which works as the characteristic function of the domain of the partial function $f$.
+\end{defn}
+
+A standard result in Recursion theory is that there exists a Turing machine that enumerates all Turing Machines. 
+We assume a fixed enumeration $T_1, T_2,\ldots $ that we refer to going forward. 
+
+\begin{defn}\label{CT}
+Church's thesis $(CT)$ is an axiom to be assumed, which states that every function $\mathbb{N}\rightarrow \mathbb{N}$ is computable. 
+Formally in Type theory
+$$\prod_{f : \mathbb{N}\rightarrow \mathbb{N}} \Big\lVert \sum_{e : \mathbb{N}} \prod_{x : \mathbb{N}} \sum_{z : \mathbb{N}} T(e,x,z) \times U(z) = f(x) \Big\rVert$$
+where $T$ is Kleene's predicate, $e$ identifies a Turing machine, $x$ is some input to $f$ and its corresponding Turing machine $T_e$, finally $z$ is the computation history that $T_e$ goes through when given $x$ as the input, with $U(z)$ being the output at the end of the computation.
+\end{defn}
+
+In other words, Church's thesis assures us that for every $f : \mathbb{N} \rightarrow \mathbb{N}$ there exists some computable function that agrees with it on every input.
+This holds true for partial functions too, since any one of them can be trivially extended to a total $(\mathbb{N} \rightarrow \mathbb{N})$ one for the purposes of Church's thesis.
+
 \chapter{LLPO}
 \begin{defn} 
 The Lesser Limited Principle of Omniscience, states that given binary sequence $s : \mathbb{N} \rightarrow \mathbf{2}$ and the fact that there is at most one occurence of $1$ in the sequence, formally 
-$$\mathtt{atMost1one} :\prod_{n_1 : \mathbb{N}} \prod_{n_2 : \mathbb{N}} s(n_1) = 1 \rightarrow s(n_2)= 1 \rightarrow n_1 = n_2$$
+$$\mathtt{atMost1one}\; s :\prod_{n_1 : \mathbb{N}} \prod_{n_2 : \mathbb{N}} s(n_1) = 1 \rightarrow s(n_2)= 1 \rightarrow n_1 = n_2$$
 we can then have by the LLPO a witness for $\mathtt{p_{odd}} \vee \mathtt{p_{even}}$, where $\mathtt{p_{odd}}$ (with $s$ as an implicit argument) is the statement that for all odd positions $n$, $s(n) = 0$, formally $\mathtt{p_{odd}} \equiv \prod_{n : \mathbb{N}} \mathtt{odd}(n) \rightarrow s(n) = 0$. 
 Similarly for $\mathtt{p_{even}}$. 
 \end{defn}
 LLPO can be viewed as a weaker form of the Law of Excluded Middle. 
 
 \begin{lem} 
-The Law of Excluded Middle and Markov's Principle implies the Lesser Limited Principle of Omniscience.
+The Law of Excluded Middle implies the Lesser Limited Principle of Omniscience.
 \end{lem}
 
 \begin{proof}
@@ -251,13 +276,105 @@ Since this is a coproduct, by the relevant principle of induction, it's enough t
 \end{proof}
 
 \begin{lem}\label{llponeg}
-If we replace the consequent of LLPO with its double negation, let's call it $\neg\neg$LLPO, then we can prove it in Type Theory. 
+If we replace the consequent of LLPO with its double negation, let's call it LLPO$^{\neg\neg}$, then we can prove it in Type Theory. 
 \end{lem}
 \begin{proof}
-From LEM$\;\Rightarrow\;$LLPO we have LEM$\;\Rightarrow\neg\neg$LLPO by effectively the same proof. 
-Since we invoke LEM only finitely many times, we can use their finite conjunction to prove $\neg\neg$LLPO. 
-The double negations of those instances are provable in Type Theory \todo{(include the proof of this?)}.
-We can leverage the fact that double negation is a modality, to construct a function that assumes the double negations of the LEM instances and concludes $\neg\neg$LLPO.
+From LEM$\;\Rightarrow\;$LLPO we have LEM$\;\Rightarrow$LLPO$^{\neg\neg}$ by effectively the same proof. 
+Since we invoke LEM only twice, we can propose the double negation of these two instances of LEM where the need arises, show that they are provable in our context and then drop the double negation since it's a modality and the goal is of the same modality. 
+We effectively use the same method as when we drop truncations around hypotheses when proving mere propositions, only this time we are working with the double negation modality. 
+
+The first instance we come across is $$\mathtt{p_{odd}} \vee \neg \mathtt{p_{odd}}$$
+We want to prove $\neg \neg (\mathtt{p_{odd}} \vee \neg \mathtt{p_{odd}})$. 
+Assume $q: (\mathtt{p_{odd}} \vee \neg \mathtt{p_{odd}}) \rightarrow \bot$. 
+We compose $q$ with $|\cdot|$ to get 
+$$q': (\mathtt{p_{odd}} + \neg \mathtt{p_{odd}}) \rightarrow \bot$$
+We then have 
+$$q' \circ \mathtt{inl} : \neg\mathtt{p_{odd}}$$
+and
+$$q' \circ \mathtt{inr} : \neg\neg \mathtt{p_{odd}}$$
+which lead us to falsum.
+
+The second instance is 
+$$\Big\lVert\sum_{n_e : \mathtt{Odd}}s(n_e)=1 \Big\rVert \vee \neg \Big\lVert\sum_{n_e : \mathtt{Odd}}s(n_e)=1 \Big\rVert$$
+Assume the negation of the above 
+$$q : \neg \bigg(\Big\lVert\sum_{n_e : \mathtt{Odd}}s(n_e)=1 \Big\rVert \vee \neg \Big\lVert\sum_{n_e : \mathtt{Odd}}s(n_e)=1 \Big\rVert\bigg)$$
+towards contradiction. 
+We compose with $|\cdot|$ to rid ourselves of the truncation
+$$q' : \neg \bigg(\Big\lVert\sum_{n_e : \mathtt{Odd}}s(n_e)=1 \Big\rVert + \neg \Big\lVert\sum_{n_e : \mathtt{Odd}}s(n_e)=1 \Big\rVert\bigg)$$
+We then have
+$$q' \circ \mathtt{inr} : \neg \neg \Big\lVert\sum_{n_e : \mathtt{Odd}}s(n_e)=1 \Big\rVert$$
+and
+$$q' \circ \mathtt{inl} : \neg \Big\lVert\sum_{n_e : \mathtt{Odd}}s(n_e)=1 \Big\rVert$$
+Contradiction.
+%We can leverage the fact that double negation is a modality, to construct a function that assumes the double negations of the LEM instances and concludes LLPO$^{\neg\neg}$.
+\end{proof}
+
+\begin{defn}
+The Axiom of Countable Choice $(ACC)$ is adapted from its set-theoretic counterpart and states that if for every $n : \mathbb{N}$ there exists (merely) some $b : \lVert B\; n \rVert$, where $B : \mathbb{N} \rightarrow \mathcal{U}$ is a family of h-sets over $\mathbb{N}$, then there merely exists some $f : \prod_{n : \mathbb{N}} B\; n$.\\
+More concisely
+$$\Big(\prod_{n : \mathbb{N}} \big\lVert B\; n \big\rVert\Big) \rightarrow \Big\lVert \prod_{n : \mathbb{N}} B\; n \Big\rVert$$
+\end{defn}
+
+\begin{lem}\label{405}
+Under Church's thesis, the following type is inhabited
+$$\sum_{F : \mathbb{N} \rightarrow \mathbb{N} \rightarrow \mathbf{2}} \Big( \big(\prod_{m : \mathbb{N}} \mathtt{atMost1one}\; F(m) \big) \times \big( \prod_{f : \mathbb{N} \rightarrow \mathbf{2}} \big\lVert \sum_{m, k : \mathbb{N}} F(m, 2k+ f\; m) = 1 \big\rVert \big) \Big)$$
+\end{lem}
+\begin{proof}
+First we provide a witness
+$$G : \sum_{F : \mathbb{N} \rightarrow \mathbb{N} \rightarrow \mathbf{2} } \prod_{n : \mathbb{N}}\mathtt{atMost1one}\; F(n)$$
+For $n, m : \mathbb{N}$ we pick the indexed $T_n$ Turing machine of our enumeration. 
+We can decide whether $m$ is odd or even. 
+\begin{itemize}
+\item If it's odd, then there exists actual $k : \mathbb{N}$ such that $m = 2*k +1$. 
+If $k$ is the Gödel number of the computation history that $T_n$ goes through when given $n$ as the input, furthermore, if it halts at the end of this computation with output $1$ then set $G.\mathtt{fst}\; n\; m :\equiv 1$. 
+Otherwise set $G.\mathtt{fst}\; n\; m :\equiv 0$.
+\item If it's even, then there exists actual $k$ such that $m = 2*k$. 
+We work as in the odd case, with the only difference being that we set $G.\mathtt{fst}\; n\; m :\equiv 1$ iff the output of the halting computation is $0$.
+\end{itemize}
+Having defined $G.\mathtt{fst}$ it's easy to see that $G.\mathtt{snd}$ has a straightforward proof, which we ommit. 
+
+We now define 
+$$Q : (\mathbb{N} \rightarrow \mathbb{N} \rightarrow \mathbf{2}) \rightarrow \mathcal{U}$$ 
+by 
+$$Q\; F :\equiv \prod_{f : \mathbb{N} \rightarrow \mathbf{2}} \big\lVert \sum_{m, k : \mathbb{N}} F(m, 2k+ f\; m) = 1 \big\rVert$$
+We want to prove $Q\; G.\mathtt{fst}$. 
+Consider arbitrary $f : \mathbb{N} \rightarrow \mathbf{2}$. 
+By CT we have that there exists, merely, $e : \mathbb{N}$ such that $T_e$ computes $f$, furthermore there exists $z : \mathbb{N}$ which $z$ is the Gödel number of the halting computation that $T_e$ goes through when given $e$ as an input and lastly $T_e$ halts at the end of this computation and outputs $j : \mathbb{N}$ where $j = f\; e$. 
+Since it's decidable whether $j$ is $0$ or $1$, we can take cases on it.
+In both cases we have $G.\mathtt{fst} (e, 2z + j) = 1$. 
+
+We conclude the proof by providing $G.\mathtt{fst}$ as the first component and the product of $G.\mathtt{snd}$ with $Q\; G.\mathtt{fst}$ as the second.
+\end{proof}
+
+\begin{thm}
+%In the context of HoTT, 
+$$ACC \times CT \times LLPO \rightarrow \bot$$
+\end{thm}
+\begin{proof}
+Let $G$ be the witness we reached in our proof of \cref{405}. 
+Let $F :\equiv G.\mathtt{fst}$. 
+By LLPO we can procure 
+$$f : \prod_{n : \mathbb{N}} \lVert \mathtt{p_{odd}}(F\; n) + \mathtt{p_{even}}(F\;n) \rVert$$
+By the ACC we get
+$$f' : \big\lVert \prod_{n : \mathbb{N}}  \mathtt{p_{odd}}(F\; n) + \mathtt{p_{even}}(F\;n) \big\rVert$$
+Since our goal is $\bot$, which is an h-prop, we can ignore the truncation and act as if we have access to
+$$f'' : \prod_{n : \mathbb{N}}  \mathtt{p_{odd}}(F\; n) + \mathtt{p_{even}}(F\;n)$$
+Let $e : \big( \mathtt{p_{odd}}(F\; n) + \mathtt{p_{even}}(F\;n)\big) \rightarrow \mathbf{2}$ be the function that sends $\mathtt{inl}\; \_ : \mathtt{p_{odd}}(F\; n) + \mathtt{p_{even}}(F\;n)$
+to $1$ and $\mathtt{inr}\; \_$ to $0$. 
+%By CT, the composition $e \circ f'' : \mathbb{N} \rightarrow \mathbf{2}$ has a $T_z$ that computes it. 
+It's easy to see that the following holds
+$$q : \prod_{n : \mathbb{N}} \big( (e\circ f''\; n = 1) \rightarrow \mathtt{p_{odd}}(F\; n) \big) \times \big( (e\circ f''\; n = 0) \rightarrow \mathtt{p_{even}}(F\; n) \big)$$
+By $G.\mathtt{snd}$ we have that there exist $m,k : \mathbb{N}$ such that we have 
+$$l : F(m, 2k + e\circ f''\; m) = 1$$
+This should normally be truncated, but given the context, we are allowed to drop it. 
+
+We then take cases on $(e\circ f''\; m = 0) + (e\circ f''\; m = 1)$. 
+\begin{itemize}
+	\item If $e\circ f''\; m = 0$ then by $q\; m$ we have $\mathtt{p_{even}}(F\; m)$. 
+	This contradicts $l$. 
+	\item Similarly, $e\circ f''\; m = 1$ is also in contradiction with $l$.
+\end{itemize}
+In either case we reach falsum, concluding the proof.
 \end{proof}
 
 \chapter{Extensional Type Theory}
@@ -268,8 +385,8 @@ where $P: \mathbf{2}^\mathbb{N} \rightarrow \mathtt{Prop}$ and $Q : \mathbf{2}^\
 Putting it plainly, if the left hand side of the above is true, then $z : \mathbb{N}$ does not depend on the proof of the constantness of $s$ to $0$.
 
 The same model also validates Markov's Principle
-$$\Big(\prod_{a : A}(P\; a \vee \neg P\; a)\Big) \rightarrow  \Big(\neg \prod_{a : A}\neg P\; a\Big)\rightarrow \Big\lVert \sum_{a : A} P\; a \Big\rVert$$
-where $P : A \rightarrow \mathtt{Prop}$ is a family of propositions over $A : \mathcal{U}$. 
+$$\Big(\prod_{n : \mathbb{N}}(P\; n \vee \neg P\; n)\Big) \rightarrow  \Big(\neg \prod_{n : \mathbb{N}}\neg P\; n\Big)\rightarrow \Big\lVert \sum_{n : \mathbb{N}} P\; n \Big\rVert$$
+where $P : \mathbb{N} \rightarrow \mathtt{Prop}$ is a family of propositions over $\mathbb{N}$. 
 Informally, Markov's Principle states that if we have a collection of decidable propositions and the fact that not all of them are false, then one of them must be true.
 
 In this section we work in the context of this model of Extensional Type Theory.
