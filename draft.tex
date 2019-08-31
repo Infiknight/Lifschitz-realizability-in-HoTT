@@ -13,7 +13,7 @@
 %\usepackage{mathrsfs}
 %\usepackage[margin=1in]{geometry} 
 \usepackage{hyperref}% http://ctan.org/pkg/hyperref
-
+\usepackage{ stmaryrd }
 \usepackage{amsmath}
 \usepackage{cleveref}% http://ctan.org/pkg/cleveref
 \usepackage{amsthm}
@@ -175,7 +175,7 @@ A \textbf{modality} is a function $\bigcirc : \mathcal{U} \rightarrow \mathcal{U
 	\item For every type $A$ we have a function $\eta_A^\bigcirc : A \rightarrow \bigcirc\; A$
 	\item for every $A : \mathcal{U}$ and every type family $B : \bigcirc A \rightarrow \mathcal{U}$ we have a function
 	$$\mathtt{ind}_\bigcirc : \Big( \prod_{a : A}\bigcirc (B (\eta_A^\bigcirc\; a)) \Big) \rightarrow \prod_{z : \bigcirc A} \bigcirc (B\; z)$$
-	\item For every $f : \prod_{a : A} \bigcirc (B(\eta_A^\bigcirc\; a))$ there is a path $\mathtt{ind}_\bigcirc (f)(\eta_A^\bigcirc\; a) = f\; a$
+	\item For every $f : \prod_{a : A} \bigcirc (B(\eta_A^\bigcirc\; a))$ and every $a : A$, there is a path $\mathtt{ind}_\bigcirc (f)(\eta_A^\bigcirc\; a) = f\; a$
 	\item For all $z,z' : \bigcirc \; A$, the function $\eta_{z=z'}^\bigcirc : (z = z') \rightarrow \bigcirc (z = z')$ is an equivalence.
 
 \end{enumerate}
@@ -215,6 +215,12 @@ $$\lambda x. \lambda b.x : X \rightarrow (B(a) \rightarrow X)$$
 is an equivalence for all $a : A$.
 
 \end{defn}
+
+Nullification at a family of types is an example of a modality, as laid out in \cite{1706.07526}, where it is presented as a higher inductive type, complete with constructors and eliminators. 
+To avoid listing all these trappings, we will instead look at the important properties $\mathcal{L}_B : \mathcal{U} \rightarrow \mathcal{U}$ should have to be considered a nullification operator. 
+
+It must have all the data required for it to be a modality.\\
+For all $X : \mathcal{U}$, $\mathcal{L}_B(X)$ must be $B$\textbf{-null}.
 
 \chapter{Computability}
 In this chapter we will give an overview of basic definitions and results of Recursion theory and formalize them in Type theory. 
@@ -426,8 +432,10 @@ We drop the truncation around $\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f^
 and has return type
 $$\Big\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f^*\; p = z \Big\rVert$$
 
+We can now assume that we have access to a model $\mathcal{E}$ of univalent type theory, in which CT, MP and IP' hold. 
+
 \begin{lem}\label{NisBnull}
-$\mathbb{N}$ is $\lVert B \rVert$-null.
+$\mathbb{N}$ is $\lVert B \rVert$-null in $\mathcal{E}$.
 \end{lem}
 \begin{proof}
 Given $a : A$ and $f : \lVert B \rVert \; a \rightarrow \mathbb{N}$ we need to prove that there exists unique $f' : \mathbf{1} \rightarrow \mathbb{N}$ through which $f$ factors, in the sense that $f = f' \circ g$, where $g : C\; a \rightarrow \mathbf{1}$ is the sole inhabitant of its function space. 
@@ -501,6 +509,23 @@ By \cref{llponeg} we have $(B\; a \rightarrow \bot) \rightarrow \bot$ and by $r$
 We conclude the proof by Ex Falso.
 \end{proof}
 
+\section{CT + LLPO + HoTT}
+
+We form a null types model $\mathcal{E}_{\lVert B \rVert}$ as defined in Section 5 of \cite{1905.03014} based on $\mathcal{E}$ from before. 
+The types of this model are the $\lVert B \rVert $-null types of $\mathcal{E}$. 
+By \cref{NisBnull} we have that $\llbracket \mathbb{N} \rrbracket^{\mathcal{E}_{\lVert B \rVert}} = \llbracket \mathbb{N} \rrbracket^\mathcal{E}$. 
+Let $\mathcal{L}_{\lVert B \rVert} : \mathcal{U} \rightarrow \mathcal{U}$ be the $\lVert B \rVert$-nullification operator on $\mathcal{E}$. 
+On $\mathcal{E}_{\lVert B \rVert}$, dependend products, dependent sums and identity on naturals are all inherited from $\mathcal{E}$, while propositional truncation $\llbracket \lVert \cdot \rVert \rrbracket^{\mathcal{E}_{\lVert B \rVert}}$ is $\mathcal{L}_{\lVert B \rVert} \lVert\cdot \rVert $ on $\mathcal{E}$.
+
+We can then deduce that the interpretation of CT in $\mathcal{E}_{\lVert B \rVert}$ is the type 
+$$\prod_{f : \mathbb{N}\rightarrow \mathbb{N}} \mathcal{L}_{\lVert B \rVert}\;\Big\lVert \sum_{e : \mathbb{N}} \prod_{x : \mathbb{N}} \sum_{z : \mathbb{N}} T(e,x,z) \times U(z) = f(x) \Big\rVert$$
+in $\mathcal{E}$. 
+To clarify, the types $T$ and $U$ remain the same because they are functions from naturals to naturals and we know that $\mathbb{N}$ is the same in both $\mathcal{E}_{\lVert B \rVert}$ and $\mathcal{E}$. 
+It's trivial to construct an inhabitant, in $\mathcal{E}$, of the above type using a witness of CT, which we know to be true in $\mathcal{E}$. 
+
+Therefore, $\mathcal{E}_{\lVert B \rVert}$ is a model of univalent type theory where both CT and LLPO hold.
+
+\section{B-nullification preserves coproducts}
 \begin{lem}
 If $C, D$ are $\lVert B \rVert$-null then so is $C + D$.
 \end{lem}
