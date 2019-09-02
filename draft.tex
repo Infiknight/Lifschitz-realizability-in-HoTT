@@ -391,7 +391,7 @@ where $P: \mathbf{2}^\mathbb{N} \rightarrow \mathtt{Prop}$ and $Q : \mathbf{2}^\
 Putting it plainly, if the left hand side of the above is true, then $z : \mathbb{N}$ does not depend on the proof of the constantness of $s$ to $0$.
 
 The same model also validates Markov's Principle
-$$\Big(\prod_{n : \mathbb{N}}(P\; n \vee \neg P\; n)\Big) \rightarrow  \Big(\neg \prod_{n : \mathbb{N}}\neg P\; n\Big)\rightarrow \Big\lVert \sum_{n : \mathbb{N}} P\; n \Big\rVert$$
+$$\Big(\prod_{n : \mathbb{N}}(P\; n + \neg P\; n)\Big) \rightarrow  \Big(\neg \prod_{n : \mathbb{N}}\neg P\; n\Big)\rightarrow \Big\lVert \sum_{n : \mathbb{N}} P\; n \Big\rVert$$
 where $P : \mathbb{N} \rightarrow \mathtt{Prop}$ is a family of propositions over $\mathbb{N}$. 
 Informally, Markov's Principle states that if we have a collection of decidable propositions and the fact that not all of them are false, then one of them must be true.
 
@@ -406,16 +406,16 @@ $$B :\equiv \lambda\; a.\; \mathtt{p_{odd}}\; a + \mathtt{p_{even}}\; a$$
 We would like to have access to the following instance of IP in our intensional model as well.
 \begin{multline*}
 \prod_{a: A} \prod_{f: B\; a \rightarrow \mathbb{N}} \Bigg( \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
-	 \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f^*\; p = z \Big\rVert \bigg)
+	 \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f\; p = z \Big\rVert \bigg)
 \end{multline*}
 \begin{multline*}
 \rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
-	  \Big\lVert \sum_{z : \mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{p : B\; a} f^*\; p = z \Big\rVert \bigg) \Bigg)
+	  \Big\lVert \sum_{z : \mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{p : B\; a} f\; p = z \Big\rVert \bigg) \Bigg)
 \end{multline*}
-The fact that $\mathbb{N}$ is modal, follows from this in Intensional Type Theory. 
+The fact that $\mathbb{N}$ is $\lVert B \rVert$-null, follows from this in Intensional Type Theory. 
 Our plan of action shall be to find a consequent of it, IP', strong enough for our purposes, that has the right form so that by Theorem 6.1 of \cite{1905.03014} we have a model of intensional type theory that satisfies IP'. 
 
-We drop the truncation around $\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f^*\; p = z \rVert$ and since this is the consequent of the antecedent, the resulting statement is weaker than the original IP. We then uncurry 4 times to reach what we propose as our IP', a function that takes four arguments in the form of a quaternary dependent pair
+We drop the truncation around $\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f\; p = z \rVert$ and since this is the consequent of the antecedent, the resulting statement is weaker than the original IP. We then uncurry 4 times to reach what we propose as our IP', a function that takes four arguments in the form of a quaternary dependent pair
 
 \begin{align*}
 &a: &A
@@ -423,14 +423,18 @@ We drop the truncation around $\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f^
 &f: &B\; a \rightarrow \mathbb{N}
 \\ &\_ :
 \begin{split}
-\bigg( \prod_{\bar{s} : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
-	\quad \Big(\prod_{n : \mathbb{N}}\bar{s}\; n = 0 \Big) \rightarrow  \sum_{z : \mathbb{N}} \prod_{p : B\; a} f^*\; p = z  \bigg)
+\bigg( \prod_{\bar{s} : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2 \cdot n)\big) + \big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
+	\quad \Big(\prod_{n : \mathbb{N}}\bar{s}\; n = 0 \Big) \rightarrow  \sum_{z : \mathbb{N}} \prod_{p : B\; a} f\; p = z  \bigg)
 \end{split}
 \\
-&r : & \sum_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big)
+&r : & \sum_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) + \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big)
 \end{align*}
 and has return type
-$$\Big\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f^*\; p = z \Big\rVert$$
+$$\Big\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f\; p = z \Big\rVert$$
+The observant reader should have noticed that the disjunctions in the third and fourth arguments have been replaced with coproducts. 
+This seemingly makes the unnamed third argument weaker which would have the undesirable effect of potentially strengthening IP' beyond IP. 
+Luckily the consequent of $\_$ is a mere proposition which means that swapping disjunction for coproduct does not actually change the strength of the argument. 
+In the case of $r$ the argument becomes stronger, which is satisfactory in itself. 
 
 We can now assume that we have access to a model $\mathcal{E}$ of univalent type theory, in which CT, MP and IP' hold. 
 
@@ -438,30 +442,23 @@ We can now assume that we have access to a model $\mathcal{E}$ of univalent type
 $\mathbb{N}$ is $\lVert B \rVert$-null in $\mathcal{E}$.
 \end{lem}
 \begin{proof}
-Given $a : A$ and $f : \lVert B \rVert \; a \rightarrow \mathbb{N}$ we need to prove that there exists unique $f' : \mathbf{1} \rightarrow \mathbb{N}$ through which $f$ factors, in the sense that $f = f' \circ g$, where $g : C\; a \rightarrow \mathbf{1}$ is the sole inhabitant of its function space. 
+Given $a : A$ and $f : \lVert B\; a \rVert \rightarrow \mathbb{N}$ we need to prove that there exists unique $f' : \mathbf{1} \rightarrow \mathbb{N}$ through which $f$ factors, in the sense that $f = f' \circ g$, where $g : \lVert B\; a \rVert \rightarrow \mathbf{1}$ is the sole inhabitant of its function space. 
 Functions with $\mathbf{1}$ as their domain are constant. 
 We therefore need to find some $z : \mathbb{N}$ so that $\lambda\; \_.\; z$ is $f'$. 
-To that end, we will use the following instance of the Independence Principle
-\begin{multline} \label{IPlhs}
-\bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
-	 \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f^*\; p = z \Big\rVert \bigg)
-\end{multline}
-\begin{multline} \label{IPrhs}
-\rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
-	  \Big\lVert \sum_{z : \mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{p : B\; a} f^*\; p = z \Big\rVert \bigg)
-\end{multline}
-where $f^*$ is the composition $f \circ C^B$, with $C^B$ being the canonical function $B\; a \rightarrow C\; a$. 
-Note that the left hand side \ref{IPlhs} is provable. 
-So we have a witness of the right hand side \ref{IPrhs}.
-By providing the odd $s_1$ and even $s_2$ subsequences of $a$ to it, we get hold of $z_1 : \mathbb{N}$ and $z_2 : \mathbb{N} $ respectively. 
+To that end, we will use IP' which we've proven true in $\mathcal{E}$. 
+We invoke it twice. 
+In both times, the first three arguments shall be the same. 
+The choice for the first argument, $a$, is evident. 
+We provide the composition $f \circ \lVert\cdot\rVert : B\; a \rightarrow \mathbb{N}$ as the second argument. 
+Constructing a witness for the third argument is easy. 
+Finally, for argument $r$ we provide the odd $s_1$ and even $s_2$ subsequences of $a$, along with proofs that they are indeed subsequences of $a$ and we get hold of $z_1 : \mathbb{N}$ and $z_2 : \mathbb{N} $ respectively. 
 Equality on $\mathbb{N}$ is decidable, therefore $(z_1 = z_2) + (z_1 \neq z_2)$ is provable. 
-
 
 We will first prove that the existence of a candidate for $f'$ follows from both constituents of the coproduct.
 \begin{itemize}
 \item First the case where $z_1= z_2$. 
 We arbitrarily pick $z_1$ and propose $f' : \equiv \lambda \;\_.\; z_1 : \mathbf{1} \rightarrow \mathbb{N}$. 
-By function extensionality we reduce proving $f= f' \circ g$ to proving $f\; c = f'\circ g\; c$ for arbitrary $c : C\; a$. \\
+By function extensionality we reduce proving $f= f' \circ g$ to proving $f\; c = f'\circ g\; c$ for arbitrary $c : \lVert B\; a\rVert$. \\
 Since our goal is a mere proposition, we can act as if we have access to an actual $b : B\; a$. 
 We then take cases on $b$.  
 \begin{itemize}
@@ -527,7 +524,7 @@ Therefore, $\mathcal{E}_{\lVert B \rVert}$ is a model of univalent type theory w
 
 \section{B-nullification preserves coproducts}
 \begin{lem}
-If $C, D$ are $\lVert B \rVert$-null then so is $C + D$.
+In $\mathcal{E}$ if $C, D$ are $\lVert B \rVert$-null then so is $C + D$.
 \end{lem}
 \begin{proof}
 We need to show that for $f : \lVert B\; a\rVert \rightarrow C+D$ there exists unique $f' : \mathbf{1} \rightarrow C+D$ such that $f = f' \circ e$, where $e : \lVert B\; a\rVert \rightarrow \mathbf{1}$ is the sole inhabitant of its function space. 
@@ -535,8 +532,7 @@ We define $$g : C + D \rightarrow \mathbf{2}$$
 using components
 $$g_C :\equiv \lambda\; \_.\; 0 : C \rightarrow \mathbf{2}$$
 $$g_D :\equiv \lambda\; \_.\; 1 : D \rightarrow \mathbf{2}$$
-Same as we did for \cref{NisBnull} we can lift a variant of IP, that will help us in our endeavor, from the model of Extensional Type Theory. 
-This variant takes the following arguments in the form of a 4-product
+Recall that in $\mathcal{E}$ we have access to a witness of IP' which takes the following arguments in the form of a 4-product
 \begin{align*}
 &a: &A
 \\
