@@ -169,7 +169,7 @@ The use of the above notation is interchangeable in the sections to follow.
 \chapter{Modalities}
 %Under the view of types as $(\infty, 1)$-categories, functions between them are functors. 
 %We can then view the universe $\mathcal{U}$ itslef as a category. 
-\begin{defn}
+\begin{defn}\label{modality_definition}
 A \textbf{modality} is a function $\bigcirc : \mathcal{U} \rightarrow \mathcal{U}$ with the following properties.
 \begin{enumerate}
 	\item For every type $A$ we have a function $\eta_A^\bigcirc : A \rightarrow \bigcirc\; A$
@@ -248,10 +248,12 @@ In other words, Church's thesis assures us that for every $f : \mathbb{N} \right
 This holds true for partial functions too, since any one of them can be trivially extended to a total $(\mathbb{N} \rightarrow \mathbb{N})$ one for the purposes of Church's thesis.
 
 \chapter{LLPO}
-\begin{defn} 
-The Lesser Limited Principle of Omniscience, states that given binary sequence $s : \mathbb{N} \rightarrow \mathbf{2}$ and the fact that there is at most one occurence of $1$ in the sequence, formally 
+In the following definition $s$ is, in places, taken to be an implicit argument. 
+In the sections to follow, terms and types that use it implicitly, are supplied with explicit arguments when the need to be clear arises. 
+\begin{defn}\label{LLPO}
+The Lesser Limited Principle of Omniscience (LLPO), states that given binary sequence $s : \mathbb{N} \rightarrow \mathbf{2}$ and the fact that there is at most one occurence of $1$ in the sequence, formally 
 $$\mathtt{atMost1one}\; s :\prod_{n_1 : \mathbb{N}} \prod_{n_2 : \mathbb{N}} s(n_1) = 1 \rightarrow s(n_2)= 1 \rightarrow n_1 = n_2$$
-we can then have by the LLPO a witness for $\mathtt{p_{odd}} \vee \mathtt{p_{even}}$, where $\mathtt{p_{odd}}$ (with $s$ as an implicit argument) is the statement that for all odd positions $n$, $s(n) = 0$, formally $\mathtt{p_{odd}} \equiv \prod_{n : \mathbb{N}} \mathtt{odd}(n) \rightarrow s(n) = 0$. 
+we can then have by the LLPO a witness for $\mathtt{p_{odd}} \vee \mathtt{p_{even}}$, where $\mathtt{p_{odd}}$ (with $s$ as an implicit argument) is the statement that for all odd positions $n$, $s(n) = 0$, formally $\mathtt{p_{odd}} \equiv \prod_{n : \mathbb{N}} (\mathtt{odd}(n) = 1) \rightarrow s(n) = 0$, and $\mathtt{odd} : \mathbb{N}\rightarrow \mathbf{2}$ with $\mathtt{odd}\; n = 1$ iff $n$ is odd. 
 Similarly for $\mathtt{p_{even}}$. 
 \end{defn}
 LLPO can be viewed as a weaker form of the Law of Excluded Middle. 
@@ -435,8 +437,31 @@ The observant reader should have noticed that the disjunctions in the third and 
 This seemingly makes the unnamed third argument weaker which would have the undesirable effect of potentially strengthening IP' beyond IP. 
 Luckily the consequent of $\_$ is a mere proposition which means that swapping disjunction for coproduct does not actually change the strength of the argument. 
 In the case of $r$ the argument becomes stronger, which is satisfactory in itself. 
+\begin{lem}
+Consider families of types $B_1, B_2$ where $B_i : A_i \rightarrow \mathcal{U}$ and $A_i : \mathcal{U}$, $i \in \{1,2\}$. 
 
-We can now assume that we have access to a model $\mathcal{E}$ of univalent type theory, in which CT, MP and IP' hold. 
+Define $B : A_1 +A_2 \rightarrow \mathcal{U}$, $B(\mathtt{inl}\; a) :\equiv  B_1(a)$ for $a : A_1$ and $B(\mathtt{inr}\; a) :\equiv  B_2(a)$ for $a : A_2$. 
+Then the following type
+$$\prod_{a : A_1}\lVert B_1\; a\rVert \times \prod_{a : A_2}\lVert B_2\;a \rVert$$
+is equivalent to
+$$\prod_{a : A_1 + A_2} \lVert B\; a \rVert$$
+\end{lem}
+\begin{proof}
+$(\Rightarrow )$ Suppose that we have $p : \prod_{a : A_1}\lVert B_1\; a\rVert \times \prod_{a : A_2}\lVert B_2\;a \rVert$. 
+We want to construct a function $\prod_{a : A_1 + A_2} \lVert B\; a \rVert$. 
+We use induction on the coproduct and wlog work out only the case $\prod_{a : A_1} \lVert B(\mathtt{inl}\; a)\rVert$. 
+For $a : A_1$ we have that $p.\mathtt{fst}(a)$ is a witness of $\lVert B(\mathtt{inl}\; a) \rVert$.
+
+$(\Leftarrow) $ Suppose $q : \prod_{a : A_1 + A_2} \lVert B\; a \rVert$. 
+We want to construct a witness for $\prod_{a : A_1}\lVert B_1\; a\rVert \times \prod_{a : A_2}\lVert B_2\;a \rVert$. 
+We do so by constructing witnesses for both of the constituents of the product. 
+Wlog we do that only for $\prod_{a : A_1}\lVert B_1\; a\rVert$. 
+Let $a : A_1$. Then $q(\mathtt{inl}\; a) : \lVert B_1\; a \rVert$, by the definition of $B$.
+\end{proof}
+The above lemma generalizes from the case of two families of types $B_1, B_2$ to a finite collection of families $B_1,\ldots,B_n$. 
+This fact enables us to reformulate a finite collection of statements, each one in the correct form, to a single statement in that same form which is equivalent to their conjunction. 
+
+We are now in the position to assume that we have access to a model $\mathcal{E}$ of univalent type theory, in which CT, MP and IP' hold. 
 
 \begin{lem}\label{NisBnull}
 $\mathbb{N}$ is $\lVert B \rVert$-null in $\mathcal{E}$.
@@ -506,21 +531,9 @@ By \cref{llponeg} we have $(B\; a \rightarrow \bot) \rightarrow \bot$ and by $r$
 We conclude the proof by Ex Falso.
 \end{proof}
 
-\section{CT + LLPO + HoTT}
-
-We form a null types model $\mathcal{E}_{\lVert B \rVert}$ as defined in Section 5 of \cite{1905.03014} based on $\mathcal{E}$ from before. 
-The types of this model are the $\lVert B \rVert $-null types of $\mathcal{E}$. 
-By \cref{NisBnull} we have that $\llbracket \mathbb{N} \rrbracket^{\mathcal{E}_{\lVert B \rVert}} = \llbracket \mathbb{N} \rrbracket^\mathcal{E}$. 
-Let $\mathcal{L}_{\lVert B \rVert} : \mathcal{U} \rightarrow \mathcal{U}$ be the $\lVert B \rVert$-nullification operator on $\mathcal{E}$. 
-On $\mathcal{E}_{\lVert B \rVert}$, dependend products, dependent sums and identity on naturals are all inherited from $\mathcal{E}$, while propositional truncation $\llbracket \lVert \cdot \rVert \rrbracket^{\mathcal{E}_{\lVert B \rVert}}$ is $\mathcal{L}_{\lVert B \rVert} \lVert\cdot \rVert $ on $\mathcal{E}$.
-
-We can then deduce that the interpretation of CT in $\mathcal{E}_{\lVert B \rVert}$ is the type 
-$$\prod_{f : \mathbb{N}\rightarrow \mathbb{N}} \mathcal{L}_{\lVert B \rVert}\;\Big\lVert \sum_{e : \mathbb{N}} \prod_{x : \mathbb{N}} \sum_{z : \mathbb{N}} T(e,x,z) \times U(z) = f(x) \Big\rVert$$
-in $\mathcal{E}$. 
-To clarify, the types $T$ and $U$ remain the same because they are functions from naturals to naturals and we know that $\mathbb{N}$ is the same in both $\mathcal{E}_{\lVert B \rVert}$ and $\mathcal{E}$. 
-It's trivial to construct an inhabitant, in $\mathcal{E}$, of the above type using a witness of CT, which we know to be true in $\mathcal{E}$. 
-
-Therefore, $\mathcal{E}_{\lVert B \rVert}$ is a model of univalent type theory where both CT and LLPO hold.
+\begin{cor}
+Similarly, $\mathbf{2}$ is $\lVert B \rVert$-null in $\mathcal{E}$. 
+\end{cor}
 
 \section{B-nullification preserves coproducts}
 \begin{lem}
@@ -602,6 +615,44 @@ By 2.12.1 of \cite{hottbook} we have $(\mathtt{inl}\; a_1 = \mathtt{inl}\; a_2) 
 We can then deduce that $f'_C\circ e\; b = h\; b$. This concludes the proof of uniqueness of $h'$.
 
 \end{proof}
+
+\begin{lem}
+In $\mathcal{E}$ if $C$ is $\lVert B \rVert$-null then for any $c_1, c_2 : C$, the identity type $c_1=_C c_2 : \mathcal{U}$ is $\lVert B\rVert$-null. 
+\end{lem}
+\begin{proof}
+Follows immediately from the fact that $\mathcal{L}_{\lVert B \rVert}$ is a modality and the fourth datum of Definition \ref{modality_definition}.
+\end{proof}
+
+\section{CT + LLPO + HoTT}
+
+We form a null types model $\mathcal{E}_{\lVert B \rVert}$ as defined in Section 5 of \cite{1905.03014} based on $\mathcal{E}$ from before. 
+The types of this model are the $\lVert B \rVert $-null types of $\mathcal{E}$. 
+By \cref{NisBnull} we have that $\llbracket \mathbb{N} \rrbracket^{\mathcal{E}_{\lVert B \rVert}} = \llbracket \mathbb{N} \rrbracket^\mathcal{E}$. 
+Let $\mathcal{L}_{\lVert B \rVert} : \mathcal{U} \rightarrow \mathcal{U}$ be the $\lVert B \rVert$-nullification operator on $\mathcal{E}$. 
+On $\mathcal{E}_{\lVert B \rVert}$, dependend products, dependent sums and identity on naturals are all inherited from $\mathcal{E}$, while propositional truncation $\llbracket \lVert \cdot \rVert \rrbracket^{\mathcal{E}_{\lVert B \rVert}}$ is $\mathcal{L}_{\lVert B \rVert} \lVert\cdot \rVert $ on $\mathcal{E}$.
+
+We can then deduce that the interpretation of CT in $\mathcal{E}_{\lVert B \rVert}$ is the type 
+$$\prod_{f : \mathbb{N}\rightarrow \mathbb{N}} \mathcal{L}_{\lVert B \rVert}\;\Big\lVert \sum_{e : \mathbb{N}} \prod_{x : \mathbb{N}} \sum_{z : \mathbb{N}} T(e,x,z) \times U(z) = f(x) \Big\rVert$$
+in $\mathcal{E}$. To clarify, the types $T$ and $U$ remain the same because they are functions from naturals to naturals and we know that $\mathbb{N}$ is the same in both $\mathcal{E}_{\lVert B \rVert}$ and $\mathcal{E}$. 
+It's trivial to construct an inhabitant, in $\mathcal{E}$, of the above type using a witness of CT, which we know to be true in $\mathcal{E}$. 
+
+We shall now have a look at the interpretation of LLPO in $\mathcal{E}_{\lVert B \rVert}$. 
+Recall the full definition \ref{LLPO} of LLPO
+$$\prod_{a : A}\lVert \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst}) \rVert$$
+where $$A :\equiv \sum_{a: \mathbf{2}^\mathbb{N}}\mathtt{atMost1one}\;a$$
+Since $\mathtt{atMost1one}$ is formed using $\mathbb{N}$, $\mathbf{2}$, equality on naturals and $\mathbf{2}$, dependent sum and product, all of which are preserved under modalities, we have that the interpretation of $\mathtt{atMost1one}$ in $\mathcal{E}_{\lVert B \rVert}$ is the same type as in $\mathcal{E}$. 
+Similarly the interpretations of $A$, $\mathtt{p_{odd}}$ and $\mathtt{p_{even}}$ are the same. 
+Therefore, the interpretation of LLPO in $\mathcal{E}_{\lVert B \rVert}$ is the type 
+$$\prod_{a : A}\mathcal{L}_{\lVert B \rVert}\;\lVert \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst}) \rVert$$
+in $\mathcal{E}$. 
+We would like to have a witness of this type. 
+Let $a : A$. 
+We once again utilize our shorthand $B\; a \equiv \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst})$. 
+Note that $\mathcal{L}_{\lVert B \rVert}\;\lVert \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst}) \rVert$ is $\lVert B \rVert$-null, which means that we have the following equivalence
+$$\mathcal{L}_{\lVert B \rVert}\; \lVert B\;a\rVert \simeq \lVert B\; a \rVert \rightarrow \mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$$
+So it is enough to prove $\lVert B\; a \rVert \rightarrow \mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$, for which we already have a witness in the form of the first datum of Definition \ref{modality_definition}, since $\mathcal{L}_{\lVert B \rVert}$ is a modality. 
+
+Therefore, $\mathcal{E}_{\lVert B \rVert}$ is a model of univalent type theory where both CT and LLPO hold.
 
 \printbibliography
 
