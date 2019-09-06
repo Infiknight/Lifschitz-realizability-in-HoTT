@@ -90,9 +90,9 @@
 \chapter{Type Theory}
 \section{Introduction}
 Type theory is a formal language and deductive system, that is self sufficient in the sense that it need not be formulated as a collection of axioms on top of some other formal system like First Order Logic, instead its deductive system can be built on top of its own formal language. 
-\todo{longer sentence to check formating }
 
-Central to Type Theory is the notion of \textit{Type}. Every term $a$ in Type Theory we come across, must lie in some type $A$, which we denote as $a : A$. Note that the relation $:$ is transitive, so $a : A$ and $A : B$ imply $a : B$. 
+Central to Type Theory is the notion of \textit{Type}. Every term $a$ in Type Theory we come across, must lie in some type $A$, which we denote as $a : A$. 
+%Note that the relation $:$ is transitive, so $a : A$ and $A : B$ imply $a : B$. 
 %This induces the cummulative hierarchy shape of the universe of types $\mathcal{U}$, wherein every level of the universe includes all lower levels and their types.
 
 For the deductive part of Type Theory, we interpret propositions as types. Proving proposition $P$ amounts to providing some inhabitant $p : P$. 
@@ -130,26 +130,51 @@ Let's have a look at some important type constructions.
 	$$\mathtt{ind}_{=_A} (C,c,x,x,\mathtt{idp_x}) \equiv c\; x$$
 	We can concatenate those paths whose domains and codomains allow for it. 
 	Paths are equivalences. That is if $p : x = y$ is such a  path, we can provide its inverse $p^{-1}$ for which we have in turn a path between $p\cdot p^{-1}$ and $\mathtt{idp}_y$ and another one between $p^{-1}\cdot p$ and $\mathtt{idp}_x$. 
-	\item For every type $A$ there is its \textbf{propositional truncation} $\| A \|$. 
-	For every element $a : A$ there exists $|a| : \| A\|$. 
-	For every $x, y : \| A\|$ we have $x = y$. 
-	Given mere proposition $B$ and $f : A \rightarrow B$, the recursion principle gives us $g : \|A\| \rightarrow B$ such that $g(|a|) \equiv f(a)$ for all $a : A$.
-
-
 \end{itemize}
+	\begin{defn}
+	We call a type $A$ a \textbf{mere proposition} or simply a \textbf{proposition}, if for every $a,b : A$ we have $a = b$.
+	\end{defn}
 
-\section{Important types}
-\begin{defn}
-We call a type $A$ a \textbf{mere proposition} if for every $a,b : A$ we have $a = b$.
-\end{defn}
+	\begin{defn}
+	We call a type $A$ a \textbf{set} if for every $a,b : A$ we have that $a =_A b$ is a mere proposition.
+	\end{defn}
 
-\begin{defn}
-We call a type $A$ a \textbf{set} if for every $a,b : A$ we have that $a =_A b$ is a mere proposition.
-\end{defn}
+	\begin{defn}
+	We call a type $A$ \textbf{contractible} if there exists $a : A$ such that for all $x : A$ it holds that $x = a$.\\
+	Formally
+	$$\mathtt{isContr}\; A :\equiv \sum_{x : A}\prod_{a :A}x=a$$
+	\end{defn}
 
-\begin{defn}
-We call a type $A$ \textbf{contractible} if there exists $a : A$ such that for all $x : A$ it holds that $x = a$.
-\end{defn}
+	\begin{defn}
+	Given some map $f : A \rightarrow B$, a \textbf{fiber} of it over some point $y : B$ is
+	$$\mathtt{fib}_f\; y :\equiv \sum_{x : A} \big(f(x) = y\big)$$
+	\end{defn}
+
+	\begin{defn}
+	We say that a map $f : A\rightarrow B$ has \textbf{contractible fibers} if for every $b : B$, the type $\mathtt{fib}_f(b)$ is contractible.\\
+	Formally, 
+	$$ \mathtt{hasContrFibers}\; f : \equiv \prod_{b : B} \mathtt{isContr}(\mathtt{fib}_f\; b)$$
+ 	\end{defn}
+ 	One way to see this, albeit naive from a set-theoretic point of view, is that we require for every element of the codomain to have exactly one element of the domain mapped to it by $f$. 
+ 	Note that for any map $f$, the type $\mathtt{hasContrFibers(f)}$ is a mere proposition. 
+
+ 	We form a notion of \textbf{equivalence of types} based on maps with contractible fibers. 
+ 	Whenever we have some $f : A\rightarrow B$ with contractible fibers, we say that the types $A$ and $B$ are equivalent and write $A \simeq B$. 
+ 	To motivate this, note that we can form $g : B \rightarrow A$ so that $f\circ g \sim \mathtt{id}_B$ and $g\circ f \sim \mathtt{id}_A$. 
+ 	So we can use a witness of one of the types to get one of the other. 
+ 	Furthermore, the equivalence of types we introduced just now is an equivalence relation on $\mathcal{U}$. 
+ 	More exposition on equivalence can be found in chapter 4 of \cite{hottbook}.
+
+\section{Higher inductive types}
+\begin{itemize}
+	\item For every type $A : \mathcal{U}$ there exists its \textbf{propositional truncation} $\| A \|$. 
+	We also have the truncation map $|\cdot| : A \rightarrow \lVert A \rVert$ so that for every element $a : A$ there exists $|a| : \| A\|$. 
+	For every $x, y : \| A\|$ we have $x = y$. 
+
+	Given mere proposition $B$ and $f : A \rightarrow B$, the recursion principle gives us $g : \|A\| \rightarrow B$ such that $g(|a|) \equiv f(a)$ for all $a : A$.
+	This recursion principle will prove itself an indispensable tool in the sections to come. 
+	Whenever, in the midst of a proof, the current goal $B$ is a mere proposition and we have access to some witness $a : \lVert A \rVert$, we are allowed by the recursion principle to assume that we have $a' : A$ and use it to construct a proof of $B$.
+\end{itemize}
 
 \section{Logic}
 Our informal deductions in Type Theory will be reminiscent of First Order Logic ones. 
@@ -209,7 +234,7 @@ $$(\lambda f.f \circ \eta_{\prod_{a: A}B(a)}^\bigcirc)^{-1} (\mathtt{ev}_a) (z) 
 
 \end{proof}
 
-\begin{defn}
+\begin{defn}\label{Bnull}
 For $B : A \rightarrow \mathcal{U}$, we call $X$ $B$\textbf{-null} if the map 
 $$\lambda x. \lambda b.x : X \rightarrow (B(a) \rightarrow X)$$
 is an equivalence for all $a : A$.
@@ -245,7 +270,7 @@ where $T$ is Kleene's predicate, $e$ identifies a Turing machine, $x$ is some in
 \end{defn}
 
 In other words, Church's thesis assures us that for every $f : \mathbb{N} \rightarrow \mathbb{N}$ there exists some computable function that agrees with it on every input.
-This holds true for partial functions too, since any one of them can be trivially extended to a total $(\mathbb{N} \rightarrow \mathbb{N})$ one for the purposes of Church's thesis.
+
 
 \chapter{LLPO}
 In the following definition $s$ is, in places, taken to be an implicit argument. 
@@ -463,6 +488,9 @@ This fact enables us to reformulate a finite collection of statements, each one 
 
 We are now in the position to assume that we have access to a model $\mathcal{E}$ of univalent type theory, in which CT, MP and IP' hold. 
 
+\section{Null types in E}
+The proofs in this section are all about $\lVert B \rVert$-nullness i.e. equivalence between function types (see Definition \ref{Bnull}). 
+Our approach in showing that some $F: C\rightarrow D$ is a map with contractible fibers, is to provide for any $d :D$ some $c :C$ such that $f(c) = d$ and then show that such an $c$ is unique, where $C,D$ are said function types. 
 \begin{lem}\label{NisBnull}
 $\mathbb{N}$ is $\lVert B \rVert$-null in $\mathcal{E}$.
 \end{lem}
@@ -535,7 +563,6 @@ We conclude the proof by Ex Falso.
 Similarly, $\mathbf{2}$ is $\lVert B \rVert$-null in $\mathcal{E}$. 
 \end{cor}
 
-\section{B-nullification preserves coproducts}
 \begin{lem}
 In $\mathcal{E}$ if $C, D$ are $\lVert B \rVert$-null then so is $C + D$.
 \end{lem}
@@ -648,7 +675,7 @@ in $\mathcal{E}$.
 We would like to have a witness of this type. 
 Let $a : A$. 
 We once again utilize our shorthand $B\; a \equiv \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst})$. 
-Note that $\mathcal{L}_{\lVert B \rVert}\;\lVert \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst}) \rVert$ is $\lVert B \rVert$-null, which means that we have the following equivalence
+Note that $\mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$ is $\lVert B \rVert$-null, which means that we have the following equivalence
 $$\mathcal{L}_{\lVert B \rVert}\; \lVert B\;a\rVert \simeq \lVert B\; a \rVert \rightarrow \mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$$
 So it is enough to prove $\lVert B\; a \rVert \rightarrow \mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$, for which we already have a witness in the form of the first datum of Definition \ref{modality_definition}, since $\mathcal{L}_{\lVert B \rVert}$ is a modality. 
 
