@@ -64,6 +64,7 @@
 \newtheorem{lem}[thm]{Lemma}
 \newtheorem{cor}[thm]{Corollary}
 \newtheorem{prop}[thm]{Proposition}
+\newtheorem{axiom}[thm]{Axiom}
 \newtheorem{rem}[thm]{Remark}
 \newtheorem{ill}[thm]{Illustration}
 \crefname{thm}{Lemma}{Lemmas}
@@ -92,6 +93,8 @@
 Type theory is a formal language and deductive system, that is self sufficient in the sense that it need not be formulated as a collection of axioms on top of some other formal system like First Order Logic, instead its deductive system can be built on top of its own formal language. 
 
 Central to Type Theory is the notion of \textit{Type}. Every term $a$ in Type Theory we come across, must lie in some type $A$, which we denote as $a : A$. 
+To avoid impredicativity we assume a countable hierarchy of universes $\mathcal{U}_0,\mathcal{U}_1,\mathcal{U}_2,\ldots$ which is cummulative i.e. every universe includes all previous universes and their types. 
+While working in type theory we usually simplify our view of this hierarchy and pick some $\mathcal{U}$, of arbitrary index that we do not specify, to use as our workspace. 
 %Note that the relation $:$ is transitive, so $a : A$ and $A : B$ imply $a : B$. 
 %This induces the cummulative hierarchy shape of the universe of types $\mathcal{U}$, wherein every level of the universe includes all lower levels and their types.
 
@@ -100,39 +103,66 @@ For the deductive part of Type Theory, we interpret propositions as types. Provi
 \section{Type Construction Operations}
 Let's have a look at some important type constructions.
 \begin{itemize}
-	\item Given types $A, B : \mathcal{U}$ we can define the type $A \rightarrow B$ of functions from $A$ to $B$. 
+	\item Given types $A, B : \mathcal{U}$ we can define the type $A \rightarrow B$ of \textbf{functions} from $A$ to $B$. 
 		We can use $\lambda$-abstraction to construct elements of this type. $\lambda x. \Phi$ lies in $A \rightarrow B$ iff for $a : A$ we have $\Phi[a/x] : B$. 
 		For $f : A \rightarrow B$ and $a : A$ we have that the application of $f$ on $a$, denoted as $f(a)$ or $f\;a$, lies in $B$.
-	\item Given some type $A : \mathcal{U}$ and a family of types $B$ over $A$, $B : A \rightarrow \mathcal{U}$, we have the type of dependent functions $$\prod_{a : A} B(a)$$
+	\item Given some type $A : \mathcal{U}$ and a family of types $B$ over $A$, $B : A \rightarrow \mathcal{U}$, we have the type of \textbf{dependent functions} or \textbf{dependent products} (which should not be viewed as the dependent version of the product type defined bellow) $$\prod_{a : A} B(a)$$
 	where for $f : \prod_{a : A} B(a)$ and $x : A$ we have $f(x) : B(x)$. 
-	As in the case of non-dependent functions, we can use lambda abstraction to construct elements of a dependently-typed function type.
-	\item Given $A, B : \mathcal{U}$ we can define the product type $A \times B : \mathcal{U}$. 
+	As in the case of non-dependent functions, we can use lambda abstraction to construct elements of a dependently-typed function type. 
+	That way, $\lambda x.\Phi$ lies in $\prod_{a:A}B(a)$ iff $B$ is of the form $\lambda y.\Psi$ and for all $a:A$ we have $\Phi[a/x] : \Psi[a/y]$. 
+	\item Given $A, B : \mathcal{U}$ we can define the \textbf{product} type $A \times B : \mathcal{U}$. 
 	For $a : A$ and $b : B$ we have the pair $(a,b) : A \times B$. 
 	We also have the projection functions 
 	$$\mathtt{pr}_1 : A \times B \rightarrow A : (a,b) \mapsto a$$
 	$$\mathtt{pr}_2 : A \times B \rightarrow B : (a,b) \mapsto b$$
-	\item Given $A : \mathcal{U}$ and family of types $B$ over $A$, $B : A \rightarrow \mathcal{U}$, we can define the dependent pair type $$\sum_{a : A} B(a)$$
+	We also have the following induction principle
+	$$\mathtt{ind}_{A\times B} : \prod_{C: A\times B \rightarrow \mathcal{U}}\big( \prod_{a:A}\prod_{b:B} C((a,b)) \big) \rightarrow \prod_{x: A\times B} C(x)$$
+	$$\mathtt{ind}_{A\times B}(C, f, (a,b)) : \equiv f(a)(b)$$
+	So given two functions $f: A\rightarrow C$ and $g : \rightarrow C$ we can construct an $h : A\times B \rightarrow C$ such that $h((a,b)) \equiv \big(f(a), g(b)\big)$ for all $a:A,\; b:B$.
+	\item Given $A : \mathcal{U}$ and family of types $B$ over $A$, $B : A \rightarrow \mathcal{U}$, we can define the \textbf{dependent pair} type (the dependent version of the product type)
+	$$\sum_{a : A} B(a)$$
 	Given $x : A$ and $b : B(x)$ we can construct the pair $(x,b) : \sum_{a : A} B(a)$. 
 	We have two projection functions, similar to the case of the product type.
-	\item Given $A, B : \mathcal{U}$ we can construct the coproduct type $A + B$. 
+	$$\mathtt{pr}_1 : \sum_{a:A}B(a) \rightarrow A : (a,b) \mapsto a$$
+	$$\mathtt{pr}_2 : \prod_{x : \sum_{a:A}B(a)}B(\mathtt{pr}_1\; x) : (a,b) \mapsto b$$
+	The induction principle is the following
+	$$\mathtt{ind}_{\sum_{a:A}B(a)} : \prod_{C : \sum_{a:A}B(a) \rightarrow \mathcal{U}}\Big( \prod_{a : A}\prod_{b : B(a)}C((a,b)) \Big)\prod_{x : \sum_{a:A}B(a)}C(x)$$
+	$$\mathtt{ind}_{\sum_{a:A}B(a)}(C, f,(a,b) ) :\equiv f(a)(b)$$
+	\item Given $A, B : \mathcal{U}$ we can construct the \textbf{coproduct} type $A + B$. 
 	We can construct elements of $A + B$ using the functions
 	$$\mathtt{inl} : A \rightarrow A+B$$
 	$$\mathtt{inr} : B \rightarrow A+B$$
-	This induces the induction principle
-	$$\mathtt{ind}_{A+B} : \prod_{C : A+B \rightarrow U} \Big(\prod_{a : A}C(\mathtt{inl}\;a)\Big) \rightarrow \Big(\prod_{b : A}C(\mathtt{inr}\;b)\Big) \rightarrow \prod_{x : A+ B}C(x)$$
+	One can guess the induction principle
+	$$\mathtt{ind}_{A+B} : \prod_{C : A+B \rightarrow U} \Big(\prod_{a : A}C(\mathtt{inl}\;a)\Big) \rightarrow \Big(\prod_{b : B}C(\mathtt{inr}\;b)\Big) \rightarrow \prod_{x : A+ B}C(x)$$
+	$$\mathtt{ind}_{A+B}(C, f_A, f_B, \mathtt{inl}\; a) :\equiv f_A\; a$$
+	$$\mathtt{ind}_{A+B}(C, f_A, f_B, \mathtt{inr}\; b) :\equiv f_B\; b$$
 	\item Given $x, y : A$ we have the \textbf{identity type} $x =_A y$. 
 	An element of this type amounts to a proof that $x$ and $y$ are equal. 
 	Say $x$ and $y$ are judgmentally equal. 
 	This is captured by the element $\mathtt{idp}_x : x =_A y$. 
 	The relevant induction principle describes how we can use elements of an identity type
 	$$\mathtt{ind}_{=_{A}} : \prod_{C : \prod_{x,y : A} (x =_A y) \rightarrow \mathcal{U}} \Big( \prod_{x : A}C(x,x,\mathtt{idp}_x) \Big) \rightarrow \prod_{x,y : A} \prod_{(p : x =_A y)} C(x,y,p)$$
-	The relevant computation gives us the judgmental equality 
+	The relevant computation gives us the judgmental (definitional) equality 
 	$$\mathtt{ind}_{=_A} (C,c,x,x,\mathtt{idp_x}) \equiv c\; x$$
 	We can concatenate those paths whose domains and codomains allow for it. 
 	Paths are equivalences. That is if $p : x = y$ is such a  path, we can provide its inverse $p^{-1}$ for which we have in turn a path between $p\cdot p^{-1}$ and $\mathtt{idp}_y$ and another one between $p^{-1}\cdot p$ and $\mathtt{idp}_x$. 
 \end{itemize}
 	\begin{defn}
 	We call a type $A$ a \textbf{mere proposition} or simply a \textbf{proposition}, if for every $a,b : A$ we have $a = b$.
+	\end{defn}
+\begin{itemize}
+	\item For every type $A : \mathcal{U}$ there exists its \textbf{propositional truncation} $\| A \|$. 
+	We also have the truncation map $|\cdot| : A \rightarrow \lVert A \rVert$ so that for every element $a : A$ there exists $|a| : \| A\|$. 
+	For every $x, y : \| A\|$ we have $x = y$. 
+
+	Given mere proposition $B$ and $f : A \rightarrow B$, the recursion principle gives us $g : \|A\| \rightarrow B$ such that $g(|a|) \equiv f(a)$ for all $a : A$.
+	This recursion principle will prove itself an indispensable tool in the sections to come. 
+	Whenever, in the midst of a proof, the current goal $B$ is a mere proposition and we have access to some witness $a : \lVert A \rVert$, we are allowed by the recursion principle to assume that we have $a' : A$ and use it to construct a proof of $B$.
+\end{itemize}
+	\begin{defn}
+	Let $f,g : \prod_{a:A}B(a)$ where $B :A \rightarrow \mathcal{U}$. 
+	We call a function of the following type a \textbf{homotopy} between $f$ and $g$
+	$$f\sim g :\equiv \prod_{a:A}f(a) = g(a)$$
 	\end{defn}
 
 	\begin{defn}
@@ -165,22 +195,37 @@ Let's have a look at some important type constructions.
  	Furthermore, the equivalence of types we introduced just now is an equivalence relation on $\mathcal{U}$. 
  	More exposition on equivalence can be found in chapter 4 of \cite{hottbook}.
 
-\section{Higher inductive types}
-\begin{itemize}
-	\item For every type $A : \mathcal{U}$ there exists its \textbf{propositional truncation} $\| A \|$. 
-	We also have the truncation map $|\cdot| : A \rightarrow \lVert A \rVert$ so that for every element $a : A$ there exists $|a| : \| A\|$. 
-	For every $x, y : \| A\|$ we have $x = y$. 
+ 	We will now see some Type Theory variants that expand a bit upon what we've laid out in this section.
 
-	Given mere proposition $B$ and $f : A \rightarrow B$, the recursion principle gives us $g : \|A\| \rightarrow B$ such that $g(|a|) \equiv f(a)$ for all $a : A$.
-	This recursion principle will prove itself an indispensable tool in the sections to come. 
-	Whenever, in the midst of a proof, the current goal $B$ is a mere proposition and we have access to some witness $a : \lVert A \rVert$, we are allowed by the recursion principle to assume that we have $a' : A$ and use it to construct a proof of $B$.
-\end{itemize}
+\section{Homotopy Type Theory}
+We get the flavour of Homotopy Type Theory (HoTT) that interests us by assuming the axiom of Univalence.
+\begin{lem}
+We can define the following function
+$$\mathtt{idtoequiv} : A=_\mathcal{U}B \rightarrow A\simeq B$$
+\end{lem}
+\begin{proof}
+The definition of $\mathtt{idtoequiv}$ can be found in section 2.10 of \cite{hottbook}. 
+\end{proof}
 
+\begin{axiom}[Univalence]
+$\mathtt{idtoequiv}$ has contractible fibers.
+\end{axiom}
+In HoTT we usually assume that the universe $\mathcal{U}$ that we are working in is univalent which means that for all $A,B: \mathcal{U}$
+$$A=_\mathcal{U}B \simeq (A \simeq B)$$
+
+\section{Extensional Type Theory}
+Extensional Type Theory (ETT) is not consistent with the Homotopy Type Theory defined above. 
+To get ETT we assume the axiom K.
+\begin{axiom}[K]
+All types are sets.
+\end{axiom}
+
+This is enough talk about variants of Type Theory.
 \section{Logic}
 Our informal deductions in Type Theory will be reminiscent of First Order Logic ones. 
 To be able to use a similar verbiage, we will set down a handful of types, corresponding to the connectives that let us form well-formed formulas in FOL. 
 These types need to be mere propositions, so that we can form non-constructive deductions. 
-This approach is called `propositions as h-propositions' in the HoTT book. 
+This approach is called `propositions as mere propositions' in \cite{hottbook}. 
 In the following, $A$ and $B$ are mere propositions.
 \begin{itemize}
 \item When we talk of conjunction $A \wedge B$, we mean the product $A \times B$. 
@@ -412,9 +457,9 @@ In either case we reach falsum, concluding the proof.
 
 \chapter{Extensional Type Theory}
 There exists a model of extensional type theory that validates the following `Independence Principle'
-$$\bigg( \prod_{s : \mathbf{2}^\mathbb{N}} P\; s \rightarrow \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}} Q\; s\; z \Big\rVert \bigg)$$
-$$\rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} P\; s \rightarrow  \Big\lVert \sum_{z : \mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow Q \; s\; z\Big\rVert \bigg)$$
-where $P: \mathbf{2}^\mathbb{N} \rightarrow \mathtt{Prop}$ and $Q : \mathbf{2}^\mathbb{N} \rightarrow \mathbb{N} \rightarrow \mathtt{Prop} $ are families of propositions. 
+$$\bigg( \prod_{s : \mathbf{2}^\mathbb{N}} P\; s \rightarrow \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}} Q\; s\; z\Big\rVert \bigg)$$
+$$\rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} P\; s \rightarrow  \Big\lVert \sum_{z:\mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow Q \; s\;z\Big\rVert \bigg)$$
+where $P: \mathbf{2}^\mathbb{N} \rightarrow \mathtt{Prop}$ and $Q : \mathbf{2}^\mathbb{N} \rightarrow \mathbb{N}\rightarrow \mathtt{Prop} $ are families of propositions. 
 Putting it plainly, if the left hand side of the above is true, then $z : \mathbb{N}$ does not depend on the proof of the constantness of $s$ to $0$.
 
 The same model also validates Markov's Principle
@@ -423,7 +468,11 @@ where $P : \mathbb{N} \rightarrow \mathtt{Prop}$ is a family of propositions ove
 Informally, Markov's Principle states that if we have a collection of decidable propositions and the fact that not all of them are false, then one of them must be true.
 
 In this section we work in the context of this model of Extensional Type Theory.
-
+\begin{defn}
+Given $f : C \rightarrow D$ we say that its image is a proposition if for any $c_1,c_2 : C$, $f(c_1) = f(c_2)$.\\
+Formally,
+$$\mathtt{imageIsProp}\; f :\equiv \prod_{c_1,c_2 : C}f(c_1) = f(c_2)$$
+\end{defn}
 Let $A :\equiv \sum_{a: \mathbf{2}^\mathbb{N}}\mathtt{atMost1one}\;a$. 
 When referring to elements of $A$ we implicitly mean the first part of the pair. 
 Let
@@ -432,32 +481,35 @@ $$B :\equiv \lambda\; a.\; \mathtt{p_{odd}}\; a + \mathtt{p_{even}}\; a$$
 
 We would like to have access to the following instance of IP in our intensional model as well.
 \begin{multline*}
-\prod_{a: A} \prod_{f: B\; a \rightarrow \mathbb{N}} \Bigg( \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
-	 \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f\; p = z \Big\rVert \bigg)
+\prod_{a: A} \prod_{h : \sum_{k : B\;a \rightarrow \mathbb{N}}\mathtt{imageIsProp}(k)} \Bigg( 
+\end{multline*}
+\begin{multline*}
+\bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
+	 \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}}\prod_{p: B\; a}  k\; p = z \Big\rVert \bigg)
 \end{multline*}
 \begin{multline*}
 \rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
-	  \Big\lVert \sum_{z : \mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{p : B\; a} f\; p = z \Big\rVert \bigg) \Bigg)
+	  \Big\lVert \sum_{z : \mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{p : B\; a} k\; p = z \Big\rVert \bigg) \Bigg)
 \end{multline*}
 The fact that $\mathbb{N}$ is $\lVert B \rVert$-null, follows from this in Intensional Type Theory. 
 Our plan of action shall be to find a consequent of it, IP', strong enough for our purposes, that has the right form so that by Theorem 6.1 of \cite{1905.03014} we have a model of intensional type theory that satisfies IP'. 
 
-We drop the truncation around $\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f\; p = z \rVert$ and since this is the consequent of the antecedent, the resulting statement is weaker than the original IP. We then uncurry 4 times to reach what we propose as our IP', a function that takes four arguments in the form of a quaternary dependent pair
+We drop the truncation around $\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} k\; p = z \rVert$ and since this is the consequent of the antecedent, the resulting statement is weaker than the original IP. We then uncurry 4 times to reach what we propose as our IP', a function that takes four arguments in the form of a quaternary dependent pair
 
 \begin{align*}
 &a: &A
 \\
-&f: &B\; a \rightarrow \mathbb{N}
+&h: &\sum_{k : B\;a \rightarrow \mathbb{N}}\mathtt{imageIsProp}(k)
 \\ &\_ :
 \begin{split}
 \bigg( \prod_{\bar{s} : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2 \cdot n)\big) + \big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
-	\quad \Big(\prod_{n : \mathbb{N}}\bar{s}\; n = 0 \Big) \rightarrow  \sum_{z : \mathbb{N}} \prod_{p : B\; a} f\; p = z  \bigg)
+	\quad \Big(\prod_{n : \mathbb{N}}\bar{s}\; n = 0 \Big) \rightarrow  \sum_{\bar{z} : \mathbb{N}} \prod_{p : B\; a} k\; p = \bar{z}  \bigg)
 \end{split}
 \\
 &r : & \sum_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) + \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big)
 \end{align*}
 and has return type
-$$\Big\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} f\; p = z \Big\rVert$$
+$$\Big\lVert \sum_{z : \mathbb{N}}\Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{p : B\; a} k\; p = z \Big\rVert$$
 The observant reader should have noticed that the disjunctions in the third and fourth arguments have been replaced with coproducts. 
 This seemingly makes the unnamed third argument weaker which would have the undesirable effect of potentially strengthening IP' beyond IP. 
 Luckily the consequent of $\_$ is a mere proposition which means that swapping disjunction for coproduct does not actually change the strength of the argument. 
@@ -490,7 +542,7 @@ We are now in the position to assume that we have access to a model $\mathcal{E}
 
 \section{Null types in E}
 The proofs in this section are all about $\lVert B \rVert$-nullness i.e. equivalence between function types (see Definition \ref{Bnull}). 
-Our approach in showing that some $F: C\rightarrow D$ is a map with contractible fibers, is to provide for any $d :D$ some $c :C$ such that $f(c) = d$ and then show that such an $c$ is unique, where $C,D$ are said function types. 
+Our approach in showing that some $F: C\rightarrow D$ is a map with contractible fibers, is to provide for any $d :D$ some $c :C$ such that $f(c) = d$ and then show that such a $c$ is unique, where $C,D$ are said function types. 
 \begin{lem}\label{NisBnull}
 $\mathbb{N}$ is $\lVert B \rVert$-null in $\mathcal{E}$.
 \end{lem}
@@ -502,42 +554,75 @@ To that end, we will use IP' which we've proven true in $\mathcal{E}$.
 We invoke it twice. 
 In both times, the first three arguments shall be the same. 
 The choice for the first argument, $a$, is evident. 
-We provide the composition $f \circ \lVert\cdot\rVert : B\; a \rightarrow \mathbb{N}$ as the second argument. 
-Constructing a witness for the third argument is easy. 
-Finally, for argument $r$ we provide the odd $s_1$ and even $s_2$ subsequences of $a$, along with proofs that they are indeed subsequences of $a$ and we get hold of $z_1 : \mathbb{N}$ and $z_2 : \mathbb{N} $ respectively. 
+
+We provide the composition $f \circ |\cdot| : B\; a \rightarrow \mathbb{N}$ as $k$ of second argument. 
+We need to provide a witness for the second part of $h$, $\mathtt{imageIsProp(f \circ |\cdot|)}$. 
+Let $q_1,q_2 : B\;a$. 
+We need to show that $f\;|q_1| = f\; |q_2|$. 
+Since $\lVert B\; a\rVert$ is a proposition, we have $|q_1| = |q_2|$ and then by action on paths we get the desired equality.
+
+We need to construct a witness for the third argument. 
+Let $\bar{s} : \mathbf{2}^\mathbb{N}$ such that $\bar{s}$ is constantly equal to $0$ and at the same time it is \textit{actually} equal to the odd subsequence of $a$ or to the even one i.e. $\big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2 \cdot n)\big) + \big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2\cdot n +1)\big)$. 
+We take cases on this coproduct. 
+Wlog suppose that $\prod_{n : \mathbb{N}} \bar{s}(n) = a(2 \cdot n)$. 
+We can use this to construct a witness $\mathtt{evenSubseqIsZero} : B\;a$. 
+We then put forward $f\;|\mathtt{evenSubseqIsZero}|$ as $\bar{z}$. 
+Recall that we've set $k$ to be $f\circ |\cdot|$.
+We need to show that for arbitrary $p : B\;a $, we have $f\; |p| = f\;|\mathtt{evenSubseqIsZero}|$. 
+This follows from $\lVert B\;a\rVert$ being a proposition and action on paths. 
+
+Finally, for argument $r$ we provide the odd $s_1$ and even $s_2$ subsequences of $a$, along with proofs that they are indeed subsequences of $a$ and we get hold of $z_1 : \mathbb{N}$ and $z_2 : \mathbb{N} $ respectively, along with $\zeta_i : \prod_{p : B\; a}\big(\prod_{n : \mathbb{N}}s_i\; n = 0 \big)\rightarrow\big(f\circ |\cdot|(p)=z_i\big)$ for $i \in \{1,2\}$. 
+Recall that the current goal is a mere proposition, namely that merely exists some $f'$, that is why we can act as if we have actual $z_1$ and $z_2$. 
 Equality on $\mathbb{N}$ is decidable, therefore $(z_1 = z_2) + (z_1 \neq z_2)$ is provable. 
 
 We will first prove that the existence of a candidate for $f'$ follows from both constituents of the coproduct.
 \begin{itemize}
 \item First the case where $z_1= z_2$. 
 We arbitrarily pick $z_1$ and propose $f' : \equiv \lambda \;\_.\; z_1 : \mathbf{1} \rightarrow \mathbb{N}$. 
-By function extensionality we reduce proving $f= f' \circ g$ to proving $f\; c = f'\circ g\; c$ for arbitrary $c : \lVert B\; a\rVert$. \\
+By function extensionality we reduce proving $f= f' \circ g$ to proving $f\; c = f'(g\; c)$ for arbitrary $c : \lVert B\; a\rVert$.\\
 Since our goal is a mere proposition, we can act as if we have access to an actual $b : B\; a$. 
-We then take cases on $b$.  
+We take cases on $b$. 
 \begin{itemize}
-\item We first consider the case $\mathtt{p_{odd}}\; a$. 
-Through this we can still get access to some actual $b' : B\; a$. 
-The odd subsequence is constantly $0$, which we can provide to the rhs of the IP alongside with $b'$ (and $s_1$ as the first argument) to deduce $f^*\; b' = z_1$. 
-Using this we then prove $f\; c = z_1$. 
-We concatenate this with $f' \circ g \; c = z_1$ to conclude this case. 
-\item The $\mathtt{p_{even}}$ case is very similar. 
-The only difference is that we provide $s_2$ as the first argument to the rhs of the IP and then have $z_1=z_2$ be part of the concatenation of paths when we prove homotopy between $f$ and $f' \circ g$. 
+\item In the first case we have $\mathtt{p_{odd}}$ which trivially leads us to $b_1 : \prod_{n : \mathtt{N}}s_1 = 0$. 
+We then have $\zeta_1(b)(b_1) : f(|b|) = z_1$. 
+Since $\lVert B\; a\rVert$ is a mere proposition, we have $|b| =c$. 
+By action on paths on this and $f$ we get $f\; c= z_1$. 
+By definition, $f'(g(c)) = z_1$, which we concatenate with $f(c) = z_1$ to conclude get $f\; c = f'(g\; c)$ and this case.
+\item In the case where $\mathtt{p_{even}}$, we similarly construct $b_2 : \prod_{n : \mathtt{N}}s_2 = 0$. 
+We then have $\zeta_2(b)(b_2) : f(|b|) = z_2$. 
+The proof follows closely the previous case, only this time around we have to include $z_1=z_2$ in the concatenation of paths.
+
 \end{itemize}
+% We then apply $\zeta_1$ to it to get $\zeta_1\; b : f\circ |\cdot|(b)=z_1$ from which we deduce $f(|b|) = z_1$. 
+% Since $\lVert B\; a\rVert$ is a mere proposition, we have $|b| =c$. 
+% By action on paths on this and $f$ we get $f\; c= z_1$. 
+% By definition, $f'\circ g(c) = z_1$, which we concatenate with $f(|b|) = z_1$ to conclude this case.
+
+% We then take cases on $b \equiv \mathtt{p_{odd}}(a) + \mathtt{p_{even}}(a)$.  
+% \begin{itemize}
+% \item We first consider the case $q : \mathtt{p_{odd}}\; a$. 
+% Through this we can still get access to some actual $b' : B\; a$ with $b' :\equiv \mathtt{inl}(q)$. 
+% The odd subsequence is constantly $0$, which we can provide to argument $r$ of IP' alongside with $b'$ (and $s_1$ as the first argument) to deduce $f \circ \lVert\cdot\rVert(b') = z_1$. 
+% Using this we then prove $f\; c = z_1$. 
+% We concatenate this with $f' \circ g \; c = z_1$ to conclude this case. 
+% \item The $\mathtt{p_{even}}$ case is very similar. 
+% The only difference is that we provide $s_2$ as the first argument to the rhs of the IP and then have $z_1=z_2$ be part of the concatenation of paths when we prove homotopy between $f$ and $f' \circ g$. 
+% \end{itemize}
 
 \item Now consider the case $z_1 \neq z_2$. 
 For any $n : \mathbb{N}$, $a\; n = 1$ is decidable. 
 Suppose that $\prod_{n : 
 \mathbb{N}} a\; n \neq 1$. 
 Then $a$ and by extension $s_1$ and $s_2$ are constantly $0$. 
-By the rhs of the IP we then have $z_1 = f\; b = z_2$ where $b : B\; a$ is clearly available to us at this point. 
+We use these facts to construct $b : B\;a$ and $b_i : \prod_{n : \mathtt{N}}s_i = 0$ and then concatenate $\zeta_i(b)(b_i)$ like before to get $z_1 = f\; b = z_2$. 
 This contradicts $z_1 \neq z_2$. 
 We have proven $\neg \prod_{n : 
 \mathbb{N}} a\; n \neq 1$. 
 By Markov's Principle there exists $n_1 : \mathbb{N}$ such that $a\; n_1 = 1$. 
 We pick the subsequence $s_0$ with parity opposite to $n_1$ and let $f'$ be always equal to the corresponding $z_0$. 
-We prove $\prod_{n : \mathbb{N}} s_0\; n = 0$ by induction on $\mathbb{N}$ and cases on $s_0 \;n$. 
+We prove $\prod_{n : \mathbb{N}} s_0\; n = 0$ by induction on $\mathbb{N}$ and cases on $(s_0 \;n = 0) + (s_0\;n = 1)$. 
 In the case where $s_0\; n = 1$ we can reach falsum because $n$ will have to be both even and odd (in $a$) by $\mathtt{atMost1one} \; a$. Ex falso trivializes this case. 
-Now that we have established this too, we have enough arguments for the rhs of IP to output the desired equality $f\; b = z_0$ which proves homotopy between $f$ and $(\lambda\;\_.\; z_0) \circ g$.
+Now that we have established this too, we can construct $b : B\; a$ and have enough arguments for IP' to output the desired equality $f\; b = z_0$ which proves homotopy between $f$ and $(\lambda\;\_.\; z_0) \circ g$.
 \end{itemize}
 We still need to prove the uniqueness of $f'$. 
 Since $\mathbf{1}$ is finite and equality on $\mathbb{N}$ is decidable, we can decide equality on the function space 
@@ -553,9 +638,9 @@ Since $h_1 \circ g = f = h_2 \circ g$, by homotopy $h_1 (g\; b) = h_2 (g\; b)$.
 We can then prove $\prod_{*: \mathbf{1}} h_1 (*) = h_2 (*)$. 
 By function extensionality $h_1 = h_2$. 
 But this contradicts $q$, so we reach $\bot$. 
-We've just proven $r : B\;a \rightarrow \bot$. 
+We've just proven $\tau : B\;a \rightarrow \bot$. 
 We still have to prove $h_1 = h_2$, the main goal. 
-By \cref{llponeg} we have $(B\; a \rightarrow \bot) \rightarrow \bot$ and by $r$ we get $\bot$. 
+By \cref{llponeg} we have $(B\; a \rightarrow \bot) \rightarrow \bot$ and by $\tau$ we get $\bot$. 
 We conclude the proof by Ex Falso.
 \end{proof}
 
@@ -586,8 +671,8 @@ Recall that in $\mathcal{E}$ we have access to a witness of IP' which takes the 
 &r : & \sum_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big)
 \end{align*}
 and returns
-$$\Big\lVert \sum_{z : \mathbf{2}} \prod_{b : B\; a} g(\bar{f}\; b) = z \Big\rVert$$
-We provide this with the arguments required, where $\bar{f}$ is $f$ composed with the truncation map $|*| : B\; a \rightarrow \lVert B\; a\rVert$, to get a witness 
+$$\Big\lVert \sum_{z : \mathbf{2}}\Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{b : B\; a} g(\bar{f}\; b) = z \Big\rVert$$
+We provide this with the arguments required, where $\bar{f}$ is $f$ composed with the truncation map $|\cdot| : B\; a \rightarrow \lVert B\; a\rVert$, to get a witness 
 $$\bar{z} : \sum_{z : \mathbf{2}} \prod_{b : B\; a} g(\bar{f}\; b) = z$$ 
 Note that we dropped the truncation since our goal is a mere proposition, therefore we can act as if we have an actual $\bar{z}$. 
 Using $\bar{z}$ we can prove that
