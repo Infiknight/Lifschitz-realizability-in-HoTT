@@ -542,7 +542,7 @@ We are now in the position to assume that we have access to a model $\mathcal{E}
 
 \section{Null types in E}
 The proofs in this section are all about $\lVert B \rVert$-nullness i.e. equivalence between function types (see Definition \ref{Bnull}). 
-Our approach in showing that some $F: C\rightarrow D$ is a map with contractible fibers, is to provide for any $d :D$ some $c :C$ such that $f(c) = d$ and then show that such a $c$ is unique, where $C,D$ are said function types. 
+Our approach in showing that some $F: C\rightarrow D$ is a map with contractible fibers, is to provide for any $d :D$ exists (merely) some $c :C$ such that $f(c) = d$ and then show that such a $c$ is unique (its type is a proposition), where $C,D$ are said function types. 
 \begin{lem}\label{NisBnull}
 $\mathbb{N}$ is $\lVert B \rVert$-null in $\mathcal{E}$.
 \end{lem}
@@ -571,7 +571,9 @@ Recall that we've set $k$ to be $f\circ |\cdot|$.
 We need to show that for arbitrary $p : B\;a $, we have $f\; |p| = f\;|\mathtt{evenSubseqIsZero}|$. 
 This follows from $\lVert B\;a\rVert$ being a proposition and action on paths. 
 
-Finally, for argument $r$ we provide the odd $s_1$ and even $s_2$ subsequences of $a$, along with proofs that they are indeed subsequences of $a$ and we get hold of $z_1 : \mathbb{N}$ and $z_2 : \mathbb{N} $ respectively, along with $\zeta_i : \prod_{p : B\; a}\big(\prod_{n : \mathbb{N}}s_i\; n = 0 \big)\rightarrow\big(f\circ |\cdot|(p)=z_i\big)$ for $i \in \{1,2\}$. 
+Finally, for argument $r$ we provide the odd $s_1$ and even $s_2$ subsequences of $a$, along with proofs that they are indeed subsequences of $a$ and we get hold of $z_1 : \mathbb{N}$ and $z_2 : \mathbb{N} $ respectively, along with 
+$$\zeta_i : \big(\prod_{n : \mathbb{N}}s_i\; n = 0 \big)\rightarrow \prod_{p : B\; a}\big(f(|p|)=z_i\big)$$
+for $i \in \{1,2\}$. 
 Recall that the current goal is a mere proposition, namely that merely exists some $f'$, that is why we can act as if we have actual $z_1$ and $z_2$. 
 Equality on $\mathbb{N}$ is decidable, therefore $(z_1 = z_2) + (z_1 \neq z_2)$ is provable. 
 
@@ -580,16 +582,16 @@ We will first prove that the existence of a candidate for $f'$ follows from both
 \item First the case where $z_1= z_2$. 
 We arbitrarily pick $z_1$ and propose $f' : \equiv \lambda \;\_.\; z_1 : \mathbf{1} \rightarrow \mathbb{N}$. 
 By function extensionality we reduce proving $f= f' \circ g$ to proving $f\; c = f'(g\; c)$ for arbitrary $c : \lVert B\; a\rVert$.\\
-Since our goal is a mere proposition, we can act as if we have access to an actual $b : B\; a$. 
+Since our goal is a mere proposition ($\mathbb{N}$ is a set, so equality on it is a proposition), we can act as if we have access to an actual $b : B\; a$. 
 We take cases on $b$. 
 \begin{itemize}
 \item In the first case we have $\mathtt{p_{odd}}$ which trivially leads us to $b_1 : \prod_{n : \mathtt{N}}s_1 = 0$. 
-We then have $\zeta_1(b)(b_1) : f(|b|) = z_1$. 
+We then have $\zeta_1(b_1)(b) : f(|b|) = z_1$. 
 Since $\lVert B\; a\rVert$ is a mere proposition, we have $|b| =c$. 
 By action on paths on this and $f$ we get $f\; c= z_1$. 
 By definition, $f'(g(c)) = z_1$, which we concatenate with $f(c) = z_1$ to conclude get $f\; c = f'(g\; c)$ and this case.
 \item In the case where $\mathtt{p_{even}}$, we similarly construct $b_2 : \prod_{n : \mathtt{N}}s_2 = 0$. 
-We then have $\zeta_2(b)(b_2) : f(|b|) = z_2$. 
+We then have $\zeta_2(b_2)(b) : f(|b|) = z_2$. 
 The proof follows closely the previous case, only this time around we have to include $z_1=z_2$ in the concatenation of paths.
 
 \end{itemize}
@@ -653,6 +655,8 @@ In $\mathcal{E}$ if $C, D$ are $\lVert B \rVert$-null then so is $C + D$.
 \end{lem}
 \begin{proof}
 We need to show that for $f : \lVert B\; a\rVert \rightarrow C+D$ there exists unique $f' : \mathbf{1} \rightarrow C+D$ such that $f = f' \circ e$, where $e : \lVert B\; a\rVert \rightarrow \mathbf{1}$ is the sole inhabitant of its function space. 
+We will first show that a candidate $f'$ merely exists and follow that up with a proof of uniqueness. 
+
 We define $$g : C + D \rightarrow \mathbf{2}$$ 
 using components
 $$g_C :\equiv \lambda\; \_.\; 0 : C \rightarrow \mathbf{2}$$
@@ -661,27 +665,91 @@ Recall that in $\mathcal{E}$ we have access to a witness of IP' which takes the 
 \begin{align*}
 &a: &A
 \\
-&\bar{f}: &B\; a \rightarrow C+D
+&h: &\sum_{\bar{f} : B\; a \rightarrow C+D} \mathtt{imageIsProp}(\bar{f})
 \\ &\_ :
 \begin{split}
-\bigg( \prod_{\bar{s} : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
+\bigg( \prod_{\bar{s} : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2 \cdot n)\big) + \big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
 	\quad \Big(\prod_{n : \mathbb{N}}\bar{s}\; n = 0 \Big) \rightarrow  \sum_{z : \mathbf{2}} \prod_{b : B\; a} g(\bar{f}\; b) = z  \bigg)
 \end{split}
 \\
-&r : & \sum_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big)
+&r : & \sum_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) + \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big)
 \end{align*}
 and returns
 $$\Big\lVert \sum_{z : \mathbf{2}}\Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{b : B\; a} g(\bar{f}\; b) = z \Big\rVert$$
-We provide this with the arguments required, where $\bar{f}$ is $f$ composed with the truncation map $|\cdot| : B\; a \rightarrow \lVert B\; a\rVert$, to get a witness 
-$$\bar{z} : \sum_{z : \mathbf{2}} \prod_{b : B\; a} g(\bar{f}\; b) = z$$ 
-Note that we dropped the truncation since our goal is a mere proposition, therefore we can act as if we have an actual $\bar{z}$. 
-Using $\bar{z}$ we can prove that
+We provide this with the arguments required, two times, where $\bar{f}$ is $f$ composed with the truncation map $|\cdot| : B\; a \rightarrow \lVert B\; a\rVert$ and $\mathtt{imageIsProp}(\bar{f})$ follows from composition with $|\cdot|$. 
+
+For the unnamed third argument we work as in the proof of \ref{NisBnull}. 
+Suppose that we have $\bar{s} : \mathbf{2}^\mathbb{N}$ equal to the odd or even subsequence of $a$ and always equal to $0$. 
+We take cases on whether it's equal to the odd or even subsequence. 
+Wlog suppose it's equal to the odd one. 
+We use $\mathtt{inl}$ on this fact to get $b_0 : B\; a$. 
+We then propose $g(\bar{f}\; b_0)$ as $z$. 
+We still need to show that for any $b : B\;a$ we have $g(\bar{f}\;b) = g(\bar{f}\; b_0)$. 
+Since $\bar{f} \equiv f \circ |\cdot|$ and $|b| = |b_0|$, by action on paths we have $\bar{f}\; b = \bar{f}\; b_0$. 
+We use action on paths again to reach the desired equality $g(\bar{f}\;b) = g(\bar{f}\; b_0)$. 
+
+For the fourth argument we use $s_1$ the odd subsequence of $a$ the first time and $s_2$ the even one the second time. 
+
+In return, we get a witnesses 
+$$z_i : \mathbf{2}$$
+and
+$$\zeta_i : \Big(\prod_{n : \mathbb{N}}s_i\; n = 0 \Big)\rightarrow \prod_{b : B\; a} g(f\; |b|) = z_i$$
+for $i \in \{1,2\}$.  
+Note that we dropped the truncation since our goal is a mere proposition, therefore we can act as if we have an actual $z_1,z_2$ and $\zeta_1, \zeta_2$. 
+
+We shift our attention to proving a new subgoal in the form of 
+$$\Big\lVert \sum_{z : \mathbf{2}} \prod_{b : \lVert B\; a\rVert} g(f\; b) = z \Big\rVert$$
+By decidability of equality of naturals we have that $z_1 = z_2 + z_1 \neq z_2$. 
+We take cases on this. 
+\begin{itemize}
+\item First the case where $z_1 = z_2$. 
+Wlog propose $z_1$ as $z$. 
+We have to show that $\prod_{b : \lVert B\;a\rVert}g(f\;b)=z_1$. 
+Let $b : \lVert B\;a \rVert$. 
+Equality on $\mathbf{2}$ is a proposition, so the current goal $g(f\;b)=z_1$ is a proposition. 
+We can therefore act as if we have some $b' : B\;a$. 
+We take cases on this. 
+Wlog we only deal with the case where the odd subsequence $s_1$ is constant to $0$. 
+We cast $\zeta_1$ upon this fact to conjure a proof of $\prod_{b : B\; a} g(f\; |b|) = z_1$. 
+So $g(f\;|b'|) = z_1$. 
+Since $|b'| = b$, by action on paths we have $g(f\;b) = g(f\;|b'|)$. 
+We concatenate the two paths to reach $g(f\;b) = z_1$ and conclude the case. 
+
+\item Now the case where $z_1 \neq z_2$. 
+We copy the following passage almost verbatim from earlier in the chapter. 
+
+For any $n : \mathbb{N}$, $a\; n = 1$ is decidable. 
+Suppose that $\prod_{n : 
+\mathbb{N}} a\; n \neq 1$. 
+Then $a$ and by extension $s_1$ and $s_2$ are constantly $0$. 
+We use these facts to construct $b : B\;a$ and $b_i : \prod_{n : \mathtt{N}}s_i = 0$ and then concatenate $\zeta_i(b)(b_i)$ like before to get $z_1 = f\; b = z_2$. 
+This contradicts $z_1 \neq z_2$. 
+We have proven $\neg \prod_{n : 
+\mathbb{N}} a\; n \neq 1$. 
+By Markov's Principle there exists $n_1 : \mathbb{N}$ such that $a\; n_1 = 1$. 
+
+Now, let $s_0$ be the subsequence opposite of the parity of $n_1$. 
+We want to show that $\prod_{n : \mathbb{N}}s_0\; n = 0$. 
+Let $n : \mathbb{N}$. 
+It's decidable whether $s_0\;n = 0$ or $s_0\;n=1$. 
+The first case is a direct proof while the second leads to a contradiction with $\mathtt{atMost1one}(a)$ and $1$ appearing in both subsequences, which we can resolve by Ex Falso. 
+Now that we have $s_0$ to be constant to $0$, we propose the corresponding $z_0$ as $z$ and apply the corresponding $\zeta_0$ to get a proof of $\prod_{b : B\;a}g(f\;|b|) = z_0$. 
+From $\prod_{n:\mathbb{N}}s_0\; n = 0$ we can immidiately get $b_0  : B\;a$. 
+So we have $g(f\;|b_0|) = z_0$. 
+For any $b : \lVert B\;a \rVert$ we have $|b_0| = b$ and by action on paths we get $g(f\;b) = g(f\;|b_0|)$. 
+We concatenate with the above to get $g(f\;b) = z_0$ and conclude the case.
+
+\end{itemize}
+We've proven 
+$$\bar{y} : \Big\lVert \sum_{z : \mathbf{2}} \prod_{b : \lVert B\; a\rVert} g(f\; b) = z \Big\rVert$$
+
+Given that the current goal, which is proving the mere existence of candidate $f'$, is a proposition, we can ignore the truncation and work with
 $$y : \sum_{z : \mathbf{2}} \prod_{b : \lVert B\; a\rVert} g(f\; b) = z$$
 We can prove that 
 $$y= 0 + y = 1$$ 
 We use induction on this coproduct to prove our goal. 
 Without loss of generality, we argue only for the case of $y = 0$. 
-As a first step towards providing a candidate for $f'$, we will try to construct some $h : \lVert B\; a\rVert \rightarrow C$ such that $\mathtt{inl} \circ h = f$. 
+We would like to have an $h : \lVert B\; a\rVert \rightarrow C$ such that $\mathtt{inl} \circ h = f$. 
 \begin{center}
 \begin{tikzcd}
                                                              & \mathbf{1} \arrow[rdd, "f'", dashed, bend left] \arrow[d, "h'"', dashed]              &                    &            \\
@@ -689,18 +757,25 @@ As a first step towards providing a candidate for $f'$, we will try to construct
 B\; a \arrow[rr, "\bar{f}"', bend right=49] \arrow[r, "|*|"] & \lVert B\;a\rVert \arrow[r, "f"] \arrow[u, "h", dashed] \arrow[uu, "e", bend left=49] & C+D \arrow[r, "g"] & \mathbf{2}
 \end{tikzcd}
 \end{center}
+To that end we will first try to construct 
+$$\bar{h} : \prod_{b : \lVert B\;a\rVert} \sum_{c:C}\mathtt{inl}(c) = f(b)$$
 Let $b : \lVert B\; a\rVert$. 
 First, note that we can prove 
-$$\zeta : \prod_{a: C+D} \Big(\big(\sum_{c : C} \mathtt{inl}\; c = a\big) + \big( \sum_{d:D} \mathtt{inr}\; d = a \big) \Big)$$
+$$\xi : \prod_{a: C+D} \Big(\big(\sum_{c : C} \mathtt{inl}\; c = a\big) + \big( \sum_{d:D} \mathtt{inr}\; d = a \big) \Big)$$
 by induction on $C+D$. 
 We then take cases on 
-$$\zeta (f\; b) : \big(\sum_{c : C} \mathtt{inl}\; c = f\; b\big) + \big( \sum_{d:D} \mathtt{inr}\; d = f\; b \big)$$
+$$\xi (f\; b) : \big(\sum_{c : C} \mathtt{inl}\; c = f\; b\big) + \big( \sum_{d:D} \mathtt{inr}\; d = f\; b \big)$$
 \begin{itemize}
-	\item If $\bar{c} : \sum_{c : C} \mathtt{inl}\; c = f\; b$, we define $h\; b :\equiv \bar{c}$.
-	Clearly $\mathtt{inl} \circ h = f$.
+	\item If $\bar{c} : \sum_{c : C} \mathtt{inl}\; c = f\; b$, we define $\bar{h}\; b :\equiv \bar{c}$.
 	\item If $\sum_{d : D} \mathtt{inl}\; d = f\; b$, then $g(f\;b) = 1$ but since $y=0$ we also have $g(f\;b) = 0$. Contradiction. 
 	This case is resolved by Ex Falso.
 \end{itemize}
+Now that we have $\bar{h}$ in our hands, we will use it to construct $h$ which should satisfy $\mathtt{inl} \circ h = f$ as stated earlier. 
+Let $b:\lVert B\; a\rVert$. 
+Define $h\;b :\equiv \mathtt{fst}(\bar{h}\; b)$. 
+Now, in order to show that $\mathtt{inl} \circ h = f$, we just show, by function extensionality, that $\mathtt{inl}(h\;b )= f\;b$. 
+This follows directly from the definitions of $h$ and $\bar{h}$. 
+
 Since $C$ is $\lVert B \rVert$-null, there exists $h' : \mathbf{1} \rightarrow C$ such that $h = h' \circ e$. 
 Observe that $\mathtt{inl} \circ h' : \mathbf{1} \rightarrow C+D$, furthermore $(\mathtt{inl} \circ h') \circ e= f$. 
 We have found a valid candidate for $f'$, what is left is to show it's unique. 
