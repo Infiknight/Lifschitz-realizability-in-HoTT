@@ -18,6 +18,7 @@
 \usepackage{cleveref}% http://ctan.org/pkg/cleveref
 \usepackage{amsthm}
 \usepackage{amssymb}
+\usepackage{siunitx}
 \usepackage{ textcomp }
 %\usepackage{ wasysym }
 \usepackage{bookmark}
@@ -90,7 +91,7 @@
 %Below is an example of the problem environment
 \chapter{Type Theory}
 \section{Introduction}
-Type theory is a formal language and deductive system, that is self sufficient in the sense that it need not be formulated as a collection of axioms on top of some other formal system like First Order Logic, instead its deductive system can be built on top of its own formal language. 
+Martin-Löf's intensional \textit{Type Theory} is a formal language and deductive system, that is self sufficient in the sense that it need not be formulated as a collection of axioms on top of some other formal system like First Order Logic, instead its deductive system can be built on top of its own formal language. 
 
 Central to Type Theory is the notion of \textit{Type}. Every term $a$ in Type Theory we come across, must lie in some type $A$, which we denote as $a : A$. 
 To avoid impredicativity we assume a countable hierarchy of universes $\mathcal{U}_0,\mathcal{U}_1,\mathcal{U}_2,\ldots$ which is cummulative i.e. every universe includes all previous universes and their types. 
@@ -98,15 +99,23 @@ While working in type theory we usually simplify our view of this hierarchy and 
 %Note that the relation $:$ is transitive, so $a : A$ and $A : B$ imply $a : B$. 
 %This induces the cummulative hierarchy shape of the universe of types $\mathcal{U}$, wherein every level of the universe includes all lower levels and their types.
 
-For the deductive part of Type Theory, we interpret propositions as types. Proving proposition $P$ amounts to providing some inhabitant $p : P$. 
+For the deductive part of Type Theory, we interpret propositions as types. 
+Proving proposition $P$ amounts to providing some inhabitant $p : P$. 
+This is in agreement with the BHK interpretation. 
+Type Theory is rich in type formation rules that gives us the breadth required to do Intuitionistic Logic inside of it. 
 
 \section{Type Construction Operations}
-Let's have a look at some important type constructions.
+We have the following list of types at our disposal.
 \begin{itemize}
 	\item Given types $A, B : \mathcal{U}$ we can define the type $A \rightarrow B$ of \textbf{functions} from $A$ to $B$. 
 		We can use $\lambda$-abstraction to construct elements of this type. $\lambda x. \Phi$ lies in $A \rightarrow B$ iff for $a : A$ we have $\Phi[a/x] : B$. 
-		For $f : A \rightarrow B$ and $a : A$ we have that the application of $f$ on $a$, denoted as $f(a)$ or $f\;a$, lies in $B$.
-	\item Given some type $A : \mathcal{U}$ and a family of types $B$ over $A$, $B : A \rightarrow \mathcal{U}$, we have the type of \textbf{dependent functions} or \textbf{dependent products} (which should not be viewed as the dependent version of the product type defined bellow) $$\prod_{a : A} B(a)$$
+		For $f : A \rightarrow B$ and $a : A$ we have that the application of $f$ on $a$, denoted as $f(a)$ or $f\;a$, lies in $B$, so $f\;a : B$. 
+
+		Functions whose type is of the form $A \rightarrow \mathcal{U}$ i.e. the codomain is $\mathcal{U}$ are called \textit{families of types}. 
+		They are of special interest because they can be viewed as types themselves; types indexed by terms of the domain type. 
+		So if $B : A \rightarrow \mathcal{U}$ is such a family of types, then its inhabitants would be the collection of inhabitants of all $B(a)$'s for all $a  : A$. 
+		This last sentence is not sanctioned by formal type theory and only serves to make the introduction of the first dependent type, the \textit{dependent function type}, easier.
+	\item Given some type $A : \mathcal{U}$ and a family of types $B$ over $A$, $B : A \rightarrow \mathcal{U}$, we have the type of \textbf{dependent functions} or \textbf{dependent products} (which should not be viewed as the dependent version of the product type defined later on) $$\prod_{a : A} B(a)$$
 	where for $f : \prod_{a : A} B(a)$ and $x : A$ we have $f(x) : B(x)$. 
 	As in the case of non-dependent functions, we can use lambda abstraction to construct elements of a dependently-typed function type. 
 	That way, $\lambda x.\Phi$ lies in $\prod_{a:A}B(a)$ iff $B$ is of the form $\lambda y.\Psi$ and for all $a:A$ we have $\Phi[a/x] : \Psi[a/y]$. 
@@ -118,7 +127,7 @@ Let's have a look at some important type constructions.
 	We also have the following induction principle
 	$$\mathtt{ind}_{A\times B} : \prod_{C: A\times B \rightarrow \mathcal{U}}\big( \prod_{a:A}\prod_{b:B} C((a,b)) \big) \rightarrow \prod_{x: A\times B} C(x)$$
 	$$\mathtt{ind}_{A\times B}(C, f, (a,b)) : \equiv f(a)(b)$$
-	So given two functions $f: A\rightarrow C$ and $g : \rightarrow C$ we can construct an $h : A\times B \rightarrow C$ such that $h((a,b)) \equiv \big(f(a), g(b)\big)$ for all $a:A,\; b:B$.
+	So given two functions $f: A\rightarrow C$ and $g : B \rightarrow C$ we can construct an $h : A\times B \rightarrow C$ such that $h((a,b)) \equiv \big(f(a), g(b)\big)$ for all $a:A,\; b:B$.
 	\item Given $A : \mathcal{U}$ and family of types $B$ over $A$, $B : A \rightarrow \mathcal{U}$, we can define the \textbf{dependent pair} type (the dependent version of the product type)
 	$$\sum_{a : A} B(a)$$
 	Given $x : A$ and $b : B(x)$ we can construct the pair $(x,b) : \sum_{a : A} B(a)$. 
@@ -136,16 +145,17 @@ Let's have a look at some important type constructions.
 	$$\mathtt{ind}_{A+B} : \prod_{C : A+B \rightarrow U} \Big(\prod_{a : A}C(\mathtt{inl}\;a)\Big) \rightarrow \Big(\prod_{b : B}C(\mathtt{inr}\;b)\Big) \rightarrow \prod_{x : A+ B}C(x)$$
 	$$\mathtt{ind}_{A+B}(C, f_A, f_B, \mathtt{inl}\; a) :\equiv f_A\; a$$
 	$$\mathtt{ind}_{A+B}(C, f_A, f_B, \mathtt{inr}\; b) :\equiv f_B\; b$$
-	\item Given $x, y : A$ we have the \textbf{identity type} $x =_A y$. 
-	An element of this type amounts to a proof that $x$ and $y$ are equal. 
-	Say $x$ and $y$ are judgmentally equal. 
+	\item Given $x, y : A$ we have the \textbf{identity type} $x =_A y : \mathcal{U}$ (we ommit the index $A$ whenever it's easily deduced). 
+	An element of this type amounts to a proof that $x$ and $y$ are equal and we call the element a path between $x$ and $y$. 
+	Say $x$ and $y$ are judgmentally equal, $x \equiv y$. 
 	This is captured by the element $\mathtt{idp}_x : x =_A y$. 
 	The relevant induction principle describes how we can use elements of an identity type
 	$$\mathtt{ind}_{=_{A}} : \prod_{C : \prod_{x,y : A} (x =_A y) \rightarrow \mathcal{U}} \Big( \prod_{x : A}C(x,x,\mathtt{idp}_x) \Big) \rightarrow \prod_{x,y : A} \prod_{(p : x =_A y)} C(x,y,p)$$
 	The relevant computation gives us the judgmental (definitional) equality 
 	$$\mathtt{ind}_{=_A} (C,c,x,x,\mathtt{idp_x}) \equiv c\; x$$
 	We can concatenate those paths whose domains and codomains allow for it. 
-	Paths are equivalences. That is if $p : x = y$ is such a  path, we can provide its inverse $p^{-1}$ for which we have in turn a path between $p\cdot p^{-1}$ and $\mathtt{idp}_y$ and another one between $p^{-1}\cdot p$ and $\mathtt{idp}_x$. 
+	Paths form an equivalence relation. That is, if $p : x = y$ and $p' : y = z$ are such paths then we can concatenate them $p \cdot p' : x = z$. 
+	We can also provide the inverse $p^{-1} : y = x$ for which we have in turn a path $q : (p\cdot p^{-1}) =_{x=x} (\mathtt{idp}_x)$ between $p\cdot p^{-1}$ and $\mathtt{idp}_x$ and another one between $p^{-1}\cdot p$ and $\mathtt{idp}_y$. 
 \end{itemize}
 	\begin{defn}
 	We call a type $A$ a \textbf{mere proposition} or simply a \textbf{proposition}, if for every $a,b : A$ we have $a = b$.
@@ -181,7 +191,7 @@ Let's have a look at some important type constructions.
 	\end{defn}
 
 	\begin{defn}
-	We say that a map $f : A\rightarrow B$ has \textbf{contractible fibers} if for every $b : B$, the type $\mathtt{fib}_f(b)$ is contractible.\\
+	We say that a map $f : A\rightarrow B$ \textbf{has contractible fibers} if for every $b : B$, the type $\mathtt{fib}_f(b)$ is contractible.\\
 	Formally, 
 	$$ \mathtt{hasContrFibers}\; f : \equiv \prod_{b : B} \mathtt{isContr}(\mathtt{fib}_f\; b)$$
  	\end{defn}
@@ -195,13 +205,22 @@ Let's have a look at some important type constructions.
  	Furthermore, the equivalence of types we introduced just now is an equivalence relation on $\mathcal{U}$. 
  	More exposition on equivalence can be found in chapter 4 of \cite{hottbook}.
 
- 	We will now see some Type Theory variants that expand a bit upon what we've laid out in this section.
+ 	We will now see some Type Theory variants that expand a bit upon what we've laid out in this section. 
+ 	Before embarking on that, we present the notion of \textbf{function extensionality} which we do not require to hold in the type theory presented in this chapter, yet holds in both of the variants below. 
+ 	As a prerequisite to it, we define the function 
+ 	$$\mathtt{happly} : (f = g) \rightarrow \prod_{a : A}(f(a) =_{B(a)} g(a))$$
+ 	for arbitrary functions $f,g : \prod_{a :A}B\;a$. We do so using induction on the identity path $f = g$ which reduces it to providing a witness for $f\;a =_{B(a)} g\;a$ with $f \equiv g$. 
+ 	Clearly $f\;a \equiv g\;a$ so $\mathtt{idp}_{f(a)} : f\;a =_{B(a)} g\;a$. 
+ 	\begin{axiom}[Function extensionality] 
+ 	$\mathtt{happly}$ has contractible fibers. 
+ 	\end{axiom}
+ 	Function extensionality, when true, allows us to equate functions that agree on all inputs. 
 
 \section{Homotopy Type Theory}
 We get the flavour of Homotopy Type Theory (HoTT) that interests us by assuming the axiom of Univalence.
 \begin{lem}
 We can define the following function
-$$\mathtt{idtoequiv} : A=_\mathcal{U}B \rightarrow A\simeq B$$
+$$\mathtt{idtoequiv} : (A=_\mathcal{U}B) \rightarrow (A\simeq B)$$
 \end{lem}
 \begin{proof}
 The definition of $\mathtt{idtoequiv}$ can be found in section 2.10 of \cite{hottbook}. 
@@ -211,30 +230,50 @@ The definition of $\mathtt{idtoequiv}$ can be found in section 2.10 of \cite{hot
 $\mathtt{idtoequiv}$ has contractible fibers.
 \end{axiom}
 In HoTT we usually assume that the universe $\mathcal{U}$ that we are working in is univalent which means that for all $A,B: \mathcal{U}$
-$$A=_\mathcal{U}B \simeq (A \simeq B)$$
+$$(A=_\mathcal{U}B) \simeq (A \simeq B)$$
+Function extensionality follows from univalence. 
 
-\section{Extensional Type Theory}
+\section{(Definitionally) Extensional Type Theory}
 Extensional Type Theory (ETT) is not consistent with the Homotopy Type Theory defined above. 
-To get ETT we assume the axiom K.
-\begin{axiom}[K]
-All types are sets.
+To get ETT we assume the following axiom. 
+\begin{axiom}
+Whenever we have an inhabitant $p : a=_C b$ we can infer $\mathtt{idp}_a : a=_C b$ i.e. $a \equiv b$. 
 \end{axiom}
+This axiom simplifies the landscape considerably. 
+Starting with it and using induction on identity types one can eventually deduce that $p \equiv \mathtt{idp}_a$. 
+Thus, the higher path structure of types collapses and types behave similarly to sets. 
+Additionally, function extensionality follows from the above axiom. 
 
 This is enough talk about variants of Type Theory.
 \section{Logic}
 Our informal deductions in Type Theory will be reminiscent of First Order Logic ones. 
 To be able to use a similar verbiage, we will set down a handful of types, corresponding to the connectives that let us form well-formed formulas in FOL. 
-These types need to be mere propositions, so that we can form non-constructive deductions. 
+When working intuitionistically we might say that we have \textit{actual}/there exists \textit{actual} $a : A$ of some $A : \mathcal{U}$ 
+and this constitutes a constructive proof of $A$ under the `propositions as types' regime as seen in \cite{hottbook}. 
+In accordance to this and the BHK interpretation, we have the following translation of FOL connectives and quantifiers. 
+Assume $A, B : \mathcal{U}$ and $C : A \rightarrow \mathcal{U}$.
+\begin{itemize}
+\item $A \wedge B$ is $A \times B$.
+\item $A \vee B$ is $A+ B$.
+\item $\forall a\in A,\; C(a)$ is simply translated to $\prod_{a : A}C(a)$. 
+\item Finally, existence $ \exists a \in A,\; C(a)$ is interpreted as $\sum_{a : A}C(a)$.
+\end{itemize}
+
+We would also like a way to do classical logic in Type Theory. 
+To do so we would need a way to say that some type $C$ is inhabited without providing a specific witness $c : C$, which would have the undesirable effect of providing more information than a classical statement of existence. 
+An effective way to do so is to provide a witness of the truncation $\lVert C \rVert$ and say that $C$ is \textit{merely} inhabited. 
+So to work classically we restrict ourselves to using only mere propositions. 
 This approach is called `propositions as mere propositions' in \cite{hottbook}. 
 In the following, $A$ and $B$ are mere propositions.
 \begin{itemize}
 \item When we talk of conjunction $A \wedge B$, we mean the product $A \times B$. 
 \item We interpret $A \vee B$, as the truncation $\| A + B\|$.
 \item We interpret $\forall a\in A,\; P(a)$, where $P(a)$ is a mere proposition for all $a \in A$, as $\prod_{a : A}P(a)$. 
-\item We interpret $ \exists a \in A,\; P(a)$, where $P(a)$ is a mere proposition for all $a \in A$, as $\| \Sigma_{a : A} P(a) \|$
+\item We interpret $ \exists a \in A,\; P(a)$, where $P(a)$ is a mere proposition for all $a \in A$, as $\| \sum_{a : A} P(a) \|$
 \end{itemize}
-The use of the above notation is interchangeable in the sections to follow.
-
+Note that the above are all chosen so that they preserve mere propositions, e.g. $A\times B$ is a mere proposition. 
+The use of the above notation is interchangeable in the sections to follow. 
+We will try to specify whether a type is \textit{merely} or \textit{actually} inhabited avoid ambiguity whenever needed. 
 
 \chapter{Modalities}
 %Under the view of types as $(\infty, 1)$-categories, functions between them are functors. 
@@ -265,7 +304,7 @@ The subuniverse is $\Sigma$\textbf{-closed} if for $X$ such that $P(X)$ and $Q :
 \end{defn}
 
 \begin{thm}
-Reflective subuniverses are closed under products. 
+Reflective subuniverses are closed under dependent products. 
 That is for subuniverse $P$ and $B : A \rightarrow \mathcal{U}$ such that $\prod_{a : A}P(B(a))$, we have that $P(\prod_{a : A} B(a))$. 
 \end{thm}
 
@@ -320,12 +359,68 @@ In other words, Church's thesis assures us that for every $f : \mathbb{N} \right
 \chapter{LLPO}
 In the following definition $s$ is, in places, taken to be an implicit argument. 
 In the sections to follow, terms and types that use it implicitly, are supplied with explicit arguments when the need to be clear arises. 
-\begin{defn}\label{LLPO}
-The Lesser Limited Principle of Omniscience (LLPO), states that given binary sequence $s : \mathbb{N} \rightarrow \mathbf{2}$ and the fact that there is at most one occurence of $1$ in the sequence, formally 
+\begin{defn}[LLPO]\label{LLPO}
+The Lesser Limited Principle of Omniscience, states that given binary sequence $s : \mathbb{N} \rightarrow \mathbf{2}$ and the fact that there is at most one occurence of $1$ in the sequence, formally 
 $$\mathtt{atMost1one}\; s :\prod_{n_1 : \mathbb{N}} \prod_{n_2 : \mathbb{N}} s(n_1) = 1 \rightarrow s(n_2)= 1 \rightarrow n_1 = n_2$$
 we can then have by the LLPO a witness for $\mathtt{p_{odd}} \vee \mathtt{p_{even}}$, where $\mathtt{p_{odd}}$ (with $s$ as an implicit argument) is the statement that for all odd positions $n$, $s(n) = 0$, formally $\mathtt{p_{odd}} \equiv \prod_{n : \mathbb{N}} (\mathtt{odd}(n) = 1) \rightarrow s(n) = 0$, and $\mathtt{odd} : \mathbb{N}\rightarrow \mathbf{2}$ with $\mathtt{odd}\; n = 1$ iff $n$ is odd. 
 Similarly for $\mathtt{p_{even}}$. 
 \end{defn}
+We now provide an alternative equivalent formulation of LLPO. 
+\begin{defn}[LLPO']
+LLPO' states that for any $s: \mathbf{2}^\mathbb{N}$ we have that
+$$ \Big( \prod_{n : \mathbb{N}} \big( s\;n = 1 \times \prod_{m : \mathbb{N}} m < n \rightarrow s\;m=0 \big) \rightarrow \mathtt{odd}\;n \Big)$$
+\center$$\vee$$
+$$ \Big( \prod_{n : \mathbb{N}} \big( s\;n = 1 \times \prod_{m : \mathbb{N}} m < n \rightarrow s\;m=0 \big) \rightarrow \mathtt{even}\;n \Big)$$
+\end{defn}
+In other words, LLPO' says that for any binary sequence either the first non-zero position is odd, if it exists, or it's even, if it exists. 
+\begin{lem}
+LLPO is equivalent to LLPO'.
+\end{lem}
+\begin{proof}~
+
+$(\text{LLPO} \rightarrow \text{LLPO'})$ Let $s : \mathbf{2}^\mathbb{N}$. 
+Define $\zeta_i : \{1,\ldots,i\} \rightarrow \mathbf{2}$ by primitive recursion: we define $\zeta_1 (1) :\equiv s(1)$. 
+For every $i : \mathbb{N}$, $i  >1$, define $\zeta_i$ as such: for $n : \{ 1,\ldots,i \}$ we can decide whether $(n=i)\;+\;(n < i)$. 
+We take cases on this. 
+If $n < i$ then let $\zeta_i(n) : \equiv \zeta_{i-1}(n)$. 
+Otherwise, if $n = i$ then first decide whether $\prod_{m : \{1,\ldots,i-1\}}\zeta_{i-1}(m) = 0$ holds or not. 
+If it holds then we let $\zeta_{i}(i) :\equiv s(i)$. 
+Otherwise we set $\zeta_i(i) : \equiv 0$. 
+
+We have effectively defined $\zeta : \prod_{i : \mathbb{N}} \mathbf{2}^{\{ 1,\ldots,i \}} : i \mapsto \zeta_i$. 
+We define $s' : \mathbf{2}^\mathbb{N} : n \mapsto \zeta(n)(n)$. 
+One can easily verify that $\mathtt{atMost1one}\; s'$. 
+By LLPO we have $\mathtt{p_{odd}}(s') \vee \mathtt{p_{even}}(s')$. 
+Our goal is a mere proposition so we ignore the truncation of the disjunction and take cases on the coproduct. 
+Wlog we only deal with the case $\mathtt{p_{odd}}(s')$. 
+By $\mathtt{inr}$ our goal is reduced to proving
+$$\prod_{n : \mathbb{N}} \big( s\;n = 1 \times \prod_{m : \mathbb{N}} m < n \rightarrow s\;m=0 \big) \rightarrow \mathtt{even}\;n$$
+Consider $n : \mathbb{N}$ such that $s\;n = 1$ and for any $m < n$, $s\;m=0$. 
+We need to show that $n$ is even. 
+We can decide whether $\mathtt{even}(n)\; +\;\mathtt{odd}(n) $. 
+In the left case we are done. 
+In the right case we have $n$ to be odd. 
+Since for all $m < n$, $s(m) = 0$ and $s(n) =1$ we have that $\zeta_n(n) = 1$ and by extension $s'(n) = 1$. 
+This contradicts the fact that $n$ is odd and $\mathtt{p_{odd}}(s')$. 
+
+$(\text{LLPO} \leftarrow \text{LLPO'})$ Let $s : \mathbf{2}^\mathbb{N}$ such that $\mathtt{atMost1one}\; s$. 
+We apply LLPO' to $s$ to get a witness of the consequent disjunction. 
+We drop the truncation and wlog pick the left constituent of the coproduct. 
+So we have 
+$$p : \prod_{n : \mathbb{N}} \big( s\;n = 1 \times \prod_{m : \mathbb{N}} m < n \rightarrow s\;m=0 \big) \rightarrow \mathtt{odd}\;n$$
+We choose to show $\mathtt{p_{even}}\; s$. 
+So, for $n : \mathbb{N}$, $\mathtt{even}(n)$, we need to show $s\; n = 0$. 
+We can decide whether $(s\;n= 0)\;+\;(s\;n = 1)$. 
+The first case is trivial. 
+Suppose $s\;n = 1$. 
+We want to reach falsum so that we can resolve the case using Ex Falso. 
+We reduce this to showing $n$ to be odd which comes in contradiction with it being even. 
+$\mathtt{odd}(n)$ would follow from $p$ if we only had $\prod_{m : \mathbb{N}}m < n \rightarrow s\;m = 0$. 
+So, consider $m : \mathbb{N},\;m < n$. 
+We can decide whether $(s\;m = 0)\;+\;(s\;m = 1)$. 
+In the left case we are done and in the right one we have by $\mathtt{atMost1one}(s)$ that $m = n$, but by $m< n$ we can deduce $m\neq n$, contradiction.
+\end{proof}
+
 LLPO can be viewed as a weaker form of the Law of Excluded Middle. 
 
 \begin{lem} 
@@ -454,6 +549,64 @@ We then take cases on $(e\circ f''\; m = 0) + (e\circ f''\; m = 1)$.
 \end{itemize}
 In either case we reach falsum, concluding the proof.
 \end{proof}
+For those interested in constructive analysis, here's a consequence of LLPO. 
+\begin{thm}
+LLPO implies $\prod_{x : \mathbb{R}}x \leq 0 \vee x \geq 0$.
+\end{thm}
+\begin{proof}
+Let $x : \mathbb{R}$. 
+We define sequence $s_{1} : \mathbf{2}^\mathbb{N}$ as such: for $n : \mathbb{N}$, $x_n$ is a rational. 
+So we can decide $(x_n < -\frac{1}{n})\;+\;(x_n \geq -\frac{1}{n})$. 
+In the left case define $s_1\; n :\equiv 1$ and in the right case $s_1\; n :\equiv 0$. 
+Similarly define $s_2$ so that for $n : \mathbb{N}$ decide $(x_n > \frac{1}{n})\;+\;(x_n \leq \frac{1}{n})$ and let $s_2\;n:\equiv 1$ if $x_n > \frac{1}{n}$ and $s_2\;n :\equiv 1$ if 
+$x_n \leq \frac{1}{n}$. 
+Define $s : \mathbf{2}^\mathbb{N}$ by interleaving $s_1$ and $s_2$, so that $s(2n+1) :\equiv s_1(n)$ and $s(2n) :\equiv s_2(n)$. 
+We apply LLPO' to $s$ and take cases on the resulting coproduct, after dropping the truncation. 
+Wlog we deal only with 
+$$p : \prod_{n : \mathbb{N}} \big( s\;n = 1 \times (\prod_{m : \mathbb{N}} m < n \rightarrow s\;m=0) \big) \rightarrow \mathtt{odd}\;n$$
+We will try to prove $x \leq 0$ which can then be followed by $\mathtt{inl}$ to conclude the main goal. 
+So we need to show that $\prod_{n : \mathbb{N}}x_n \leq \frac{1}{n}$. 
+Let $l : \mathbb{N}$. $x_l$ is a rational so we have that $(x_l \leq \frac{1}{l})\;+\;(x_l > \frac{1}{l})$. 
+We take cases on this coproduct. The left case is trivial. 
+
+In the right case, we have $s_2\;l = 1$ which implies $s\;2l = 1$. 
+We will construct a witness, by induction on $\mathbb{N}$, of 
+$$\prod_{n : \mathbb{N}} \bigg($$
+$$\Big(\sum_{m : \mathbb{N}}\big( (m < n) \times (s\;m = 1) \times (\prod_{k : \mathbb{N}} k < m \rightarrow s\;k = 0)\big)\Big)$$
+$$+$$
+$$ \big( \prod_{ m : \mathbb{N}} m < n \rightarrow s\;m = 0 \big) $$
+$$\bigg)$$
+%$$\sum_{n : \mathbb{N}}\big(s\;n = 1 \times (\prod_{m : \mathbb{N}}m < n \rightarrow s\;m = 0) \big)$$
+which we will use to prove our current goal, by arriving at a contradiction. 
+We name our witness to be constructed $f$. 
+$f(0)$ is trivial to construct by showing that no natural is bellow $0$ and using $\mathtt{inr}$. 
+We assume that we have some $f(n)$ for $n : \mathbb{N}$ and want to define $f(\mathtt{succ}\; n)$. 
+We take cases on $f(n)$. 
+In the left case we have an actual $m$ less than $n$ such that $s(m) = 1$ and $s$ is constantly zero bellow it. 
+By definition $n < \mathtt{succ}\;n$ so $m < \mathtt{succ}\;n$. 
+This fact along with $s\;m = 1$ and the constantness of $s$ to $0$ bellow $m$ can be combined into a triplet to which we apply $\mathtt{inl}$ to get our definition of $f(\mathtt{succ}\; n)$. 
+
+In the right case we have $\prod_{ m : \mathbb{N}} m < n \rightarrow s\;m = 0$. 
+Note that we can decide $(s\;n = 0)\;+\;(s\;n = 1)$. 
+We take cases on this. 
+In the left case we simply apply $\mathtt{inr}$ to the fact that $s$ is constantly $0$ bellow $\mathtt{succ}\;n$ and we are done. 
+In the right we can use $n$ as the candidate for the triplet and then apply $\mathtt{inl}$ to the triplet. 
+
+We are done with defining $f$. 
+We now want to construct a witness $k : \sum_{n : \mathbb{N}}(s\;n = 1)\times \prod_{m : \mathbb{N}}m < n$. 
+We take cases on $f\; 2l$. 
+The left case is trivial. 
+In the right case we have that for every $n :\mathbb{N}$ less than $2l$, $s\;n = 0$ and we already have $s\;2l = 1$ as a hypothesis, these two facts are enough to conclude the case. 
+By $p(k)$ we have that $k.\mathtt{fst}$ is odd. 
+So there exists natural $m$ such that $k.\mathtt{fst} = 2m+1$. 
+We can decide whether $(x_m < -\frac{1}{m})\;+\;(x_m \geq -\frac{1}{m})$ and we do take cases on it. 
+
+First we look at the right case where $x_m \geq -\frac{1}{m}$. 
+This implies that $s_1(m) = 0$ and by extension $s(k.\mathtt{fst}) = s(2m+1) = 0$. 
+Contradiction, since $s(k.\mathtt{fst}) = 1$. 
+In the left case we have $x_m < -\frac{1}{m}$. 
+But then $\mathtt{abs}(x_l-x_m) > \frac{1}{l} + \frac{1}{m}$ this is in contradiction with our assumption that $x$ is a real number. 
+\end{proof}
 
 \chapter{Extensional Type Theory}
 There exists a model of extensional type theory that validates the following `Independence Principle'
@@ -469,9 +622,9 @@ Informally, Markov's Principle states that if we have a collection of decidable 
 
 In this section we work in the context of this model of Extensional Type Theory.
 \begin{defn}
-Given $f : C \rightarrow D$ we say that its image is a proposition if for any $c_1,c_2 : C$, $f(c_1) = f(c_2)$.\\
+Given $f : C \rightarrow D$ we say that it's constant if for any $c_1,c_2 : C$, $f(c_1) = f(c_2)$.\\
 Formally,
-$$\mathtt{imageIsProp}\; f :\equiv \prod_{c_1,c_2 : C}f(c_1) = f(c_2)$$
+$$\mathtt{isConst}\; f :\equiv \prod_{c_1,c_2 : C}f(c_1) = f(c_2)$$
 \end{defn}
 Let $A :\equiv \sum_{a: \mathbf{2}^\mathbb{N}}\mathtt{atMost1one}\;a$. 
 When referring to elements of $A$ we implicitly mean the first part of the pair. 
@@ -481,7 +634,7 @@ $$B :\equiv \lambda\; a.\; \mathtt{p_{odd}}\; a + \mathtt{p_{even}}\; a$$
 
 We would like to have access to the following instance of IP in our intensional model as well.
 \begin{multline*}
-\prod_{a: A} \prod_{h : \sum_{k : B\;a \rightarrow \mathbb{N}}\mathtt{imageIsProp}(k)} \Bigg( 
+\prod_{a: A} \prod_{h : \sum_{k : B\;a \rightarrow \mathbb{N}}\mathtt{isConst}(k)} \Bigg( 
 \end{multline*}
 \begin{multline*}
 \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) \vee \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
@@ -499,7 +652,7 @@ We drop the truncation around $\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} k\
 \begin{align*}
 &a: &A
 \\
-&h: &\sum_{k : B\;a \rightarrow \mathbb{N}}\mathtt{imageIsProp}(k)
+&h: &\sum_{k : B\;a \rightarrow \mathbb{N}}\mathtt{isConst}(k)
 \\ &\_ :
 \begin{split}
 \bigg( \prod_{\bar{s} : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2 \cdot n)\big) + \big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
@@ -535,7 +688,9 @@ We do so by constructing witnesses for both of the constituents of the product.
 Wlog we do that only for $\prod_{a : A_1}\lVert B_1\; a\rVert$. 
 Let $a : A_1$. Then $q(\mathtt{inl}\; a) : \lVert B_1\; a \rVert$, by the definition of $B$.
 \end{proof}
+\begin{cor}
 The above lemma generalizes from the case of two families of types $B_1, B_2$ to a finite collection of families $B_1,\ldots,B_n$. 
+\end{cor}
 This fact enables us to reformulate a finite collection of statements, each one in the correct form, to a single statement in that same form which is equivalent to their conjunction. 
 
 We are now in the position to assume that we have access to a model $\mathcal{E}$ of univalent type theory, in which CT, MP and IP' hold. 
@@ -556,7 +711,7 @@ In both times, the first three arguments shall be the same.
 The choice for the first argument, $a$, is evident. 
 
 We provide the composition $f \circ |\cdot| : B\; a \rightarrow \mathbb{N}$ as $k$ of second argument. 
-We need to provide a witness for the second part of $h$, $\mathtt{imageIsProp(f \circ |\cdot|)}$. 
+We need to provide a witness for the second part of $h$, $\mathtt{isConst(f \circ |\cdot|)}$. 
 Let $q_1,q_2 : B\;a$. 
 We need to show that $f\;|q_1| = f\; |q_2|$. 
 Since $\lVert B\; a\rVert$ is a proposition, we have $|q_1| = |q_2|$ and then by action on paths we get the desired equality.
@@ -665,7 +820,7 @@ Recall that in $\mathcal{E}$ we have access to a witness of IP' which takes the 
 \begin{align*}
 &a: &A
 \\
-&h: &\sum_{\bar{f} : B\; a \rightarrow C+D} \mathtt{imageIsProp}(\bar{f})
+&h: &\sum_{\bar{f} : B\; a \rightarrow C+D} \mathtt{isConst}(\bar{f})
 \\ &\_ :
 \begin{split}
 \bigg( \prod_{\bar{s} : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2 \cdot n)\big) + \big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
@@ -676,7 +831,7 @@ Recall that in $\mathcal{E}$ we have access to a witness of IP' which takes the 
 \end{align*}
 and returns
 $$\Big\lVert \sum_{z : \mathbf{2}}\Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{b : B\; a} g(\bar{f}\; b) = z \Big\rVert$$
-We provide this with the arguments required, two times, where $\bar{f}$ is $f$ composed with the truncation map $|\cdot| : B\; a \rightarrow \lVert B\; a\rVert$ and $\mathtt{imageIsProp}(\bar{f})$ follows from composition with $|\cdot|$. 
+We provide this with the arguments required, two times, where $\bar{f}$ is $f$ composed with the truncation map $|\cdot| : B\; a \rightarrow \lVert B\; a\rVert$ and $\mathtt{isConst}(\bar{f})$ follows from composition with $|\cdot|$. 
 
 For the unnamed third argument we work as in the proof of \ref{NisBnull}. 
 Suppose that we have $\bar{s} : \mathbf{2}^\mathbb{N}$ equal to the odd or even subsequence of $a$ and always equal to $0$. 
@@ -836,10 +991,58 @@ We would like to have a witness of this type.
 Let $a : A$. 
 We once again utilize our shorthand $B\; a \equiv \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst})$. 
 Note that $\mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$ is $\lVert B \rVert$-null, which means that we have the following equivalence
-$$\mathcal{L}_{\lVert B \rVert}\; \lVert B\;a\rVert \simeq \lVert B\; a \rVert \rightarrow \mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$$
+$$\big(\mathcal{L}_{\lVert B \rVert}\; \lVert B\;a\rVert\big) \simeq \big(\lVert B\; a \rVert \rightarrow \mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert\big)$$
 So it is enough to prove $\lVert B\; a \rVert \rightarrow \mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$, for which we already have a witness in the form of the first datum of Definition \ref{modality_definition}, since $\mathcal{L}_{\lVert B \rVert}$ is a modality. 
 
 Therefore, $\mathcal{E}_{\lVert B \rVert}$ is a model of univalent type theory where both CT and LLPO hold.
+
+\chapter*{Appendix}
+Following \cite{bridges_richman_1987_2} we develop a constructive theory of rational and real numbers.
+\section{Rational numbers}
+We define the rationals as $\mathbb{Q} :\equiv \sum_{n,m: \mathbb{N}}m \neq 0$ where $m$ is the denominator and $n$ the numerator. 
+We now need to codify the usual notion of equality of rationals into type theory. 
+We define it as the infix predicate
+$$\doteq\; :\equiv \prod_{q_1, q_2 : \mathbb{Q}} (q_1.\mathtt{fst} \cdot q_2.\mathtt{snd}) = (q_2.\mathtt{fst} \cdot q_1.\mathtt{snd})$$
+which can be proved to be an equivalence relation. 
+This sort of equality between rationals is the only one that interests us and at no point will we be refering to the type theoretic primitive equality between $\mathbb{Q}$ witnesses, without explicit mention that we are doing so. 
+
+Similarly for order we use 
+$$q_1 < q_2 :\equiv (q_1.\mathtt{fst} \cdot q_2.\mathtt{snd}) < (q_2.\mathtt{fst} \cdot q_1.\mathtt{snd})$$ 
+where the $<$ in the right hand side of the definition is order defined on the naturals. 
+As expected, we define $\leq$ as the coproduct of $<$ and $\doteq$. 
+
+Defining the usual operations on rationals and showing that the usual relations hold is straightforward. 
+
+\section{Real numbers}
+We define the reals as Cauchy sequences of rationals
+$$\mathbb{R} :\equiv \sum_{s: \mathbb{Q}^\mathbb{N}}\prod_{n,m : \mathbb{N}} \Big( \mathtt{abs}\big(s(n) - s(m) \big) \leq n^{-1} + m^{-1} \Big)$$
+where $\mathtt{abs}$ is the absolute value on rationals. 
+We also define $\mathtt{abs}$ on a real number $x$ to be the maximum out of $x$ and $-x$, $\mathtt{max}(x,-x)$, where $\mathtt{max}$ is defined component-wise, $\mathtt{max}(x,y)_n :\equiv \mathtt{max}(x_n,y_n)$. 
+
+Addition and subtraction on reals are also defined component-wise, $(x \pm y)_n :\equiv x_{2n} + y_{2n}$. 
+We won't be needing multiplication so we skip it entirely. 
+Rationals are embedded in the reals as constant sequences of themselves, since if $q : \mathbb{Q}$ then $r_q :\equiv \lambda\;\_.\; q$ is clearly a valid first component of a real number. 
+
+We codify equality on reals as such
+$$\doteq\;:\equiv \prod_{x,y : \mathbb{R}} \prod_{n : \mathbb{N}} \mathtt{abs}\big( x.\mathtt{fst}(n) - y.\mathtt{fst}(n)\big) \leq \frac{2}{n}$$
+
+This, like the rational dot equality, is what we mean when talk about equality between reals, not the type theoretic primitive. 
+
+We define what it means for a real number to be \textbf{positive}
+$$\mathtt{positive} :\equiv \prod_{x: \mathbb{R}} \sum_{n : \mathbb{N}} x.\mathtt{fst}(n) > \frac{1}{n}$$
+
+We define the order predicate `$<$' on reals with infix notation
+$$x<y\; :\equiv \mathtt{positive}\big( \mathtt{abs}(y-x) \big)$$
+We define $\leq$ as follows
+$$x \leq y :\equiv \prod_{n : \mathbb{N}} \big( y.\mathtt{fst}(n) - x.\mathtt{fst}(n) \big) \geq -\frac{1}{n}$$
+When it comes to inequality, note that the negation of equality, $\neg (x \doteq y)$, states that the two sequences of rationals are not always (for all $n :\mathbb{N}$) close together ($\leq \frac{2}{n}$). 
+We would rather have a stronger, existential, form of inequality. 
+That is why we define \textbf{strong inequality}
+$$x\;\#\; y\; :\equiv \mathtt{positive}\big( \mathtt{abs}(x,y)\big)$$
+\todo{Were we to assume Markov's Principle, strong inequality would be equivalent to negation of equality. }
+\begin{prop}[Apartness]
+For $x,y : \mathbb{R}$ if $x\;\#\;y$ then for any $z:\mathbb{R}$ we have $(x\;\#\;z) + (y\;\#\;z)$
+\end{prop}
 
 \printbibliography
 
