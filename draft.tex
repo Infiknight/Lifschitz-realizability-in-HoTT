@@ -163,7 +163,7 @@ We have the following list of types at our disposal.
 \begin{itemize}
 	\item For every type $A : \mathcal{U}$ there exists its \textbf{propositional truncation} $\| A \|$. 
 	We also have the truncation map $|\cdot| : A \rightarrow \lVert A \rVert$ so that for every element $a : A$ there exists $|a| : \| A\|$. 
-	For every $x, y : \| A\|$ we have $x = y$. 
+	Finally, $\lVert A\rVert$ is a mere proposition.  
 
 	Given mere proposition $B$ and $f : A \rightarrow B$, the recursion principle gives us $g : \|A\| \rightarrow B$ such that $g(|a|) \equiv f(a)$ for all $a : A$.
 	This recursion principle will prove itself an indispensable tool in the sections to come. 
@@ -199,17 +199,21 @@ We have the following list of types at our disposal.
  	Note that for any map $f$, the type $\mathtt{hasContrFibers(f)}$ is a mere proposition. 
 
  	We form a notion of \textbf{equivalence of types} based on maps with contractible fibers. 
- 	Whenever we have some $f : A\rightarrow B$ with contractible fibers, we say that the types $A$ and $B$ are equivalent and write $A \simeq B$. 
- 	To motivate this, note that we can form $g : B \rightarrow A$ so that $f\circ g \sim \mathtt{id}_B$ and $g\circ f \sim \mathtt{id}_A$. 
- 	So we can use a witness of one of the types to get one of the other. 
- 	Furthermore, the equivalence of types we introduced just now is an equivalence relation on $\mathcal{U}$. 
+ 	Whenever we have some $f : A\rightarrow B$ with contractible fibers, we say that the types $A$ and $B$ are equivalent and write $A \simeq B$ which we define as 
+ 	$$A\simeq B :\equiv \sum_{f : A \rightarrow B}\mathtt{hasContrFibers}\;f$$ 
+ 	To motivate this, note that whenever we have $A\simeq B$, we can form $f : A\rightarrow B$ and $g : B \rightarrow A$ so that $f\circ g \sim \mathtt{id}_B$ and $g\circ f \sim \mathtt{id}_A$. 
+ 	$f$ and $g$ are called each other's quasi-inverse.
+ 	It also holds the other way around, if there exist $f,g$ like above, then both of them have contractible fibers. 
+ 	Another way to show that $A\simeq B$ is to provide some $f : A\rightarrow B$ and $g_1,g_2 : B \rightarrow A$ such that $f \circ g_1 \sim \mathtt{id}_B$ and $g_2 \circ f \sim \mathtt{id}_A$. 
+ 	In these situations, $g_1$ is called a right inverse of $f$ and $g_2$ a left inverse. 
+ 	Finally, the equivalence of types we introduced just now is an equivalence relation on $\mathcal{U}$. 
  	More exposition on equivalence can be found in chapter 4 of \cite{hottbook}.
 
  	We will now see some Type Theory variants that expand a bit upon what we've laid out in this section. 
  	Before embarking on that, we present the notion of \textbf{function extensionality} which we do not require to hold in the type theory presented in this chapter, yet holds in both of the variants below. 
  	As a prerequisite to it, we define the function 
- 	$$\mathtt{happly} : (f = g) \rightarrow \prod_{a : A}(f(a) =_{B(a)} g(a))$$
- 	for arbitrary functions $f,g : \prod_{a :A}B\;a$. We do so using induction on the identity path $f = g$ which reduces it to providing a witness for $f\;a =_{B(a)} g\;a$ with $f \equiv g$. 
+ 	$$\mathtt{happly} : (f = g) \rightarrow (f \sim g)$$
+ 	for arbitrary functions $f,g : \prod_{a :A}B\;a$, where $A : \mathcal{U},\; B : A \rightarrow \mathcal{U}$. We do so using induction on the identity path $f = g$ which reduces it to providing a witness for $f\;a =_{B(a)} g\;a$ assuming $f \equiv g$. 
  	Clearly $f\;a \equiv g\;a$ so $\mathtt{idp}_{f(a)} : f\;a =_{B(a)} g\;a$. 
  	\begin{axiom}[Function extensionality] 
  	$\mathtt{happly}$ has contractible fibers. 
@@ -264,53 +268,123 @@ To do so we would need a way to say that some type $C$ is inhabited without prov
 An effective way to do so is to provide a witness of the truncation $\lVert C \rVert$ and say that $C$ is \textit{merely} inhabited. 
 So to work classically we restrict ourselves to using only mere propositions. 
 This approach is called `propositions as mere propositions' in \cite{hottbook}. 
-In the following, $A$ and $B$ are mere propositions.
 \begin{itemize}
-\item When we talk of conjunction $A \wedge B$, we mean the product $A \times B$. 
-\item We interpret $A \vee B$, as the truncation $\| A + B\|$.
+\item When we talk of conjunction $A \wedge B$, where $A$ and $B$ are mere propositions, we mean the product $A \times B$. 
+\item We interpret $A \vee B$, where $A$ and $B$ are mere propositions, as the truncation $\| A + B\|$.
 \item We interpret $\forall a\in A,\; P(a)$, where $P(a)$ is a mere proposition for all $a \in A$, as $\prod_{a : A}P(a)$. 
 \item We interpret $ \exists a \in A,\; P(a)$, where $P(a)$ is a mere proposition for all $a \in A$, as $\| \sum_{a : A} P(a) \|$
 \end{itemize}
 Note that the above are all chosen so that they preserve mere propositions, e.g. $A\times B$ is a mere proposition. 
 The use of the above notation is interchangeable in the sections to follow. 
-We will try to specify whether a type is \textit{merely} or \textit{actually} inhabited avoid ambiguity whenever needed. 
+We will try to specify whether a type is \textit{merely} or \textit{actually} inhabited to avoid ambiguity whenever needed. 
 
 \chapter{Modalities}
 %Under the view of types as $(\infty, 1)$-categories, functions between them are functors. 
 %We can then view the universe $\mathcal{U}$ itslef as a category. 
 \begin{defn}\label{modality_definition}
-A \textbf{modality} is a function $\bigcirc : \mathcal{U} \rightarrow \mathcal{U}$ with the following properties.
+A \textbf{modality} is any function $\bigcirc : \mathcal{U} \rightarrow \mathcal{U}$ with the following properties.
 \begin{enumerate}
-	\item For every type $A$ we have a function $\eta_A^\bigcirc : A \rightarrow \bigcirc\; A$
-	\item for every $A : \mathcal{U}$ and every type family $B : \bigcirc A \rightarrow \mathcal{U}$ we have a function
+	\item For every type $A$ we have a function $\eta_A^\bigcirc : A \rightarrow \bigcirc A$ called the modal unit.
+	\item for every $A : \mathcal{U}$ and every type family $B : \bigcirc A \rightarrow \mathcal{U}$ we have the induction principle
 	$$\mathtt{ind}_\bigcirc : \Big( \prod_{a : A}\bigcirc (B (\eta_A^\bigcirc\; a)) \Big) \rightarrow \prod_{z : \bigcirc A} \bigcirc (B\; z)$$
+	where $A$ and $B$ are implicit arguments of $\mathtt{ind}_\bigcirc$ and can be derived from context. 
 	\item For every $f : \prod_{a : A} \bigcirc (B(\eta_A^\bigcirc\; a))$ and every $a : A$, there is a path $\mathtt{ind}_\bigcirc (f)(\eta_A^\bigcirc\; a) = f\; a$
 	\item For all $z,z' : \bigcirc \; A$, the function $\eta_{z=z'}^\bigcirc : (z = z') \rightarrow \bigcirc (z = z')$ is an equivalence.
-
 \end{enumerate}
 \end{defn}
-A modality $\bigcirc$ induces a $\Sigma$-closed reflective subuniverse.
 
+\begin{lem}\label{modalUnitLeftInverse}
+Given $A : \mathcal{U}$, if $\eta^\bigcirc_A : A \rightarrow \bigcirc A$ has a left inverse, then $A \simeq \bigcirc A$. 
+\end{lem}
+\begin{proof}
+Assume the hypotheses of the lemma. 
+We need to show that $A \simeq \bigcirc A$. 
+We already have a left inverse so producing a right inverse for $\eta^\bigcirc_A$ would be enough to show equivalence. 
+Let $f : \bigcirc A \rightarrow A$ be the left inverse, i.e. $f \circ \eta^\bigcirc_A \sim \mathtt{id}_A$. 
+We then have $\eta^\bigcirc_A \circ f \circ \eta^\bigcirc_A \sim \eta^\bigcirc_A \circ \mathtt{id}_A$ and 
+$\eta^\bigcirc_A \circ f \circ \eta^\bigcirc_A \sim \mathtt{id}_{\bigcirc A} \circ \eta^\bigcirc_A$. 
+This translates to
+$$h : \prod_{a : A}\eta^\bigcirc_A \circ f \;(\eta^\bigcirc_A\; a) = \mathtt{id}_{\bigcirc A} \; (\eta^\bigcirc_A\; a)$$
+We define the following function by assuming $a : A$ and applying the relevant modal unit to $h\;a$ 
+$$h' : \prod_{a : A}\bigcirc\big(\eta^\bigcirc_A \circ f \;(\eta^\bigcirc_A\; a) = \mathtt{id}_{\bigcirc A} \; (\eta^\bigcirc_A\; a) \big)$$
+We then use the induction principle of the modality to get
+$$\mathtt{ind}_{\bigcirc}\; h' : \prod_{z : \bigcirc A}\bigcirc\big(\eta^\bigcirc_A \circ f \;(z) = \mathtt{id}_{\bigcirc A} \; (z) \big)$$
+Then, by the equivalence mentioned in the fourth datum of \ref{modality_definition} we have a quasi-inverse $r$ for the modal unit $\eta_{\eta^\bigcirc_A \circ f \;(z) = \mathtt{id}_{\bigcirc A} \; (z)}$, 
+which we use to construct
+$$ \lambda\;(z : \bigcirc A).\; r \big((\mathtt{ind}_{\bigcirc}\; h')\;(z)\big) : \prod_{z : \bigcirc A}\eta^\bigcirc_A \circ f \;(z) = \mathtt{id}_{\bigcirc A} \; (z) $$
+We've proven $\eta^\bigcirc_A \circ f \sim \mathtt{id}_{\bigcirc A}$ which means that $ f$ is the right inverse of $\eta_A^\bigcirc$. 
+Since the modal unit has both a left and a right inverse, we can conclude that $A \simeq \bigcirc A$. 
+\end{proof}
+The usefulness of this lemma lies in that it makes it easier for us to provide a proof of equivalence between a type and its image under $\bigcirc$, when they are so. 
+These types are of special interest to us because they form a $\sum$-closed reflective subuniverse of $\mathcal{U}$. 
+We shall define a predicate to tell them apart. 
 \begin{defn}
-Given modality $\bigcirc : \mathcal{U} \rightarrow \mathcal{U}$, a \textbf{reflective subuniverse} is a `subset' of $\mathcal{U}$ encoded by a family of h-propositions $P : \mathcal{U} \rightarrow \mathtt{Prop}$ such that the following conditions hold. 
-\begin{itemize}
-	\item For $A : \mathcal{U}$, we have $P(\bigcirc A)$.
-	\item For $A : \mathcal{U}$ and $B$ such that $P(B)$, the function
-	$$\lambda f.f \circ \eta_A^\bigcirc : (\bigcirc A \rightarrow B) \rightarrow (A \rightarrow B)$$
-	is an equivalence.
-
-\end{itemize}
-The subuniverse is $\Sigma$\textbf{-closed} if for $X$ such that $P(X)$ and $Q : X \rightarrow \mathcal{U}$ such that $\prod_{x : X} P(Q(x))$, we have $P(\Sigma_{x : X} Q(x))$.
+We define $\mathtt{isModal}_{\bigcirc} : \mathcal{U} \rightarrow \mathtt{Prop}$ as such
+$$\mathtt{isModal}_{\bigcirc} \equiv \prod_{A : \mathcal{U}}(A \simeq \bigcirc A)$$
 \end{defn}
 
+\begin{defn}
+Given modality $\bigcirc : \mathcal{U} \rightarrow \mathcal{U}$, the \textbf{reflective subuniverse} of $\mathcal{U}$ is encoded by the following type
+$$\mathcal{U}^\bigcirc \equiv \sum_{A : \mathcal{U}}\mathtt{isModal}_\bigcirc (A)$$
+% \begin{itemize}
+% 	\item For $A : \mathcal{U}$, we have $\mathtt{isModal}_{\bigcirc}(\bigcirc A)$.
+% 	\item For $A : \mathcal{U}$ and $B$ such that $\mathtt{isModal}_{\bigcirc}(B)$, the function
+% 	$$\lambda (f : \bigcirc A \rightarrow B).(f \circ \eta_A^\bigcirc) : (\bigcirc A \rightarrow B) \rightarrow (A \rightarrow B)$$
+% 	is an equivalence.
+
+% \end{itemize}
+The subuniverse is $\Sigma$\textbf{-closed} if for $X$ such that $\mathtt{isModal}_{\bigcirc}(X)$ and $Q : X \rightarrow \mathcal{U}$ such that $\prod_{x : X} \mathtt{isModal}_{\bigcirc}(Q(x))$, we have $\mathtt{isModal}_{\bigcirc}(\Sigma_{x : X} Q(x))$.
+\end{defn}
+The \textit{reflective} modifier refers to the fact that for each $f : A \rightarrow B$ there is a canonical way to construct its \textit{reflection}, $f' : \bigcirc A \rightarrow \bigcirc B$. 
+We simply compose $f$ with the modal unit $\eta_B^\bigcirc$ and use the induction principle of the modality on the result. 
+
+Propositional truncation is a modality as it possesses the required data outlined in \ref{modality_definition}. 
+Its reflective subuniverse is the universe of mere propositions.  
+\begin{prop}
+For all $A  :\mathcal{U}$, we have $\mathtt{isModal}_{\bigcirc}(\bigcirc A)$. 
+\end{prop}
+\begin{lem}
+For $A, B : \mathcal{U}$ such that $\mathtt{isModal}\; B$ we have
+$$(A\rightarrow B) \simeq (\bigcirc A \rightarrow B)$$
+\end{lem}
+\begin{proof}
+Note that $(A\rightarrow B) \simeq (A\rightarrow \bigcirc B)$ and $(\bigcirc A \rightarrow B) \simeq (\bigcirc A \rightarrow \bigcirc B)$, since $B$ is modal. 
+So we reduce our goal to 
+$$(A\rightarrow \bigcirc B) \simeq (\bigcirc A \rightarrow \bigcirc B)$$
+We need only provide a quasi-inverse for 
+$$(-\circ \eta_A^{\bigcirc}) : (A\rightarrow \bigcirc B) \rightarrow (\bigcirc A \rightarrow \bigcirc B)$$
+ to conclude the proof. 
+We propose $\mathtt{ind}$ as the quasi-inverse. 
+We first show $\big(\mathtt{ind}\circ (-\circ \eta_A^{\bigcirc})\big) \sim \mathtt{id}_{\bigcirc A \rightarrow \bigcirc B}$. 
+Let $g : \bigcirc A \rightarrow \bigcirc B$. 
+We need $\mathtt{ind}(g\circ \eta_A^\bigcirc ) = g$. 
+By function extensionality it's enough to show that 
+$$\prod_{x : \bigcirc A}\mathtt{ind}(g\circ \eta_A^\bigcirc )(x) = g(x)$$
+So, for every $x$, we are trying to provide a witness for an identity path of terms in $\bigcirc B$. 
+By the fourth datum of \ref{modality_definition} and the relevant induction principle with, with implicit arguments $A$ and $x\mapsto \mathtt{ind}(g\circ \eta_A^\bigcirc )(x) = g(x) : \bigcirc A \rightarrow \mathcal{U}$, we can reduce it to constructing a witness for
+$$\prod_{a : A} \mathtt{ind}(g\circ \eta_A^\bigcirc )(\eta^\bigcirc_{A}\;a) = g(\eta^\bigcirc_{A}\;a)$$
+A witness of this type is secured for us, once again by the definition of modalities, the third item with $g \circ \eta_A^\bigcirc $ as $f$. 
+
+The proof of $\big( (-\circ \eta_A^{\bigcirc})\circ \mathtt{ind}\big) \sim \mathtt{id}_{A \rightarrow \bigcirc B}$ 
+is similar to the above, with some steps being even more immediate. 
+\end{proof}
+It is easy to generalize the above lemma to dependent functions.
+\begin{cor}
+For $A : \mathcal{U}$ and $B : \bigcirc A \rightarrow \mathcal{U}$ \\
+such that $\prod_{x : \bigcirc A}\mathtt{isModal}_\bigcirc (B\;x)$ we have
+$$\Big(\prod_{a : A}B(\eta_A^\bigcirc \; a)\Big) \simeq \Big( \prod_{x : \bigcirc A}B(x) \Big)$$
+\end{cor}
+
 \begin{thm}
-Reflective subuniverses are closed under dependent products. 
-That is for subuniverse $P$ and $B : A \rightarrow \mathcal{U}$ such that $\prod_{a : A}P(B(a))$, we have that $P(\prod_{a : A} B(a))$. 
+Reflective subuniverses are closed under dependent products.
+That is, for the subuniverse of $\bigcirc$ and $B : A \rightarrow \mathcal{U}$ such that\\
+$\prod_{a : A}\mathtt{isModal}_{\bigcirc}(B(a))$, we have that $\mathtt{isModal}_{\bigcirc}(\prod_{a : A} B(a))$. 
 \end{thm}
 
 \begin{proof}
-For $a : A$, consider $\mathtt{ev}_a: (\prod_{a: A}B(a)) \rightarrow B(a)$ defined by $\mathtt{ev}_a (f) : \equiv f(x)$. 
-Since $P(B(a))$, we have 
+By \ref{modalUnitLeftInverse} it is enough to provide a left inverse for $\eta^\bigcirc_{\prod_{a : A} B(a)}$. 
+For $a : A$, consider $\mathtt{ev}_a: (\prod_{a: A}B(a)) \rightarrow B(a)$ defined by $\mathtt{ev}_a (f) : \equiv f(a)$. 
+Since $\mathtt{isModal}_{\bigcirc}(B(a))$, we have 
 $$(\lambda f.f \circ \eta_{\prod_{a: A}B(a)}^\bigcirc)^{-1} (\mathtt{ev}_a) : \bigcirc\big(\prod_{a: A}B(a)\big) \rightarrow B(a)$$
 We can now define the retraction of $\eta^\bigcirc_{\prod_{a : A} B(a)}$ by pattern matching as such:\\
 For $z: (\prod_{a: A}B(a))$ and $a : A$ we have 
@@ -498,10 +572,10 @@ $$G : \sum_{F : \mathbb{N} \rightarrow \mathbb{N} \rightarrow \mathbf{2} } \prod
 For $n, m : \mathbb{N}$ we pick the indexed $T_n$ Turing machine of our enumeration. 
 We can decide whether $m$ is odd or even. 
 \begin{itemize}
-\item If it's odd, then there exists actual $k : \mathbb{N}$ such that $m = 2*k +1$. 
+\item If it's odd, then there exists actual $k : \mathbb{N}$ such that $m = 2k +1$. 
 If $k$ is the Gödel number of the computation history that $T_n$ goes through when given $n$ as the input, furthermore, if it halts at the end of this computation with output $1$ then set $G.\mathtt{fst}\; n\; m :\equiv 1$. 
 Otherwise set $G.\mathtt{fst}\; n\; m :\equiv 0$.
-\item If it's even, then there exists actual $k$ such that $m = 2*k$. 
+\item If it's even, then there exists actual $k$ such that $m = 2k$. 
 We work as in the odd case, with the only difference being that we set $G.\mathtt{fst}\; n\; m :\equiv 1$ iff the output of the halting computation is $0$.
 \end{itemize}
 Having defined $G.\mathtt{fst}$ it's easy to see that $G.\mathtt{snd}$ has a straightforward proof, which we ommit. 
@@ -999,7 +1073,7 @@ Therefore, $\mathcal{E}_{\lVert B \rVert}$ is a model of univalent type theory w
 \chapter*{Appendix}
 Following \cite{bridges_richman_1987_2} we develop a constructive theory of rational and real numbers.
 \section{Rational numbers}
-We define the rationals as $\mathbb{Q} :\equiv \sum_{n,m: \mathbb{N}}m \neq 0$ where $m$ is the denominator and $n$ the numerator. 
+We define the rationals as $\mathbb{Q} :\equiv \sum_{n,m: \mathbb{I}}m \neq 0$ where $m$ is the denominator and $n$ the numerator. 
 We now need to codify the usual notion of equality of rationals into type theory. 
 We define it as the infix predicate
 $$\doteq\; :\equiv \prod_{q_1, q_2 : \mathbb{Q}} (q_1.\mathtt{fst} \cdot q_2.\mathtt{snd}) = (q_2.\mathtt{fst} \cdot q_1.\mathtt{snd})$$
