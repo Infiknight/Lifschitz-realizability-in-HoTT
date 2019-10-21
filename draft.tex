@@ -70,7 +70,6 @@
 \newtheorem{rem}[thm]{Remark}
 \newtheorem{ill}[thm]{Illustration}
 \newtheorem{exmp}[thm]{Example}
-\crefname{thm}{Lemma}{Lemmas}
 
 
 
@@ -197,6 +196,9 @@ We have the following list of types at our disposal.
 	\item We have an \textbf{empty} type $\bot : \mathcal{U}$ with the induction principle
 	$$\mathtt{ind}_\bot : \prod_{A : \mathcal{U}}\prod_{C : A \rightarrow \mathcal{U}} \prod_{x  :\bot} C\;x$$
 	\item We have a unit type $\mathbf{1} : \mathcal{U}$ for which we have a term $* : \mathbf{1}$ and a witness of $\prod_{x,y : \mathbf{1}} x =y$. 
+	\item We have the $\mathbf{2}$ type with terms $0 : \mathbf{2}$ and $1 : \mathbf{2}$ and the induction principle
+	$$\mathtt{ind}_\mathbf{2} : \prod_{C : \mathbf{2} \rightarrow \mathcal{U}}C(0)\rightarrow C(1) \rightarrow \prod_{x : \mathbf{2}}C(x)$$
+	$$\mathtt{ind}_\mathbf{2}()$$
 	\item We have the type of \textbf{natural numbers} $\mathbb{N} : \mathcal{U}$ equiped with $0 : \mathbb{N}$ and $\mathtt{succ} : \mathbb{N} \rightarrow \mathbb{N}$. 
 	There is also the induction principle
 	$$\mathtt{ind}_\mathbb{N} : \prod_{C : \mathbb{N} \rightarrow \mathcal{U}}C(0)\rightarrow \big(\prod_{ : \mathbb{N}} C(n) \rightarrow C(\mathtt{succ}\;n)\big)\rightarrow \prod_{n : \mathbb{N}}C\;n$$
@@ -351,7 +353,7 @@ This approach is called `propositions as mere propositions' in \cite{hottbook}.
 Note that the above are all chosen so that they preserve mere propositions, e.g. $A\times B$ is a mere proposition. 
 The use of the above notation is interchangeable in the sections to follow. 
 We will try to specify whether a type is \textit{merely} or \textit{actually} inhabited to avoid ambiguity whenever needed. 
-\section{Formal Type Theory}
+\section{Formal Type Theory}\label{formalTT}
 We shall now have a look at what Intensional Type Theory \textit{actually is}. 
 We will give a short description of a formal system in which the informal derivations we do in the rest of this text are meant to be taking place. 
 Building blocks of the formal system will be juxtaposed against their informal counterparts. 
@@ -374,7 +376,7 @@ The rules of inferrence prescribe how we are allowed to combine said terms and d
 The judgment $\Gamma \vdash a  : A$ corresponds to the exact step of an informal derivation where we construct the witness $a : A$ using terms over $\Gamma$ which we constructed in earlier steps of the same derivation. 
 As one might expect, the deductive system is populated with inference rules that allow us to deduce valid judgments from collections of others; to illustrate
 $$\frac{J_1,J_2,\ldots,J_n}{J}$$
-All the constructions and rules described in \cref{informalTT} should and can be transcribed in this form.
+All the constructions and rules described in \ref{informalTT} should and can be transcribed in this form.
 
 There is an important judgment that subverts the form described above and which asserts the correctness of a context. 
 We write it as $\Gamma\; \mathtt{ctx}$. 
@@ -452,8 +454,8 @@ We define $\mathtt{isModal}_{\bigcirc} : \mathcal{U} \rightarrow \mathtt{Prop}$ 
 $$\mathtt{isModal}_{\bigcirc} \equiv \prod_{A : \mathcal{U}}(A \simeq \bigcirc A)$$
 \end{defn}
 
-\begin{defn}
-Given modality $\bigcirc : \mathcal{U} \rightarrow \mathcal{U}$, the \textbf{reflective subuniverse} of $\mathcal{U}$ is encoded by the following type
+\begin{defn}\label{reflectiveSubuniverse}
+Given modality $\bigcirc : \mathcal{U} \rightarrow \mathcal{U}$, the $\sum$-closed \textbf{reflective subuniverse} of $\mathcal{U}$ is encoded by the following type
 $$\mathcal{U}^\bigcirc \equiv \sum_{A : \mathcal{U}}\mathtt{isModal}_\bigcirc (A)$$
 % \begin{itemize}
 % 	\item For $A : \mathcal{U}$, we have $\mathtt{isModal}_{\bigcirc}(\bigcirc A)$.
@@ -462,7 +464,7 @@ $$\mathcal{U}^\bigcirc \equiv \sum_{A : \mathcal{U}}\mathtt{isModal}_\bigcirc (A
 % 	is an equivalence.
 
 % \end{itemize}
-The subuniverse is $\Sigma$\textbf{-closed} if for $X$ such that $\mathtt{isModal}_{\bigcirc}(X)$ and $Q : X \rightarrow \mathcal{U}$ such that $\prod_{x : X} \mathtt{isModal}_{\bigcirc}(Q(x))$, we have $\mathtt{isModal}_{\bigcirc}(\Sigma_{x : X} Q(x))$.
+That the subuniverse is $\sum$\textbf{-closed} means that for $X$ such that $\mathtt{isModal}_{\bigcirc}(X)$ and $Q : X \rightarrow \mathcal{U}$ such that $\prod_{x : X} \mathtt{isModal}_{\bigcirc}(Q(x))$, we have $\mathtt{isModal}_{\bigcirc}(\Sigma_{x : X} Q(x))$.
 \end{defn}
 The \textit{reflective} modifier refers to the fact that for each $f : A \rightarrow B$ there is a canonical way to construct its \textit{reflection}, $f' : \bigcirc A \rightarrow \bigcirc B$. 
 We simply compose $f$ with the modal unit $\eta_B^\bigcirc$ and use the induction principle of the modality on the result. 
@@ -504,7 +506,7 @@ such that $\prod_{x : \bigcirc A}\mathtt{isModal}_\bigcirc (B\;x)$ we have
 $$\Big(\prod_{a : A}B(\eta_A^\bigcirc \; a)\Big) \simeq \Big( \prod_{x : \bigcirc A}B(x) \Big)$$
 \end{cor}
 
-\begin{thm}
+\begin{thm}\label{reflSubuniversePiTypes}
 Reflective subuniverses are closed under dependent products.
 That is, for the subuniverse of $\bigcirc$ and $B : A \rightarrow \mathcal{U}$ such that\\
 $\prod_{a : A}\mathtt{isModal}_{\bigcirc}(B(a))$, we have that $\mathtt{isModal}_{\bigcirc}(\prod_{a : A} B(a))$. 
@@ -721,7 +723,7 @@ For $n, m : \mathbb{N}$ we pick the indexed $T_n$ Turing machine of our enumerat
 We can decide whether $m$ is odd or even. 
 \begin{itemize}
 \item If it's odd, then there exists actual $k : \mathbb{N}$ such that $m = 2k +1$. 
-If $k$ is the Gödel number of the computation history that $T_n$ goes through when given $n$ as the input, furthermore, if it halts at the end of this computation with output $1$ then set $G.\mathtt{fst}\; n\; m :\equiv 1$. 
+If $k$ is the G\"odel number of the computation history that $T_n$ goes through when given $n$ as the input, furthermore, if it halts at the end of this computation with output $1$ then set $G.\mathtt{fst}\; n\; m :\equiv 1$. 
 Otherwise set $G.\mathtt{fst}\; n\; m :\equiv 0$.
 \item If it's even, then there exists actual $k$ such that $m = 2k$. 
 We work as in the odd case, with the only difference being that we set $G.\mathtt{fst}\; n\; m :\equiv 1$ iff the output of the halting computation is $0$.
@@ -734,7 +736,7 @@ by
 $$Q\; F :\equiv \prod_{f : \mathbb{N} \rightarrow \mathbf{2}} \big\lVert \sum_{m, k : \mathbb{N}} F(m, 2k+ f\; m) = 1 \big\rVert$$
 We want to prove $Q\; G.\mathtt{fst}$. 
 Consider arbitrary $f : \mathbb{N} \rightarrow \mathbf{2}$. 
-By CT we have that there exists, merely, $e : \mathbb{N}$ such that $T_e$ computes $f$, furthermore there exists $z : \mathbb{N}$ which $z$ is the Gödel number of the halting computation that $T_e$ goes through when given $e$ as an input and lastly $T_e$ halts at the end of this computation and outputs $j : \mathbb{N}$ where $j = f\; e$. 
+By CT we have that there exists, merely, $e : \mathbb{N}$ such that $T_e$ computes $f$, furthermore there exists $z : \mathbb{N}$ which $z$ is the G\"odel number of the halting computation that $T_e$ goes through when given $e$ as an input and lastly $T_e$ halts at the end of this computation and outputs $j : \mathbb{N}$ where $j = f\; e$. 
 Since it's decidable whether $j$ is $0$ or $1$, we can take cases on it.
 In both cases we have $G.\mathtt{fst} (e, 2z + j) = 1$. 
 
@@ -746,7 +748,7 @@ We conclude the proof by providing $G.\mathtt{fst}$ as the first component and t
 $$ACC \times CT \times LLPO \rightarrow \bot$$
 \end{thm}
 \begin{proof}
-Let $G$ be the witness we reached in our proof of \cref{405}. 
+Let $G$ be the witness we reached in our proof of \ref{405}. 
 Let $F :\equiv G.\mathtt{fst}$. 
 By LLPO we can procure 
 $$f : \prod_{n : \mathbb{N}} \lVert \mathtt{p_{odd}}(F\; n) + \mathtt{p_{even}}(F\;n) \rVert$$
@@ -830,31 +832,57 @@ In the left case we have $x_m < -\frac{1}{m}$.
 But then $\mathtt{abs}(x_l-x_m) > \frac{1}{l} + \frac{1}{m}$ this is in contradiction with our assumption that $x$ is a real number. 
 \end{proof}
 
-\chapter{Extensional Type Theory}
-There exists a model of extensional type theory that validates the following `Independence Principle'
+\chapter{UTT + CT + MP + LLPO}
+In this chapter we present the main result of this text, which is showing that Univalent Type Theory is consistent with Church's thesis, Markov's principle and LLPO. 
+Markov's Principle is the following statement
+$$\Big(\prod_{n : \mathbb{N}}(P\; n + \neg P\; n)\Big) \rightarrow  \Big(\neg \prod_{n : \mathbb{N}}\neg P\; n\Big)\rightarrow \Big\lVert \sum_{n : \mathbb{N}} P\; n \Big\rVert$$
+where $P : \mathbb{N} \rightarrow \mathtt{Prop}$ is a family of propositions over $\mathbb{N}$. 
+Informally, Markov's Principle states that if we have a collection of decidable propositions and the fact that not all of them are false, then one of them must be true.
+
+To reach the consistency result, we will work with models and results presented in \cite{1905.03014}. 
+First, some quick terminology. 
+A cwf (category with families) model of type theory is a categorical construction which `realizes' all data of formal TT presented in \ref{formalTT}. 
+A detail of their construction that is of interest to us, is that any type over some context is `realized' in the cwf model as the set of its terms over the same context. 
+
+A quick overview of the overarching proof goes like this:\\
+Start with a model of ETT+CT+MP. 
+Show that this model satisfies a statement that will go by the name of IP'. 
+Construct, based on this model, another model of UTT+CT+MP+IP'. 
+Identify the null - with respect to LLPO - types of this model to retrieve a model of UTT+CT+MP+LLPO.\\
+We proceed with the actual proof. 
+
+As the first step towards our goal, we consider the cwf model built on top of category of internal cubical objects in $\mathbf{Asm}(\mathcal{K}_1)$. 
+For the category of assemblies over Kleene's first model, $\mathbf{Asm}(\mathcal{K}_1)$, we direct the reader to Chapter 1 of \cite{vanOosten:2008:RVI:1816956}. 
+We call this model $\mathcal{E}$. 
+By Theorem 3.10 of \cite{1905.03014} $\mathcal{E}$ satisfies Assumption 3.1 of the same paper. 
+So it is a model of extensional type theory. 
+Furthermore, Church's Thesis and Markov's Principle hold in it, as shown in the proof of theorem 6.4.  of \cite{1905.03014}. \todo{should i argue more about this?} 
+
+In addition to the above, $\mathcal{E}$ validates the following `Independence Principle' \todo{i claim, but don't I have to rationalize this?}
 $$\bigg( \prod_{s : \mathbf{2}^\mathbb{N}} P\; s \rightarrow \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}} Q\; s\; z\Big\rVert \bigg)$$
 $$\rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} P\; s \rightarrow  \Big\lVert \sum_{z:\mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow Q \; s\;z\Big\rVert \bigg)$$
 where $P: \mathbf{2}^\mathbb{N} \rightarrow \mathtt{Prop}$ and $Q : \mathbf{2}^\mathbb{N} \rightarrow \mathbb{N}\rightarrow \mathtt{Prop} $ are families of propositions. 
 Putting it plainly, if the left hand side of the above is true, then $z : \mathbb{N}$ does not depend on the proof of the constantness of $s$ to $0$.
 
-The same model also validates Markov's Principle
-$$\Big(\prod_{n : \mathbb{N}}(P\; n + \neg P\; n)\Big) \rightarrow  \Big(\neg \prod_{n : \mathbb{N}}\neg P\; n\Big)\rightarrow \Big\lVert \sum_{n : \mathbb{N}} P\; n \Big\rVert$$
-where $P : \mathbb{N} \rightarrow \mathtt{Prop}$ is a family of propositions over $\mathbb{N}$. 
-Informally, Markov's Principle states that if we have a collection of decidable propositions and the fact that not all of them are false, then one of them must be true.
 
-In this section we work in the context of this model of Extensional Type Theory.
+
+%In this section we work in the context of this model of Extensional Type Theory.
 \begin{defn}
 Given $f : C \rightarrow D$ we say that it's constant if for any $c_1,c_2 : C$, $f(c_1) = f(c_2)$.\\
 Formally,
 $$\mathtt{isConst}\; f :\equiv \prod_{c_1,c_2 : C}f(c_1) = f(c_2)$$
 \end{defn}
+\begin{rem}\label{AandB}
 Let $A :\equiv \sum_{a: \mathbf{2}^\mathbb{N}}\mathtt{atMost1one}\;a$. 
 When referring to elements of $A$ we implicitly mean the first part of the pair. 
 Let
 $$B : A \rightarrow \mathcal{U}$$
 $$B :\equiv \lambda\; a.\; \mathtt{p_{odd}}\; a + \mathtt{p_{even}}\; a$$
-
-We would like to have access to the following instance of IP in our intensional model as well.
+\end{rem}
+We set as our new subgoal to reach an Orton-Pitts model, as seen in Chapter 3 of \cite{1905.03014}, which models UTT, CT and MP. 
+We call this model to be constructed $\mathcal{E}'$. 
+Furthermore, we require that $\mathbb{N}$ is $\lVert B \rVert$-null in this model. 
+To make sure that this last requirement is met, we would like the following instance of IP to hold in it. 
 \begin{multline*}
 \prod_{a: A} \prod_{h : \sum_{k : B\;a \rightarrow \mathbb{N}}\mathtt{isConst}(k)} \Bigg( 
 \end{multline*}
@@ -867,7 +895,9 @@ We would like to have access to the following instance of IP in our intensional 
 	  \Big\lVert \sum_{z : \mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{p : B\; a} k\; p = z \Big\rVert \bigg) \Bigg)
 \end{multline*}
 The fact that $\mathbb{N}$ is $\lVert B \rVert$-null, follows from this in Intensional Type Theory. 
-Our plan of action shall be to find a consequent of it, IP', strong enough for our purposes, that has the right form so that by Theorem 6.1 of \cite{1905.03014} we have a model of intensional type theory that satisfies IP'. 
+Our plan of action shall be to compromise and find a consequent of it, IP', weaker than IP in ETT but strong enough to imply $\lVert B \rVert$-nullness of $\mathbb{N}$ in UTT, that has the right form so that by Theorem 6.1 of \cite{1905.03014} we get our $\mathcal{E}'$ that satisfies IP'. 
+Note that we have been and will be working in ETT up until the construction of $\mathcal{E}'$ is finalized. 
+This is because we are proving results pertinent to $\mathcal{E}$. 
 
 We drop the truncation around $\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} k\; p = z \rVert$ and since this is the consequent of the antecedent, the resulting statement is weaker than the original IP. We then uncurry 4 times to reach what we propose as our IP', a function that takes four arguments in the form of a quaternary dependent pair
 
@@ -889,6 +919,9 @@ The observant reader should have noticed that the disjunctions in the third and 
 This seemingly makes the unnamed third argument weaker which would have the undesirable effect of potentially strengthening IP' beyond IP. 
 Luckily the consequent of $\_$ is a mere proposition which means that swapping disjunction for coproduct does not actually change the strength of the argument. 
 In the case of $r$ the argument becomes stronger, which is satisfactory in itself. 
+
+So IP' holds in $\mathcal{E}$, since IP holds in it and is stronger than IP'. 
+We need the following lemma and its corollary to bundle together CT, MP and IP'. 
 \begin{lem}
 Consider families of types $B_1, B_2$ where $B_i : A_i \rightarrow \mathcal{U}$ and $A_i : \mathcal{U}$, $i \in \{1,2\}$. 
 
@@ -914,11 +947,14 @@ Let $a : A_1$. Then $q(\mathtt{inl}\; a) : \lVert B_1\; a \rVert$, by the defini
 The above lemma generalizes from the case of two families of types $B_1, B_2$ to a finite collection of families $B_1,\ldots,B_n$. 
 \end{cor}
 This fact enables us to reformulate a finite collection of statements, each one in the correct form, to a single statement in that same form which is equivalent to their conjunction. 
+So, given that CT, MP and IP' are in the right form required by Theorem 6.1 of \cite{1905.03014}, by the corollary above and said theorem, we have that there exists Orton-Pitts model $\mathcal{E}'$ of UTT, CT, MP and IP'.
+\begin{prop}\label{EPrime}
+$\mathcal{E}'$ is an Orton-Pitts model of UTT in which CT, MP and IP' hold.
+\end{prop}
 
-We are now in the position to assume that we have access to a model $\mathcal{E}$ of univalent type theory, in which CT, MP and IP' hold. 
-
-\section{Null types in E}
+\section{Null types in $\mathcal{E}'$}
 The proofs in this section are all about $\lVert B \rVert$-nullness i.e. equivalence between function types (see Definition \ref{Bnull}). 
+We work in the context of Intensional Type Theory. 
 Our approach in showing that some $F: C\rightarrow D$ is a map with contractible fibers, is to provide for any $d :D$ (merely) some $c :C$ such that $f(c) = d$ and then show that such a $c$ is unique (its type is a proposition), where $C,D$ are said function types. 
 \begin{lem}\label{NisBnull}
 $\mathbb{N}$ is $\lVert B \rVert$-null in $\mathcal{E}$.
@@ -966,7 +1002,7 @@ We take cases on $b$.
 We then have $\zeta_1(b_1)(b) : f(|b|) = z_1$. 
 Since $\lVert B\; a\rVert$ is a mere proposition, we have $|b| =c$. 
 By action on paths on this and $f$ we get $f\; c= z_1$. 
-By definition, $f'(g(c)) = z_1$, which we concatenate with $f(c) = z_1$ to conclude get $f\; c = f'(g\; c)$ and this case.
+By definition, $f'(g(c)) = z_1$, which we concatenate with $f(c) = z_1$ to get $f\; c = f'(g\; c)$ and conclude this case.
 \item In the case where $\mathtt{p_{even}}$, we similarly construct $b_2 : \prod_{n : \mathtt{N}}s_2 = 0$. 
 We then have $\zeta_2(b_2)(b) : f(|b|) = z_2$. 
 The proof follows closely the previous case, only this time around we have to include $z_1=z_2$ in the concatenation of paths.
@@ -1019,7 +1055,7 @@ By function extensionality $h_1 = h_2$.
 But this contradicts $q$, so we reach $\bot$. 
 We've just proven $\tau : B\;a \rightarrow \bot$. 
 We still have to prove $h_1 = h_2$, the main goal. 
-By \cref{llponeg} we have $(B\; a \rightarrow \bot) \rightarrow \bot$ and by $\tau$ we get $\bot$. 
+By \ref{llponeg} we have $(B\; a \rightarrow \bot) \rightarrow \bot$ and by $\tau$ we get $\bot$. 
 We conclude the proof by Ex Falso.
 \end{proof}
 
@@ -1027,7 +1063,7 @@ We conclude the proof by Ex Falso.
 Similarly, $\mathbf{2}$ is $\lVert B \rVert$-null in $\mathcal{E}$. 
 \end{cor}
 
-\begin{lem}
+\begin{lem}\label{coproductIsBnull}
 In $\mathcal{E}$ if $C, D$ are $\lVert B \rVert$-null then so is $C + D$.
 \end{lem}
 \begin{proof}
@@ -1187,36 +1223,125 @@ In $\mathcal{E}$ if $C$ is $\lVert B \rVert$-null then for any $c_1, c_2 : C$, t
 Follows immediately from the fact that $\mathcal{L}_{\lVert B \rVert}$ is a modality and the fourth datum of Definition \ref{modality_definition}.
 \end{proof}
 
-\section{CT + LLPO + HoTT}
+\section{CT + LLPO + UTT}
 
-We form a null types model $\mathcal{E}_{\lVert B \rVert}$ as defined in Section 5 of \cite{1905.03014} based on $\mathcal{E}$ from before. 
+We form a null types model $\mathcal{E}'_{\lVert B \rVert}$ as defined in Section 5 Definition 5.1 of \cite{1905.03014} based on $\mathcal{E}'$ from before. 
 The types of this model are the $\lVert B \rVert $-null types of $\mathcal{E}$. 
-By \cref{NisBnull} we have that $\llbracket \mathbb{N} \rrbracket^{\mathcal{E}_{\lVert B \rVert}} = \llbracket \mathbb{N} \rrbracket^\mathcal{E}$. 
-Let $\mathcal{L}_{\lVert B \rVert} : \mathcal{U} \rightarrow \mathcal{U}$ be the $\lVert B \rVert$-nullification operator on $\mathcal{E}$. 
-On $\mathcal{E}_{\lVert B \rVert}$, dependend products, dependent sums and identity on naturals are all inherited from $\mathcal{E}$, while propositional truncation $\llbracket \lVert \cdot \rVert \rrbracket^{\mathcal{E}_{\lVert B \rVert}}$ is $\mathcal{L}_{\lVert B \rVert} \lVert\cdot \rVert $ on $\mathcal{E}$.
+The witnesses of these types are also inherited from $\mathcal{E}'$. 
+Same for contexts. 
+We claim that this model of UTT satisfies CT, MP and LLPO. 
+To prove this claim we first need to procure some tools. 
+\begin{rem}
+When we say that the types and witnesses carry over, we mean that if $\Gamma \vdash_{\mathcal{E}'} A : \mathcal{U}$ and $A$ is $\lVert B \rVert$-null in $\mathcal{E}'$ then $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} \llbracket A\rrbracket^{\mathcal{E}'} : \mathcal{U}$ where $\llbracket A\rrbracket^{\mathcal{E}'}$ is the construct in $\mathcal{E}'$ that \textit{realizes} $\Gamma \vdash_{\mathcal{E}'} A : \mathcal{U}$.  
+\end{rem}
+\begin{lem}\label{wellPurported}
+The types $\mathbb{N}$, $\mathbf{2}$, $\mathbf{1}$ of $\mathcal{E}'$ carry over to $\mathcal{E}'_{\lVert B \rVert}$ and are each equal to their corresponding $\mathbb{N}$, $\mathbf{2}$, $\mathbf{1}$ of $\mathcal{E}'_{\lVert B \rVert}$ in $\mathcal{E}'_{\lVert B \rVert}$. 
+Similarly, if $C$ is a $\lVert B \rVert$-null type in $\mathcal{E}'$ then identity types of witnesses of it, carry over to $\mathcal{E}'_{\lVert B \rVert}$ and are equal to their correspondent there. 
+Same for dependent products and sums, if in $\mathcal{E}'$ $C : D \rightarrow \mathcal{U}$ such that $C(d)$ is $\lVert B \rVert$-null for all $d : D$ then $\prod_{d:D}C(d)$ carries over to $\mathcal{E}'_{\lVert B \rVert}$ and equals its correspondent and if in addition $C$ is $\lVert B \rVert$-null too in $\mathcal{E}'$, then $\sum_{d:D} C(d)$ carries over and equals its correspondent too. 
+\end{lem}
+\begin{proof}
+The types $\mathbb{N}$ and $\mathbf{2}$ are $\lVert B \rVert$-null in $\mathcal{E}'$ as shown in \ref{NisBnull} and its corollary. 
+It's trivial to show that the unit type $\mathbf{1}$ is $\lVert B \rVert$-null too. 
+$\lVert B \rVert$-nullness of dependent products and sums under the assumptions above, follow from \ref{reflSubuniversePiTypes} and the fact that nullification is a modality and therefore forms a $\sum$-closed reflective subuniverse as seen in \ref{reflectiveSubuniverse}. 
+$\lVert B \rVert$-nullness of identity types follows once again from the fact that nullification is a modality and the fourth datum of \ref{modality_definition}. 
 
-We can then deduce that the interpretation of CT in $\mathcal{E}_{\lVert B \rVert}$ is the type 
-$$\prod_{f : \mathbb{N}\rightarrow \mathbb{N}} \mathcal{L}_{\lVert B \rVert}\;\Big\lVert \sum_{e : \mathbb{N}} \prod_{x : \mathbb{N}} \sum_{z : \mathbb{N}} T(e,x,z) \times U(z) = f(x) \Big\rVert$$
-in $\mathcal{E}$. To clarify, the types $T$ and $U$ remain the same because they are functions from naturals to naturals and we know that $\mathbb{N}$ is the same in both $\mathcal{E}_{\lVert B \rVert}$ and $\mathcal{E}$. 
-It's trivial to construct an inhabitant, in $\mathcal{E}$, of the above type using a witness of CT, which we know to be true in $\mathcal{E}$. 
+We've proven that these types carry over to $\mathcal{E}'_{\lVert B \rVert}$. 
+What is left, is to show that they are equal to their corresponding construction in $\mathcal{E}'_{\lVert B \rVert}$, i.e. in the case of the dependent product we would have to show that for $C : D \rightarrow \mathcal{U}$, where $C$ and $D$ are types in $\mathcal{E}'_{\lVert B \rVert}$, the type $\llbracket \prod_{d:D}C(d) \rrbracket^{\mathcal{E}'}$ in $\mathcal{E}'_{\lVert B \rVert}$ is equal to the local $\prod_{d:D}C(d)$ in $\mathcal{E}'_{\lVert B \rVert}$. 
 
-We shall now have a look at the interpretation of LLPO in $\mathcal{E}_{\lVert B \rVert}$. 
-Recall the full definition \ref{LLPO} of LLPO
-$$\prod_{a : A}\lVert \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst}) \rVert$$
-where $$A :\equiv \sum_{a: \mathbf{2}^\mathbb{N}}\mathtt{atMost1one}\;a$$
-Since $\mathtt{atMost1one}$ is formed using $\mathbb{N}$, $\mathbf{2}$, equality on naturals and $\mathbf{2}$, dependent sum and product, all of which are preserved under modalities, we have that the interpretation of $\mathtt{atMost1one}$ in $\mathcal{E}_{\lVert B \rVert}$ is the same type as in $\mathcal{E}$. 
-Similarly the interpretations of $A$, $\mathtt{p_{odd}}$ and $\mathtt{p_{even}}$ are the same. 
-Therefore, the interpretation of LLPO in $\mathcal{E}_{\lVert B \rVert}$ is the type 
-$$\prod_{a : A}\mathcal{L}_{\lVert B \rVert}\;\lVert \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst}) \rVert$$
-in $\mathcal{E}$. 
-We would like to have a witness of this type. 
-Let $a : A$. 
-We once again utilize our shorthand $B\; a \equiv \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst})$. 
-Note that $\mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$ is $\lVert B \rVert$-null, which means that we have the following equivalence
-$$\big(\mathcal{L}_{\lVert B \rVert}\; \lVert B\;a\rVert\big) \simeq \big(\lVert B\; a \rVert \rightarrow \mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert\big)$$
-So it is enough to prove $\lVert B\; a \rVert \rightarrow \mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$, for which we already have a witness in the form of the first datum of Definition \ref{modality_definition}, since $\mathcal{L}_{\lVert B \rVert}$ is a modality. 
+Since we are working under univalence, equality follows from equivalence. 
+We can prove this using the data of these inductive types, constructors like $\mathtt{succ},\;0$ and the induction principles, which all carry over to $\mathcal{E}'_{\lVert B \rVert}$ since their types are $\lVert B \rVert$-null in $\mathcal{E}'$. 
+We omit the details on how done and direct those looking for more exposition on how this should be carried out to Section 5.4 of \cite{hottbook} which talks about universal properties of inductive types. 
+\end{proof}
+It should be mentioned that the above applies to coproducts too, whose case we work out in detail, to elucidate the more general case above. 
+% We would like to identify what type constructions in $\mathcal{E}'_{\lVert B \rVert}$ correspond to in $\mathcal{E}'$ and by this we mean the following. Suppose for example $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} C$ and 
+% $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} D$ then by $\mathcal{E}'_{\lVert B \rVert}$ being a model of UTT we must have that $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} C+D$. 
+% Since $\mathcal{E}'_{\lVert B \rVert}$ inherits its types from $\mathcal{E}'$, it must be that $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} C+D$ makes an appears in the base model as $\Gamma \vdash_{\mathcal{E}'} \llbracket C+D \rrbracket^{\mathcal{E}'_{\lVert B \rVert}}$. 
+% We care about this because witnesses transfer over from the base model to the null types model. 
+\begin{exmp}
+Let $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} C : \mathcal{U}$, $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} D : \mathcal{U}$ and $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} C +D : \mathcal{U}$. 
+We have that
+$$\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} \llbracket C + D\rrbracket^{\mathcal{E}'} : \mathcal{U}$$
+and
+$$\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} p : \big( (C +D) = \llbracket C + D\rrbracket^{\mathcal{E}'}\big)$$
+\end{exmp}
+\begin{proof}
+Since $C, D$ are types in $\mathcal{E}'_{\lVert B \rVert}$, they must be $\lVert B \rVert$-null types in $\mathcal{E}'$. 
+By \ref{coproductIsBnull} we have that $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} \llbracket C + D\rrbracket^{\mathcal{E}'} : \mathcal{U}$. 
+It only remains to show that $ \llbracket C + D\rrbracket^{\mathcal{E}'}$ is equal to $C+D$ in $\mathcal{E}'_{\lVert B \rVert}$. 
+Since this is a UTT model, by univalence it's enough to show that the types are equivalent. 
+% We reduce this to showing that $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} \llbracket C + D\rrbracket^{\mathcal{E}'} : \mathcal{U}$ has the data required for it to be the coproduct of $C$ and $D$ in $\mathcal{E}'_{\lVert B \rVert}$. 
+% Then by uniqueness it would follow that it's equivalent to $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} C +D : \mathcal{U}$. 
+The coproduct data of $ \llbracket C + D\rrbracket^{\mathcal{E}'}$ in $\mathcal{E}'$ are available in $\mathcal{E}'_{\lVert B \rVert}$, since their types must be $\lVert B \rVert$-null by \ref{reflSubuniversePiTypes}. 
+We name them $\mathtt{ind}_1$, $\mathtt{inl}_1$ and $\mathtt{inr}_1$ to distinguish them from those of $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} C +D : \mathcal{U}$ whose we denote with $\mathtt{ind}_2$, $\mathtt{inl}_2$ and $\mathtt{inr}_2$. 
+It's easy to verify that 
+$$(\mathtt{ind}_2\;\mathtt{inl}_1\;\mathtt{inr}_1) : (C+D) \rightarrow \llbracket C + D\rrbracket^{\mathcal{E}'}$$
+and
+$$(\mathtt{ind}_1\;\mathtt{inl}_2\;\mathtt{inr}_2) : \llbracket C + D\rrbracket^{\mathcal{E}'} \rightarrow (C+D)$$
+form a pair of quasi-inverses and conclude the proof of equivalence. 
+\end{proof}
 
-Therefore, $\mathcal{E}_{\lVert B \rVert}$ is a model of univalent type theory where both CT and LLPO hold.
+\begin{thm}
+CT, MP and LLPO hold in the model $\mathcal{E}'_{\lVert B \rVert}$ of UTT.
+\end{thm}
+\begin{proof}
+We first work out the proof for CT. 
+CT is the following type
+$$\prod_{f : \mathbb{N}\rightarrow \mathbb{N}} \Big\lVert \sum_{e : \mathbb{N}} \prod_{x : \mathbb{N}} \sum_{z : \mathbb{N}} T(e,x,z) \times U(z) = f(x) \Big\rVert$$
+which, after adopting the alias CT for the above type, would be the construct $\vdash_{\mathcal{E}'_{\lVert B \rVert}} \textnormal{CT} : \mathcal{U}$ in the model $\mathcal{E}'_{\lVert B \rVert}$. 
+%Since witnesses are carried over, it's enough to find a witness for $\vdash_{\mathcal{E}'} \llbracket\textnormal{CT}\rrbracket^{\mathcal{E}'_{\lVert B \rVert}} : \mathcal{U}$. 
+Note that $T$ and $U$ are both functions from $\mathbb{N}$ to $\mathbb{N}$, so the results in \ref{wellPurported} extend to them. 
+With this in mind, along with the general result of \ref{wellPurported} and Corollary 5.6 of \cite{1905.03014}, we can deduce, by induction on type formation, that there is a path $p$ in $\mathcal{E}'_{\lVert B \rVert}$ between 
+$$\vdash_{\mathcal{E}'_{\lVert B \rVert}} \textnormal{CT} : \mathcal{U}$$ 
+and the type 
+$$\vdash_{\mathcal{E}'_{\lVert B \rVert}} \bigg\llbracket \prod_{f : \mathbb{N}\rightarrow \mathbb{N}} \mathcal{L}_{\lVert B \rVert}\;\Big\lVert \sum_{e : \mathbb{N}} \prod_{x : \mathbb{N}} \sum_{z : \mathbb{N}} T(e,x,z) \times U(z) = f(x) \Big\rVert \bigg\rrbracket^{\mathcal{E}'} : \mathcal{U}$$
+which is the carried over $\lVert B \rVert$-null type in $\mathcal{E}'$
+$$\vdash_{\mathcal{E}'} \prod_{f : \mathbb{N}\rightarrow \mathbb{N}} \mathcal{L}_{\lVert B \rVert}\;\Big\lVert \sum_{e : \mathbb{N}} \prod_{x : \mathbb{N}} \sum_{z : \mathbb{N}} T(e,x,z) \times U(z) = f(x) \Big\rVert : \mathcal{U}$$ 
+So we need only find a witness of this last type in $\mathcal{E}'$ which would carry over to the same type in $\mathcal{E}'_{\lVert B \rVert}$ and could be transported along $p$ to conclude the case of CT. 
+This type can be proved to follow from the interpretation of CT in $\mathcal{E}'$ 
+$$\vdash_{\mathcal{E}'} \textnormal{CT} : \mathcal{U}$$
+which we know to be inhabited by \ref{EPrime}. 
+
+For MP we follow exactly the same steps as for CT. 
+
+For LLPO we first reduce proving 
+$$\vdash_{\mathcal{E}'_{\lVert B \rVert}} \textnormal{LLPO} : \mathcal{U}$$
+to providing a witness for 
+$$a : A \vdash_{\mathcal{E}'_{\lVert B \rVert}} \lVert B\;a\rVert : \mathcal{U}$$
+where $\textnormal{LLPO} \equiv \prod_{a : A}\lVert B\;a \rVert$ for $A$ and $B$ presented in \ref{AandB}. 
+Then work as in the case for CT and prove a path $p$ between
+$$a : A \vdash_{\mathcal{E}'_{\lVert B \rVert}} \lVert B\;a\rVert : \mathcal{U}$$
+and
+$$a : A \vdash_{\mathcal{E}'_{\lVert B \rVert}} \big\llbracket \mathcal{L}_{\lVert B \rVert}\; \lVert B\;a\rVert \big\rrbracket^{\mathcal{E}'} : \mathcal{U}$$
+By Corollary 5.5 of \cite{1905.03014} we have a witness of the last type. 
+We transport it over $p$ to conclude the proof. 
+\end{proof}
+
+% By \ref{NisBnull} we have that $\llbracket \mathbb{N} \rrbracket^{\mathcal{E}_{\lVert B \rVert}} = \llbracket \mathbb{N} \rrbracket^\mathcal{E}$. 
+% Let $\mathcal{L}_{\lVert B \rVert} : \mathcal{U} \rightarrow \mathcal{U}$ be the $\lVert B \rVert$-nullification operator on $\mathcal{E}$. 
+% On $\mathcal{E}_{\lVert B \rVert}$, dependend products, dependent sums and identity on naturals are all inherited from $\mathcal{E}$, while propositional truncation $\llbracket \lVert \cdot \rVert \rrbracket^{\mathcal{E}_{\lVert B \rVert}}$ is $\mathcal{L}_{\lVert B \rVert} \lVert\cdot \rVert $ on $\mathcal{E}$.
+
+% We can then deduce that the interpretation of CT in $\mathcal{E}_{\lVert B \rVert}$ is the type 
+% $$\prod_{f : \mathbb{N}\rightarrow \mathbb{N}} \mathcal{L}_{\lVert B \rVert}\;\Big\lVert \sum_{e : \mathbb{N}} \prod_{x : \mathbb{N}} \sum_{z : \mathbb{N}} T(e,x,z) \times U(z) = f(x) \Big\rVert$$
+% in $\mathcal{E}$. To clarify, the types $T$ and $U$ remain the same because they are functions from naturals to naturals and we know that $\mathbb{N}$ is the same in both $\mathcal{E}_{\lVert B \rVert}$ and $\mathcal{E}$. 
+% It's trivial to construct an inhabitant, in $\mathcal{E}$, of the above type using a witness of CT, which we know to be true in $\mathcal{E}$. 
+
+% We shall now have a look at the interpretation of LLPO in $\mathcal{E}_{\lVert B \rVert}$. 
+% Recall the full definition \ref{LLPO} of LLPO
+% $$\prod_{a : A}\lVert \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst}) \rVert$$
+% where $$A :\equiv \sum_{a: \mathbf{2}^\mathbb{N}}\mathtt{atMost1one}\;a$$
+% Since $\mathtt{atMost1one}$ is formed using $\mathbb{N}$, $\mathbf{2}$, equality on naturals and $\mathbf{2}$, dependent sum and product, all of which are preserved under modalities, we have that the interpretation of $\mathtt{atMost1one}$ in $\mathcal{E}_{\lVert B \rVert}$ is the same type as in $\mathcal{E}$. 
+% Similarly the interpretations of $A$, $\mathtt{p_{odd}}$ and $\mathtt{p_{even}}$ are the same. 
+% Therefore, the interpretation of LLPO in $\mathcal{E}_{\lVert B \rVert}$ is the type 
+% $$\prod_{a : A}\mathcal{L}_{\lVert B \rVert}\;\lVert \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst}) \rVert$$
+% in $\mathcal{E}$. 
+% We would like to have a witness of this type. 
+% Let $a : A$. 
+% We once again utilize our shorthand $B\; a \equiv \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst})$. 
+% Note that $\mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$ is $\lVert B \rVert$-null, which means that we have the following equivalence
+% $$\big(\mathcal{L}_{\lVert B \rVert}\; \lVert B\;a\rVert\big) \simeq \big(\lVert B\; a \rVert \rightarrow \mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert\big)$$
+% So it is enough to prove $\lVert B\; a \rVert \rightarrow \mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$, for which we already have a witness in the form of the first datum of Definition \ref{modality_definition}, since $\mathcal{L}_{\lVert B \rVert}$ is a modality. 
+
+% Therefore, $\mathcal{E}_{\lVert B \rVert}$ is a model of univalent type theory where both CT and LLPO hold.
 
 \chapter*{Appendix}
 Following \cite{bridges_richman_1987_2} we develop a constructive theory of rational and real numbers.
@@ -1257,14 +1382,14 @@ We define the order predicate `$<$' on reals with infix notation
 $$x<y\; :\equiv \mathtt{positive}\big( \mathtt{abs}(y-x) \big)$$
 We define $\leq$ as follows
 $$x \leq y :\equiv \prod_{n : \mathbb{N}} \big( y.\mathtt{fst}(n) - x.\mathtt{fst}(n) \big) \geq -\frac{1}{n}$$
-When it comes to inequality, note that the negation of equality, $\neg (x \doteq y)$, states that the two sequences of rationals are not always (for all $n :\mathbb{N}$) close together ($\leq \frac{2}{n}$). 
-We would rather have a stronger, existential, form of inequality. 
-That is why we define \textbf{strong inequality}
-$$x\;\#\; y\; :\equiv \mathtt{positive}\big( \mathtt{abs}(x,y)\big)$$
-\todo{Were we to assume Markov's Principle, strong inequality would be equivalent to negation of equality. }
-\begin{prop}[Apartness]
-For $x,y : \mathbb{R}$ if $x\;\#\;y$ then for any $z:\mathbb{R}$ we have $(x\;\#\;z) + (y\;\#\;z)$
-\end{prop}
+% When it comes to inequality, note that the negation of equality, $\neg (x \doteq y)$, states that the two sequences of rationals are not always (for all $n :\mathbb{N}$) close together ($\leq \frac{2}{n}$). 
+% We would rather have a stronger, existential, form of inequality. 
+% That is why we define \textbf{strong inequality}
+% $$x\;\#\; y\; :\equiv \mathtt{positive}\big( \mathtt{abs}(x,y)\big)$$
+% \todo{Were we to assume Markov's Principle, strong inequality would be equivalent to negation of equality. }
+% \begin{prop}[Apartness]
+% For $x,y : \mathbb{R}$ if $x\;\#\;y$ then for any $z:\mathbb{R}$ we have $(x\;\#\;z) + (y\;\#\;z)$
+% \end{prop}
 
 \printbibliography
 
