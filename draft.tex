@@ -1,8 +1,9 @@
 \documentclass[12pt]{report}
 
+
 \usepackage{tikz-cd}
 %\usepackage{answers}
-\usepackage{biblatex}
+\usepackage[backend=biber,style=alphabetic,citestyle=alphabetic]{biblatex}
 \addbibresource{bibliography.bib}
 \usepackage{setspace}
 %\usepackage{graphicx}
@@ -13,54 +14,54 @@
 %\usepackage{mathrsfs}
 %\usepackage[margin=1in]{geometry} 
 \usepackage{hyperref}% http://ctan.org/pkg/hyperref
-\usepackage{ stmaryrd }
+\usepackage{stmaryrd}
 \usepackage{amsmath}
-\usepackage{cleveref}% http://ctan.org/pkg/cleveref
 \usepackage{amsthm}
+\usepackage{cleveref}% http://ctan.org/pkg/cleveref
 \usepackage{amssymb}
 \usepackage{siunitx}
-\usepackage{ textcomp }
+\usepackage{textcomp}
 %\usepackage{ wasysym }
 \usepackage{bookmark}
 %\usepackage{accents}
 \usepackage[parfill]{parskip}
-
+\usepackage{appendix}
  
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\nin}{\not \in}
+% \newcommand{\N}{\mathbb{N}}
+% \newcommand{\Z}{\mathbb{Z}}
+% \newcommand{\R}{\mathbb{R}}
+% \newcommand{\nin}{\not \in}
 
-\DeclareMathOperator{\sech}{sech}
-\DeclareMathOperator{\csch}{csch}
+% \DeclareMathOperator{\sech}{sech}
+% \DeclareMathOperator{\csch}{csch}
  
-\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
-\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
-\newenvironment{definition}[2][Definition]{\begin{trivlist}
-\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
-\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
-\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
-\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
-\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
-\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
-\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
-\newenvironment{solution}[2][Solution]{\begin{trivlist}
-\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-\newenvironment{problem}[2][Problem]{\begin{trivlist}
-\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
-\newenvironment{question}[2][Question]{\begin{trivlist}
-\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
-\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
-\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+% \newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+% \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+% \newenvironment{definition}[2][Definition]{\begin{trivlist}
+% \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+% \newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+% \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+% \newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+% \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+% \newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+% \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+% \newenvironment{solution}[2][Solution]{\begin{trivlist}
+% \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+% \newenvironment{problem}[2][Problem]{\begin{trivlist}
+% \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+% \newenvironment{question}[2][Question]{\begin{trivlist}
+% \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+% \newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+% \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
 
-\usepackage{xcolor}
-\newcommand\todo[1]{\textcolor{red}{#1}}
+% \usepackage{xcolor}
+% \newcommand\todo[1]{\textcolor{red}{#1}}
  
 %\newenvironment{bprooftree}
  % {\leavevmode\hbox\bgroup}
   %{\DisplayProof\egroup}
 
-\newtheorem{thm}{Theorem}[section]
+\newtheorem{thm}{Theorem}[chapter]
 \newtheorem{lem}[thm]{Lemma}
 \newtheorem{cor}[thm]{Corollary}
 \newtheorem{prop}[thm]{Proposition}
@@ -71,31 +72,59 @@
 \newtheorem{ill}[thm]{Illustration}
 \newtheorem{exmp}[thm]{Example}
 
-
-
+\crefname{prop}{proposition}{propositions}
+\Crefname{prop}{Proposition}{Propositions}
+\crefname{cor}{corollary}{corollaries}
+\Crefname{cor}{Corollary}{Corollaries}
+\crefname{lem}{lemma}{lemmas}
+\Crefname{lem}{Lemma}{Lemmas}
+\crefname{thm}{theorem}{theorems}
+\Crefname{thm}{Theorem}{Theorems}
+\crefname{axiom}{axiom}{axioms}
+\Crefname{axiom}{Axiom}{Axioms}
+\usepackage{illcmolthesis}
 \begin{document}
  %\pagenumbering{gobble}
 % --------------------------------------------------------------
 %                         Start here
 % --------------------------------------------------------------
  
-\title{Draft}%replace with the appropriate homework number
-\author{Dimitrios Koutsoulis\\ %replace with your name
-11838639} %if necessary, replace with your course title
- 
-\begin{titlepage}
-\hypersetup{pageanchor=false}
-\maketitle
-\thispagestyle{empty}
-\end{titlepage}
-\hypersetup{pageanchor=true}
+\title{Lifschitz Realizability for Homotopy Type Theory}%replace with the appropriate homework number
+\author{Dimitrios Koutsoulis} %if necessary, replace with your course title
+\birthdate{May 27, 1992}
+\birthplace{Marousi, Attica, Greece}
+\defensedate{November 26, 2019}
+\supervisor{Andrew Swan}
+\supervisor{Benno van den Berg}
+\committeemember{Benno van den Berg (co-supervisor)}
+\committeemember{Nick Bezhanishvili}
+\committeemember{Jaap van Oosten}
+\committeemember{Andrew Swan (supervisor)}
+\committeemember{Yde Venema (chair)}
+
+%\begin{titlepage}
+%\hypersetup{pageanchor=false}
+{\parskip=0pt
+\maketitle}
+%\thispagestyle{empty}
+%\end{titlepage}
+%\hypersetup{pageanchor=true}
 %Below is an example of the problem environment
+\chapter*{Abstract}
+This thesis explores a potential development of the constructive tradition of Russian Mathematics (RUSS) inside Homotopy Type Theory (HoTT). 
+A short introduction to Type Theory is provided. 
+Fragments of RUSS are then formalized inside it. 
+A construction that follows closely Van Oosten's generalization of Lifschitz' Realizability is carried out to culminate with a consistency result; that of our selection of RUSS axioms under HoTT. 
+
 \chapter{Type Theory}
-\section{Introduction}
+%\section{Introduction}
 Martin-L\"of's intensional \textit{Type Theory} is a formal language and deductive system, that is self sufficient in the sense that it need not be formulated as a collection of axioms on top of some other formal system like First Order Logic, instead its deductive system can be built on top of its own formal language. 
+The version of it that we will be considering in this text is the one used in \cite{hottbook}. 
+This chapter presents, in a concise manner, definitions and results found in chapters 1-5 of \cite{hottbook}. 
 
 Central to Type Theory is the notion of \textit{Type}. Every term $a$ in Type Theory we come across, must lie in some type $A$, which we denote as $a : A$. 
-To avoid impredicativity we assume a countable hierarchy of universes $\mathcal{U}_0,\mathcal{U}_1,\mathcal{U}_2,\ldots$ which is cummulative i.e. every universe includes all previous universes and their types. 
+Types themselves are terms of \textit{Universes}, which are types and terms themselves. 
+To avoid impredicativity we assume a countable hierarchy of universes $\mathcal{U}_1,\mathcal{U}_2,\mathcal{U}_3,\ldots$ which is cummulative i.e. every universe includes all previous universes and their types. 
 While working in type theory we usually simplify our view of this hierarchy and pick some $\mathcal{U}$, of arbitrary index that we do not specify, to use as our workspace. 
 %Note that the relation $:$ is transitive, so $a : A$ and $A : B$ imply $a : B$. 
 %This induces the cummulative hierarchy shape of the universe of types $\mathcal{U}$, wherein every level of the universe includes all lower levels and their types.
@@ -106,17 +135,22 @@ This is in agreement with the BHK interpretation.
 Type Theory is rich in type formation rules that gives us the breadth required to do Intuitionistic Logic inside of it. 
 
 \section{Type Construction Operations}\label{informalTT}
+%This section constitutes an informal treatment of Type Theory. 
+In this section we go over all the types of Type Theory we need. 
+When working out proofs in TT, we use the constructs presented here. 
+Nevertheless, this presentation is meant to reflect a formal system like the one in \Cref{formalTT}. 
 We have the following list of types at our disposal.
 \begin{itemize}
 	\item Given types $A, B : \mathcal{U}$ we can define the type $A \rightarrow B : \mathcal{U}$ of \textbf{functions} from $A$ to $B$. 
 		We can use $\lambda$-abstraction to construct elements of this type. $\lambda x. \Phi$ lies in $A \rightarrow B$ iff for $a : A$ we have $\Phi[a/x] : B$. 
+		We may also right it as $\lambda (x : A). \Phi$ to make clear which type it lies in. 
 		For $f : A \rightarrow B$ and $a : A$ we have that the application of $f$ on $a$, denoted as $f(a)$ or $f\;a$, lies in $B$, so $f\;a : B$. 
 
 		Functions whose type is of the form $A \rightarrow \mathcal{U}$ i.e. the codomain is $\mathcal{U}$ are called \textit{families of types}. 
 		They are of special interest because they can be viewed as types themselves; types indexed by terms of the domain type. 
 		So if $B : A \rightarrow \mathcal{U}$ is such a family of types, then its inhabitants would be the collection of inhabitants of all $B(a)$'s for all $a  : A$. 
 		This last sentence is not sanctioned by formal type theory and only serves to make the introduction of the first dependent type, the \textit{dependent function type}, easier.
-	\item Given some type $A : \mathcal{U}$ and a family of types $B$ over $A$, $B : A \rightarrow \mathcal{U}$, we have the type of \textbf{dependent functions} or \textbf{dependent products} (which should not be viewed as the dependent version of the product type defined later on) $$\prod_{a : A} B(a)$$
+	\item Given some type $A : \mathcal{U}$ and a family of types $B$ over $A$, $B : A \rightarrow \mathcal{U}$, we have the type of \textbf{dependent functions} or \textbf{dependent products} $$\prod_{a : A} B(a)$$
 	where for $f : \prod_{a : A} B(a)$ and $x : A$ we have $f(x) : B(x)$. 
 	As in the case of non-dependent functions, we can use lambda abstraction to construct elements of a dependently-typed function type. 
 	That way, $\lambda x.\Phi$ lies in $\prod_{a:A}B(a)$ iff $B$ is of the form $\lambda y.\Psi$ and for all $a:A$ we have $\Phi[a/x] : \Psi[a/y]$. 
@@ -151,34 +185,17 @@ We have the following list of types at our disposal.
 	$$\mathtt{ind}_{A+B} : \prod_{C : A+B \rightarrow U} \Big(\prod_{a : A}C(\mathtt{inl}\;a)\Big) \rightarrow \Big(\prod_{b : B}C(\mathtt{inr}\;b)\Big) \rightarrow \prod_{x : A+ B}C(x)$$
 	$$\mathtt{ind}_{A+B}(C, f_A, f_B, \mathtt{inl}\; a) :\equiv f_A\; a$$
 	$$\mathtt{ind}_{A+B}(C, f_A, f_B, \mathtt{inr}\; b) :\equiv f_B\; b$$
-	\item Given $x, y : A$ we have the \textbf{identity type} $x =_A y : \mathcal{U}$ (we ommit the index $A$ whenever it's easily deduced). 
+	\item Given $x, y : A$ we have the \textbf{identity type} $x =_A y : \mathcal{U}$ (we omit the index $A$ whenever it's easily deduced). 
 	An element of this type amounts to a proof that $x$ and $y$ are equal and we call the element a path between $x$ and $y$. 
-	Say $x$ and $y$ are judgmentally equal, $x \equiv y$. 
-	This is captured by the element $\mathtt{idp}_x : x =_A y$. 
+	%Say $x$ and $y$ are judgmentally equal, $x \equiv y$. 
+	%This is captured by the element $\mathtt{idp}_x : x =_A y$. 
 	For every $x  :A$ we have $\mathtt{idp}_x : x=_A x$. 
 	The relevant induction principle describes how we can use elements of an identity type
 	$$\mathtt{ind}_{=_{A}} : \prod_{C : \prod_{x,y : A} (x =_A y) \rightarrow \mathcal{U}} \Big( \prod_{x : A}C(x,x,\mathtt{idp}_x) \Big) \rightarrow \prod_{x,y : A} \prod_{(p : x =_A y)} C(x,y,p)$$
 	The relevant computation rule gives us the judgmental (definitional) equality 
 	$$\mathtt{ind}_{=_A} (C,c,x,x,\mathtt{idp_x}) \equiv c\; x$$
-	We can concatenate those paths whose domains and codomains allow for it. 
-	Paths form an equivalence relation. That is, if $p : x = y$ and $p' : y = z$ are such paths then we can concatenate them $p \cdot p' : x = z$. 
-	We can also provide the inverse $p^{-1} : y = x$ for which we have in turn a path $q : (p\cdot p^{-1}) =_{x=x} (\mathtt{idp}_x)$ between $p\cdot p^{-1}$ and $\mathtt{idp}_x$ and another one between $p^{-1}\cdot p$ and $\mathtt{idp}_y$. 
 
-	This would be a good place to talk a bit more about the closure properties of judgmental/definitional equality $\equiv$. 
-	Essentially, we demand that $\equiv$ is a congruence relation built upon those judgmental equalities we introduce elsewhere, as part of enriching our type theory with type formers, in addition to being closed under these:
-	\begin{itemize}
-	\item For terms $\lambda x.\;t$ and $u$ such that the application $(\lambda x.\;t)\;u$ is legal according to their typings, we have $(\lambda x.\;t)\;u \equiv t[u/x]$. 
-	\item If $t \equiv t'$ and $s \equiv s'$ and the application $t(s)$ is legal, then $t(s) \equiv t'(s')$. 
-	\item Closed under lambda abstraction, i.e. if $t \equiv t'$ then $\lambda x.\;t \equiv \lambda x.\;t'$. 
-	\end{itemize}
-	After closing under the above, we drop from $\equiv$ all pairs of terms that belong to (judgmentally) unequal types. 
-
-	We sometimes introduce judgmental equalities with a colon on the left $:\equiv$. 
-	This serves merely as an indication of `direction' in the definition wherein the left hand side is being introduced as a term while it's well understood that the right hand side is a term of type theory. 
-	Sometimes the lhs is just a name, a shorthand, for the rhs. 
-	The colon serves no \textit{formal} purpose and the reader may ignore it, if they do not find it helpful. 
-
-	When working in type theory, we may freely replace terms with those judgmentally equal to them.
+	
 
 \end{itemize}
 
@@ -198,7 +215,8 @@ We have the following list of types at our disposal.
 	\item We have a unit type $\mathbf{1} : \mathcal{U}$ for which we have a term $* : \mathbf{1}$ and a witness of $\prod_{x,y : \mathbf{1}} x =y$. 
 	\item We have the $\mathbf{2}$ type with terms $0 : \mathbf{2}$ and $1 : \mathbf{2}$ and the induction principle
 	$$\mathtt{ind}_\mathbf{2} : \prod_{C : \mathbf{2} \rightarrow \mathcal{U}}C(0)\rightarrow C(1) \rightarrow \prod_{x : \mathbf{2}}C(x)$$
-	$$\mathtt{ind}_\mathbf{2}()$$
+	$$\mathtt{ind}_\mathbf{2}(C, c_0, c_1, 0) \equiv c_0$$
+	$$\mathtt{ind}_\mathbf{2}(C, c_0, c_1, 1) \equiv c_1$$
 	\item We have the type of \textbf{natural numbers} $\mathbb{N} : \mathcal{U}$ equiped with $0 : \mathbb{N}$ and $\mathtt{succ} : \mathbb{N} \rightarrow \mathbb{N}$. 
 	There is also the induction principle
 	$$\mathtt{ind}_\mathbb{N} : \prod_{C : \mathbb{N} \rightarrow \mathcal{U}}C(0)\rightarrow \big(\prod_{ : \mathbb{N}} C(n) \rightarrow C(\mathtt{succ}\;n)\big)\rightarrow \prod_{n : \mathbb{N}}C\;n$$
@@ -207,8 +225,6 @@ We have the following list of types at our disposal.
 
 
 \end{itemize}
-This concludes our informal presentation of the primitives of Type Theory. 
-We will continue with definitions and results using the tools we laid out above. 
 \begin{rem}
 Sometimes, when constructing a term of some type, we say that we \textit{take cases} on it or some other type. 
 By this we mean that we are invoking a type's induction or recursion principle. 
@@ -226,20 +242,96 @@ They actually give us access to non-dependent functions too.
 Let $C : A \rightarrow \mathcal{U}$ be the family of types that forms the codomain of the resulting function of the induction principle. 
 If for all $a : A$, $C(a) \equiv B$ where $B  :\mathcal{U}$ then we can form a non-dependent function $f : A \rightarrow B$. 
 \end{rem}
+\section{Judgmental Equality}
+This would be a good place to talk a bit more about the closure properties of judgmental/definitional equality $\equiv$. 
+	Essentially, we demand that $\equiv$ is a congruence relation built upon those judgmental equalities we introduce elsewhere, as part of enriching our type theory with type formers, in addition to being closed under these:
+	\begin{itemize}
+	\item For any term $a : A$ we have $a \equiv a$. 
+	\item For terms $\lambda x.\;t$ and $u$ such that the application $(\lambda x.\;t)\;u$ is legal according to their typings, we have $(\lambda x.\;t)\;u \equiv t[u/x]$. 
+	\item If $t \equiv t'$ and $s \equiv s'$ and the application $t(s)$ is legal, then $t(s) \equiv t'(s')$. 
+	\item Closed under lambda abstraction, i.e. if $t \equiv t'$ then $\lambda x.\;t \equiv \lambda x.\;t'$. 
+	\end{itemize}
+	After closing under the above, we drop from $\equiv$ all pairs of terms that belong to (judgmentally) unequal types. 
+	\begin{rem}
+	We sometimes introduce judgmental equalities with a colon on the left $:\equiv$. 
+	This is just a stylistic choice, i.e. the colon can be ignored. 
+	\end{rem}
+	% This serves merely as an indication of `direction' in the definition wherein the left hand side is being introduced as a term while it's well understood that the right hand side is a term of type theory. 
+	% Sometimes the lhs is just a name, a shorthand, for the rhs. 
+	% The colon serves no \textit{formal} purpose and the reader may ignore it, if they do not find it helpful. 
+	\begin{rem}
+	When working in type theory, we may freely replace terms with those judgmentally equal to them. 
+	This liberty is justified, as one would expect, by the inclusion of relevant inference rules in the underlying formal system of Type Theory. 
+	\end{rem}
+	% With the above facts about judgmental equality in mind, along with the induction principle of equality, we can do the following in TT. 
+	% We can concatenate those paths whose domains and codomains allow for it. 
+	% That is, if $p : x = y$ and $p' : y = z$ are such paths then we can concatenate them $p \cdot p' : x = z$, the proof of this consists of invoking $\mathtt{ind}_{=}$ twice, once for $p$ and once for $p'$, then we have to prove $x=z$ where $x\equiv y$ and $y \equiv z$, a trivial result. 
+	% We can also provide the inverse $p^{-1} : y = x$ for which we have in turn a path $q : (p\cdot p^{-1}) =_{x=x} (\mathtt{idp}_x)$ between $p\cdot p^{-1}$ and $\mathtt{idp}_x$ and another one between $p^{-1}\cdot p$ and $\mathtt{idp}_y$. 
+	% We conclude that paths form an equivalence relation. 
+	This concludes our informal presentation of the primitives of Type Theory. 
+	We will continue with definitions and results using the tools we laid out above. 
+	\section{On paths}
+	In this section we go over some results about manipulating identity paths. 
+	\begin{lem}
+	We can construct the following function with infix notation, which we call \textbf{concatenation of paths}
+	$$\_\cdot \_ : \prod_{A : \mathcal{U}}\prod_{a_1, a_2, a_3 : A}(a_1 =_A a_2) \rightarrow (a_2 =_A a_3) \rightarrow (a_1 =_A a_3)$$
+	where $A, a_1, a_2, a_3$ are implicit arguments and the two paths that follow are explicitly provided. 
+	\end{lem}
+	\begin{proof}
+	By the induction principle of identity types, it's enough to work out only the case where $a_1 \equiv a_2$ and the first explicit argument is $\mathtt{idp}_{a_1}$. 
+	We invoke the induction principle once more to get $a_2 \equiv a_3$. 
+	We then have $a_1 \equiv a_3$ and $\mathtt{idp}_{a_1} : a_1 =_A a_3$. 
+	\end{proof}
+	\begin{cor}
+	Concatenating $\mathtt{idp}_a$ with itself results in itself. 
+	$$\mathtt{idp}_a \cdot \mathtt{idp}_a = \mathtt{idp}_a$$
+	\end{cor}
+	\begin{lem}
+	We can \textbf{invert} paths. 
+	Formally, we have a function
+	$$(\cdot)^{-1} : \prod_{A : \mathcal{U}}\prod_{a_1, a_2 : A}(a_1 =_A a_2) \rightarrow (a_2 =_A a_1)$$
+	\end{lem}
+	\begin{proof}
+	By the principle of induction we can assume $a_1 \equiv a_2$. 
+	We can then replace the goal with $a_1 =_A a_1$ which is inhabited by $\mathtt{idp}_{a_1}$. 
+	\end{proof}
+	\begin{cor}
+	Inverting $\mathtt{idp}_a$ results in itself. 
+	$$\mathtt{idp}_a^{-1} = \mathtt{idp}_a$$
+	\end{cor}
+	\begin{cor}
+	Concatenating a path with its inverse results in $\mathtt{idp}$. 
+	More specifically, for $p : a =_C b$
+	$$p \cdot p^{-1} = \mathtt{idp}_a$$
+	$$p^{-1} \cdot p = \mathtt{idp}_b$$
+	\end{cor}
+	\begin{lem}
+	Applying any function $f : A\rightarrow B$ to $a_1, a_2 : A$ such that $p : a_1 =_A a_2$ gives us a path $\mathtt{ap}_f (p) : f(a_1) =_B f(a_2)$. 
+	We name this \textbf{action on paths} and this instance, action of $f$ on $p$.\\
+	Formally,
+	$$\mathtt{ap} : \prod_{A,B : \mathcal{U}}\prod_{f : A \rightarrow B}\prod_{a_1,a_2 : A}(a_1 =_A a_2)\rightarrow \big(f(a_1) =_B f(a_2)\big)$$
+	\end{lem}
+	\begin{proof}
+	Assume the hypotheses $A,B,f, a_1, a_2$ and $p : a_1 =_A a_2$ as above. 
+	We need a witness of $f(a_1) =_B f(a_2)$. 
+	We use induction on the identity type $a_1 =_A a_2$. 
+	So we have to show that for $\mathtt{idp}_{a_1} : a_1 =_A a_2$, we have $f(a_1) =_B f(a_2)$. 
+	By $\mathtt{idp}_{a_1}$ we have $a_1 \equiv a_2$ which means we can rewrite the goal as $f(a_1) =_B f(a_1)$, for which we have a witness in the form of $\mathtt{idp}_{f(a_1)}$. 
+	\end{proof}
+	\begin{lem}
+	For $A: \mathcal{U}$ and family $C : A \rightarrow \mathcal{U}$, if we have $ p : x =_\mathcal{U} y$ and $z : C\;x$  then we can \textbf{transport} $z$ \textbf{over} $p$ and get an inhabitant of $C\;y$. 
+	Formally
+	$$\mathtt{transport} : \prod_{x,y : A}\prod_{p : x =_A y}\prod_{C : A \rightarrow \mathcal{U}}C(x) \rightarrow C(y)$$
+	\end{lem}
+	\begin{proof}
+	By the induction principle of identity types, we have $x \equiv y$ which allows us to deduce $C(x) \equiv C(y)$ and thus $z : C(y)$. 
+	\end{proof}
+	% \begin{lem}
+	% For $A : \mathcal{U}$, $B : A \rightarrow \mathcal{U}$, $f : \prod_{a : A}B\; a$, $a_1, a_2 : A$ and $p : a_1 =_A a_2$, transporting $f\;a_1$ over $p$ results in an inhabitant of $B\; a_2$ which is equal to $f\; a_2$.\\
+	% Formally
+	% $$$$
+	% \end{lem}
 
-\begin{lem}
-Applying any function $f : A\rightarrow B$ to $a_1, a_2 : A$ such that $p : a_1 =_A a_2$ gives us a path $\mathtt{ap}_f (p) : f(a_1) =_B f(a_2)$. 
-We name this \textbf{action on paths} and this instance, action of $f$ on $p$.\\
-Formally,
-$$\mathtt{ap} : \prod_{A,B : \mathcal{U}}\prod_{f : A \rightarrow B}\prod_{a_1,a_2 : A}(a_1 =_A a_2)\rightarrow \big(f(a_1) =_B f(a_2)\big)$$
-\end{lem}
-\begin{proof}
-Assume the hypotheses $A,B,f, a_1, a_2$ and $p : a_1 =_A a_2$ as above. 
-We need a witness of $f(a_1) =_B f(a_2)$. 
-We use induction on the identity type $a_1 =_A a_2$. 
-So we have to show that for $\mathtt{idp}_{a_1} : a_1 =_A a_2$, we have $f(a_1) =_B f(a_2)$. 
-By $\mathtt{idp}_{a_1}$ we have $a_1 \equiv a_2$ which means we can rewrite the goal as $f(a_1) =_B f(a_1)$, for which we have a witness in the form of $\mathtt{idp}_{f(a_1)}$. 
-\end{proof}
 \section{Equivalence}
 	Before going over what it means for two types to be equivalent, we have to work out some preliminary notions. 
 	\begin{defn}
@@ -314,7 +406,7 @@ Function extensionality follows from univalence.
 Extensional Type Theory (ETT) is not consistent with the Univalent Type Theory defined above. 
 To get ETT we assume the following axiom. 
 \begin{axiom}
-Whenever we have an inhabitant $p : a=_C b$ we can infer $\mathtt{idp}_a : a=_C b$ i.e. $a \equiv b$. 
+Whenever we have an inhabitant $p : a=_C b$ we can infer $a \equiv b$. 
 \end{axiom}
 This axiom simplifies the landscape considerably. 
 Starting with it and using induction on identity types one can eventually deduce that $p \equiv \mathtt{idp}_a$. 
@@ -338,10 +430,10 @@ Assume $A, B : \mathcal{U}$ and $C : A \rightarrow \mathcal{U}$.
 \item Finally, existence $ \exists a \in A,\; C(a)$ is interpreted as $\sum_{a : A}C(a)$.
 \end{itemize}
 
-We would also like a way to do classical logic in Type Theory. 
+We would also like a way to form non-constructive statements in Type Theory. 
 To do so we would need a way to say that some type $C$ is inhabited without providing a specific witness $c : C$, which would have the undesirable effect of providing more information than a classical statement of existence. 
 An effective way to do so is to provide a witness of the truncation $\lVert C \rVert$ and say that $C$ is \textit{merely} inhabited. 
-So to work classically we restrict ourselves to using only mere propositions. 
+So to work non-constructively we restrict ourselves to using only mere propositions. 
 This approach is called `propositions as mere propositions' in \cite{hottbook}. 
 \begin{itemize}
 \item When we talk of conjunction $A \wedge B$, where $A$ and $B$ are mere propositions, we mean the product $A \times B$. 
@@ -353,63 +445,8 @@ This approach is called `propositions as mere propositions' in \cite{hottbook}.
 Note that the above are all chosen so that they preserve mere propositions, e.g. $A\times B$ is a mere proposition. 
 The use of the above notation is interchangeable in the sections to follow. 
 We will try to specify whether a type is \textit{merely} or \textit{actually} inhabited to avoid ambiguity whenever needed. 
-\section{Formal Type Theory}\label{formalTT}
-We shall now have a look at what Intensional Type Theory \textit{actually is}. 
-We will give a short description of a formal system in which the informal derivations we do in the rest of this text are meant to be taking place. 
-Building blocks of the formal system will be juxtaposed against their informal counterparts. 
-We direct those looking for a full description to Appendixes A.1 and A.2 of \cite{hottbook}.
-
-When working informally, at any given point we have a collection of assumptions about variables and their typings that are available to be used in completing the next step of our derivation. 
-This is captured by the \textit{context} which is a list of typings $x_1 : A_1,\; x_2 : A_2,\;\ldots,\;x_n : A_n$ of variables $x_i$ and their types $A_i$. 
-Each $x_i$ must be distinct. 
-\begin{exmp}
-As one would guess
-$$x_1 : \mathbf{2},\; x_2 : \mathbf{2},\; x_3 : (x_1=_\mathbf{2} x_2)$$
-is a legitimate context. 
-\end{exmp}
-
-The deductive system of TT is a sort of a sequent calculus where we infer sequents called \textit{judgments} which are of the form $\Gamma \vdash a : A$ where $\Gamma$ is a context and $a : A$ the statement that $a$ is a term of type $A$. 
-Both $a$ and $A$ are composed exclusively by \textit{terms over} $\Gamma$. 
-By terms over $\Gamma$ we mean terms that can appear in the right hand side of valid judgments with $\Gamma$ as the left hand side, e.g. $b$ is a term over $\Gamma$ if $\Gamma \vdash b : B$ can be inferred in our system. 
-The rules of inferrence prescribe how we are allowed to combine said terms and derive valid judgments. 
-
-The judgment $\Gamma \vdash a  : A$ corresponds to the exact step of an informal derivation where we construct the witness $a : A$ using terms over $\Gamma$ which we constructed in earlier steps of the same derivation. 
-As one might expect, the deductive system is populated with inference rules that allow us to deduce valid judgments from collections of others; to illustrate
-$$\frac{J_1,J_2,\ldots,J_n}{J}$$
-All the constructions and rules described in \ref{informalTT} should and can be transcribed in this form.
-
-There is an important judgment that subverts the form described above and which asserts the correctness of a context. 
-We write it as $\Gamma\; \mathtt{ctx}$. 
-There are also two rules that let us build valid contexts. 
-One affirming the empty context's validity and can be the root of a deduction tree
-$$\frac{~}{\cdot\; \mathtt{ctx}}$$
-and one which lets us extend a given context $\Gamma$ with \textit{a type over it} (a term which, under the assumptions in $\Gamma$, can be inferred to be of type $\mathcal{U}_i$ for some $i : \mathbb{N}$)
-$$\frac{\Gamma \vdash A : \mathcal{U}_i}{(\Gamma,\; x: A)\; \mathtt{ctx}}$$
-where $x$ must differ from all variables in $\Gamma$. 
-\begin{exmp}
-Consider the case of constructing a function. 
-Suppose that the current context is $\Gamma,\;x : A$ where $x$ is a variable. 
-If we can deduce that $b : B$ (where $b, B$ might not be ground terms but instead contain variables like $x$ or those in $\Gamma$) then this corresponds to a valid judgment $\Gamma,\;x :A \vdash b : B$. 
-Formally, this is captured by the rule
-$$\frac{\Gamma,\;x : A \vdash b : B}{\Gamma \vdash \lambda(x : A).b : \prod_{x : A}B}$$
-Note that the function and its type $\prod_{x : A}B$ are allowed to be dependent, as we allowed $b$ and $B$ to be open terms containing variables, that is why there is no point in specifying $B(x)$. 
-\end{exmp} 
-\begin{exmp}
-Judgmental equalities are also taken care of by this system. 
-
-Suppose, like in the previous example that we are in the situation captured by the judgment $\Gamma,\;x :A \vdash b : B$. Suppose that we also have a term $a$ over $\Gamma$ i.e. $\Gamma \vdash a : A$. 
-Then we should be able to deduce that application of $\lambda(x : A).\;b$ on $a$ would be judgmentally equal to $b[a/x]$ which is the result of replacing all occurences of $x$ in $b$ with $a$. 
-Also both should be of type $B[a/x]$. 
-These facts are captured by the following four judgments
-$$\frac{\Gamma,\;x : A \vdash b : B,\qquad \Gamma \vdash a : A}{\Gamma \vdash \big(\lambda(x : A).b\big)(a) : B[a/x]}$$
-$$\frac{\Gamma,\;x : A \vdash b : B,\qquad \Gamma \vdash a : A}{\Gamma \vdash b[a/x] : B[a/x]}$$
-$$\frac{\Gamma,\;x : A \vdash b : B,\qquad \Gamma \vdash a : A}{\Gamma \vdash \Big(\big(\lambda(x : A).b\big)(a) \equiv b[a/x]\Big) : \Big(b[a/x] =_{B[a/x]} b[a/x]\Big)}$$
-$$\frac{\Gamma,\;x : A \vdash b : B,\qquad \Gamma \vdash a : A}{\Gamma \vdash \Big(\big(\lambda(x : A).b\big)(a) \equiv b[a/x]\Big) : \Big(\big(\lambda(x : A).b\big)(a) =_{B[a/x]} \big(\lambda(x : A).b\big)(a)\Big)}$$
-
-The formal system has enough rules to enable deducing all the properties of judgmental equality we mentioned in the definition of identity types.
-\end{exmp}
-
 \chapter{Modalities}
+In this chapter we introduce \textit{modalities}, their definition and important results about them, adapted from \cite{1706.07526} and Section 7.7 of \cite{hottbook}. 
 %Under the view of types as $(\infty, 1)$-categories, functions between them are functors. 
 %We can then view the universe $\mathcal{U}$ itslef as a category. 
 \begin{defn}\label{modality_definition}
@@ -440,7 +477,7 @@ We define the following function by assuming $a : A$ and applying the relevant m
 $$h' : \prod_{a : A}\bigcirc\big(\eta^\bigcirc_A \circ f \;(\eta^\bigcirc_A\; a) = \mathtt{id}_{\bigcirc A} \; (\eta^\bigcirc_A\; a) \big)$$
 We then use the induction principle of the modality to get
 $$\mathtt{ind}_{\bigcirc}\; h' : \prod_{z : \bigcirc A}\bigcirc\big(\eta^\bigcirc_A \circ f \;(z) = \mathtt{id}_{\bigcirc A} \; (z) \big)$$
-Then, by the equivalence mentioned in the fourth datum of \ref{modality_definition} we have a quasi-inverse $r$ for the modal unit $\eta_{\eta^\bigcirc_A \circ f \;(z) = \mathtt{id}_{\bigcirc A} \; (z)}$, 
+Then, by the equivalence mentioned in the fourth datum of \Cref{modality_definition} we have a quasi-inverse $r$ for the modal unit $\eta_{\eta^\bigcirc_A \circ f \;(z) = \mathtt{id}_{\bigcirc A} \; (z)}$, 
 which we use to construct
 $$ \lambda\;(z : \bigcirc A).\; r \big((\mathtt{ind}_{\bigcirc}\; h')\;(z)\big) : \prod_{z : \bigcirc A}\eta^\bigcirc_A \circ f \;(z) = \mathtt{id}_{\bigcirc A} \; (z) $$
 We've proven $\eta^\bigcirc_A \circ f \sim \mathtt{id}_{\bigcirc A}$ which means that $ f$ is the right inverse of $\eta_A^\bigcirc$. 
@@ -451,7 +488,7 @@ These types are of special interest to us because they form a $\sum$-closed refl
 We shall define a predicate to tell them apart. 
 \begin{defn}
 We define $\mathtt{isModal}_{\bigcirc} : \mathcal{U} \rightarrow \mathtt{Prop}$ as such
-$$\mathtt{isModal}_{\bigcirc} \equiv \prod_{A : \mathcal{U}}(A \simeq \bigcirc A)$$
+$$\mathtt{isModal}_{\bigcirc}\; A :\equiv \mathtt{hasContrFibers}\; \eta_A^\bigcirc$$
 \end{defn}
 
 \begin{defn}\label{reflectiveSubuniverse}
@@ -469,7 +506,7 @@ That the subuniverse is $\sum$\textbf{-closed} means that for $X$ such that $\ma
 The \textit{reflective} modifier refers to the fact that for each $f : A \rightarrow B$ there is a canonical way to construct its \textit{reflection}, $f' : \bigcirc A \rightarrow \bigcirc B$. 
 We simply compose $f$ with the modal unit $\eta_B^\bigcirc$ and use the induction principle of the modality on the result. 
 
-Propositional truncation is a modality as it possesses the required data outlined in \ref{modality_definition}. 
+Propositional truncation is a modality as it possesses the required data outlined in \Cref{modality_definition}. 
 Its reflective subuniverse is the universe of mere propositions.  
 \begin{prop}
 For all $A  :\mathcal{U}$, we have $\mathtt{isModal}_{\bigcirc}(\bigcirc A)$. 
@@ -492,7 +529,7 @@ We need $\mathtt{ind}(g\circ \eta_A^\bigcirc ) = g$.
 By function extensionality it's enough to show that 
 $$\prod_{x : \bigcirc A}\mathtt{ind}(g\circ \eta_A^\bigcirc )(x) = g(x)$$
 So, for every $x$, we are trying to provide a witness for an identity path of terms in $\bigcirc B$. 
-By the fourth datum of \ref{modality_definition} and the relevant induction principle, with implicit arguments $A$ and $x\mapsto \mathtt{ind}(g\circ \eta_A^\bigcirc )(x) = g(x) : \bigcirc A \rightarrow \mathcal{U}$, we can reduce it to constructing a witness for
+By the fourth datum of \Cref{modality_definition} and the relevant induction principle, with implicit arguments $A$ and $x\mapsto \mathtt{ind}(g\circ \eta_A^\bigcirc )(x) = g(x) : \bigcirc A \rightarrow \mathcal{U}$, we can reduce it to constructing a witness for
 $$\prod_{a : A} \mathtt{ind}(g\circ \eta_A^\bigcirc )(\eta^\bigcirc_{A}\;a) = g(\eta^\bigcirc_{A}\;a)$$
 A witness of this type is secured for us, once again by the definition of modalities, the third item with $g \circ \eta_A^\bigcirc $ as $f$. 
 
@@ -513,13 +550,15 @@ $\prod_{a : A}\mathtt{isModal}_{\bigcirc}(B(a))$, we have that $\mathtt{isModal}
 \end{thm}
 
 \begin{proof}
-By \ref{modalUnitLeftInverse} it is enough to provide a left inverse for 
+By \Cref{modalUnitLeftInverse} it is enough to provide a left inverse for 
 $$\eta^\bigcirc_{\prod_{a : A} B(a)} : \Big(\prod_{a : A} B(a)\Big) \rightarrow \bigcirc \Big( \prod_{a : A} B(a) \Big)$$
-First, for $a : A$, consider $\mathtt{ev}_a: (\prod_{a: A}B(a)) \rightarrow B(a)$ defined by $\mathtt{ev}_a (f) : \equiv f(a)$. 
+First, for $a : A$, consider $\mathtt{ev}_a: (\prod_{x: A}B(x)) \rightarrow B(a)$ defined by $\mathtt{ev}_a (f) : \equiv f(a)$. 
 By $\mathtt{isModal}\; B(a)$ we have that there exists $\eta_{B\;a}^{-1}$, quasi-inverse of $\eta_{B\;a}$. 
 We define 
-$$h :\equiv \lambda(f : \prod_{a : A}B\;a).\;\lambda(a : A).\; \eta_{B\;a}^{-1}\circ (\mathtt{ind}_{\prod_{x :A}B\;x,\;B\;a}(\eta_{B(a)} \circ f))$$
+$$h :\equiv \lambda(f : \bigcirc \prod_{x : A}B\;x).\;\lambda(a : A).\; \eta_{B\;a}^{-1}\;\big(\mathtt{ind}_{\prod_{x :A}B\;x,\;B\;a}(\eta_{B(a)} \circ \mathtt{ev}_a)\;f\big)$$
 and we propose $h$ as the left inverse. 
+In case the notation above is hard to discern, we note the typing
+$$\mathtt{ind}_{\prod_{x :A}B\;x,\;B\;a} : \Big( \prod_{x : A} B\;x \rightarrow \bigcirc B\;a \Big) \rightarrow \Big( \big(\bigcirc \prod_{x : A} B\;x\big) \rightarrow \bigcirc B\;a \Big)$$
 By function extensionality, it's enough to show that for $g : \prod_{a:A}B\;a$, 
 $$h(\eta^\bigcirc_{\prod_{a : A} B(a)}\; g) = g$$
 By function extensionality we reduce this to
@@ -549,14 +588,40 @@ is an equivalence for all $a : A$.
 
 \end{defn}
 
-Nullification at a family of types is an example of a modality, as laid out in \cite{1706.07526}, where it is presented as a higher inductive type, complete with constructors and eliminators. 
+\textbf{Nullification at a family of types} is an example of a modality, as laid out in \cite{1706.07526}, where it is presented as a higher inductive type, complete with constructors and eliminators. 
 To avoid listing all these trappings, we will instead look at the important properties $\mathcal{L}_B : \mathcal{U} \rightarrow \mathcal{U}$ should have to be considered a nullification operator. 
+\begin{itemize}
+\item It must have all the data required for it to be a modality. 
+\item The subuniverse associated with it is the subuniverse of $B$-null types of $\mathcal{U}$, i.e. the modal, under $\mathcal{L}_B$, types in $\mathcal{U}$ are the $B$-null types in $\mathcal{U}$. 
+In particular, for all $X : \mathcal{U}$, $\mathcal{L}_B(X)$ must be $B$\textbf{-null}.
+\end{itemize}
+We will now go over some important properties of nullification. 
+Given that we did not present here the specific construction that comprises nullification, we will not bother with the proofs of these properties. 
+We will instead request that the reader assumes they hold true and point to their actual proofs in \cite{1706.07526}. 
 
-It must have all the data required for it to be a modality.\\
-For all $X : \mathcal{U}$, $\mathcal{L}_B(X)$ must be $B$\textbf{-null}.
+Nullification behaves nicely across universes. 
+The following proposition is adapted from Lemma 2.24 of \cite{1706.07526}. 
+\begin{prop}
+For nullification operator $\bigcirc : \mathcal{U} \rightarrow \mathcal{U}$ and universe $\mathcal{U}'$ higher in hierarchy than $\mathcal{U}$ (i.e. $\mathcal{U} : \mathcal{U}'$) we have that there is a canonical way to construct $\bigcirc' : \mathcal{U}' \rightarrow \mathcal{U}'$ (the canonical extension of $\bigcirc$ to $\mathcal{U}'$) and that the following statements hold true. 
+\begin{itemize}
+\item For $X : \mathcal{U}$ we have $\mathtt{isModal}_\bigcirc\; X \leftrightarrow \mathtt{isModal}_{\bigcirc'}\; X$.
+\item For $X : \mathcal{U}$ the induced map $\bigcirc' X \rightarrow \bigcirc X$ is an equivalence. 
+\end{itemize}
+\end{prop}
+$\bigcirc'$ is defined by nullifying at the same family of types as $\bigcirc$ since the same family resides in the higher universe too. 
+The induced map mentioned in the second item refers to the one we get by starting with $\eta_X^{\bigcirc} : X \rightarrow \bigcirc X$ and, with item (i) in mind, apply the modality induction principle of $\bigcirc'$ to $\eta_X^{\bigcirc}$. 
+
+The modality of greatest interest to us will be a nullification at a family of mere propositions i.e. we nullify at some $B$ where $B : A \rightarrow \mathtt{Prop}$. 
+This sort of modality is what is called a \textit{left exact} modality in \cite{1706.07526} as shown in Corollary 3.11 of the aforementioned text. 
+Because of this, Theorem 3.10 of \cite{1706.07526} applies to our modality. 
+\begin{prop}
+If $\bigcirc$ is a nullification at a family of mere propositions, then the subuniverse $\mathcal{U}_\bigcirc :\equiv \sum_{X : \mathcal{U}}\mathtt{isModal}_\bigcirc X$ is itself $\bigcirc'$ modal, for any $\bigcirc' $ which is the canonical extension of $\bigcirc$ to some $\mathcal{U}'$ such that $\mathcal{U} : \mathcal{U}'$. 
+\end{prop}
+The significance of this lies in that it establishes an equivalence between $\mathcal{U}_{\mathcal{L}_B}$ and $\mathcal{L}_B' \mathcal{U}_{\mathcal{L}_B}$ in $\mathcal{U}'$ where $\mathcal{U} : \mathcal{U}'$. 
+This equivalence will come in handy later in \Cref{nullTypesModel}, when we will inductively apply $\mathcal{L}_B$ to a type's construction hoping for the resulting type to be equivalent to the one we started with, or at least similar enough.
 
 \chapter{Computability}
-In this chapter we will give an overview of basic definitions and results of Recursion theory and formalize them in Type theory. 
+We quickly have a look at a spoonful of Recursion theory which we formalize in Type theory. 
 The reader is expected to be somewhat familiar with Turing machines, as we will not be delving into their technical details. 
 %Instead, we follow a similar approach to that of \cite{bridges_richman_1987} and assume an effective enumeration of 
 
@@ -564,7 +629,7 @@ The reader is expected to be somewhat familiar with Turing machines, as we will 
 A \textbf{partial function} is a function with a subset of the naturals as its domain.\\
 Formally 
 $$f : \Big(\sum_{n : \mathbb{N}} P\; n \Big) \rightarrow \mathbb{N}$$
-where $P : \mathbb{N} \rightarrow \mathbf{Prop}$ is a family of propositions over $\mathbb{N}$, which works as the characteristic function of the domain of the partial function $f$.
+where $P : \mathbb{N} \rightarrow \mathtt{Prop}$ is a family of propositions over $\mathbb{N}$, which works as the characteristic function of the domain of the partial function $f$.
 \end{defn}
 
 A standard result in Recursion theory is that there exists a Turing machine that enumerates all Turing Machines. 
@@ -578,9 +643,14 @@ where $T$ is Kleene's predicate, $e$ identifies a Turing machine, $x$ is some in
 \end{defn}
 
 In other words, Church's thesis assures us that for every $f : \mathbb{N} \rightarrow \mathbb{N}$ there exists some computable function that agrees with it on every input.
+For a more complete development of Recursion Theory in a constructive setting, we point to \cite{recursionInHA} and \cite{bridges_richman_1987_1} which use intuitionistic arithmetic and Bishop's constructive mathematics, respectively, as the foundation. 
+This chapter was inspired by the latter. 
 
+\chapter{The Lesser Limited Principle of Omniscience}
+We define the Lesser Limited Principle of Omniscience, which we view as an integral axiom of our theory of Russian Mathematics. 
+The rest of the chapter, which the reader may skip as it does not come up again, is dedicated to providing background information on LLPO. 
+More specifically, we are interested in clarifying how much `non-constructive power' we get by adopting it. 
 
-\chapter{LLPO}
 In the following definition $s$ is, in places, taken to be an implicit argument. 
 In the sections to follow, terms and types that use it implicitly, are supplied with explicit arguments when the need to be clear arises. 
 \begin{defn}[LLPO]\label{LLPO}
@@ -711,7 +781,7 @@ The Axiom of Countable Choice $(ACC)$ is adapted from its set-theoretic counterp
 More concisely
 $$\Big(\prod_{n : \mathbb{N}} \big\lVert B\; n \big\rVert\Big) \rightarrow \Big\lVert \prod_{n : \mathbb{N}} B\; n \Big\rVert$$
 \end{defn}
-
+The following lemma and its proof are adapted from Theorem 1.5 of \cite{bridges_richman_1987_1}. 
 \begin{lem}\label{405}
 Under Church's thesis, the following type is inhabited
 $$\sum_{F : \mathbb{N} \rightarrow \mathbb{N} \rightarrow \mathbf{2}} \Big( \big(\prod_{m : \mathbb{N}} \mathtt{atMost1one}\; F(m) \big) \times \big( \prod_{f : \mathbb{N} \rightarrow \mathbf{2}} \big\lVert \sum_{m, k : \mathbb{N}} F(m, 2k+ f\; m) = 1 \big\rVert \big) \Big)$$
@@ -728,7 +798,7 @@ Otherwise set $G.\mathtt{fst}\; n\; m :\equiv 0$.
 \item If it's even, then there exists actual $k$ such that $m = 2k$. 
 We work as in the odd case, with the only difference being that we set $G.\mathtt{fst}\; n\; m :\equiv 1$ iff the output of the halting computation is $0$.
 \end{itemize}
-Having defined $G.\mathtt{fst}$ it's easy to see that $G.\mathtt{snd}$ has a straightforward proof, which we ommit. 
+Having defined $G.\mathtt{fst}$ it's easy to see that $G.\mathtt{snd}$ has a straightforward proof, which we omit. 
 
 We now define 
 $$Q : (\mathbb{N} \rightarrow \mathbb{N} \rightarrow \mathbf{2}) \rightarrow \mathcal{U}$$ 
@@ -742,13 +812,13 @@ In both cases we have $G.\mathtt{fst} (e, 2z + j) = 1$.
 
 We conclude the proof by providing $G.\mathtt{fst}$ as the first component and the product of $G.\mathtt{snd}$ with $Q\; G.\mathtt{fst}$ as the second.
 \end{proof}
-
+The following theorem and its proof are adapted from Corollary 1.6 of \cite{bridges_richman_1987_1}. 
 \begin{thm}
 %In the context of HoTT, 
 $$ACC \times CT \times LLPO \rightarrow \bot$$
 \end{thm}
 \begin{proof}
-Let $G$ be the witness we reached in our proof of \ref{405}. 
+Let $G$ be the witness we reached in our proof of \Cref{405}. 
 Let $F :\equiv G.\mathtt{fst}$. 
 By LLPO we can procure 
 $$f : \prod_{n : \mathbb{N}} \lVert \mathtt{p_{odd}}(F\; n) + \mathtt{p_{even}}(F\;n) \rVert$$
@@ -803,17 +873,17 @@ $$\bigg)$$
 %$$\sum_{n : \mathbb{N}}\big(s\;n = 1 \times (\prod_{m : \mathbb{N}}m < n \rightarrow s\;m = 0) \big)$$
 which we will use to prove our current goal, by arriving at a contradiction. 
 We name our witness to be constructed $f$. 
-$f(0)$ is trivial to construct by showing that no natural is bellow $0$ and using $\mathtt{inr}$. 
+$f(0)$ is trivial to construct by showing that no natural is below $0$ and using $\mathtt{inr}$. 
 We assume that we have some $f(n)$ for $n : \mathbb{N}$ and want to define $f(\mathtt{succ}\; n)$. 
 We take cases on $f(n)$. 
-In the left case we have an actual $m$ less than $n$ such that $s(m) = 1$ and $s$ is constantly zero bellow it. 
+In the left case we have an actual $m$ less than $n$ such that $s(m) = 1$ and $s$ is constantly zero below it. 
 By definition $n < \mathtt{succ}\;n$ so $m < \mathtt{succ}\;n$. 
-This fact along with $s\;m = 1$ and the constantness of $s$ to $0$ bellow $m$ can be combined into a triplet to which we apply $\mathtt{inl}$ to get our definition of $f(\mathtt{succ}\; n)$. 
+This fact along with $s\;m = 1$ and the constantness of $s$ to $0$ below $m$ can be combined into a triplet to which we apply $\mathtt{inl}$ to get our definition of $f(\mathtt{succ}\; n)$. 
 
 In the right case we have $\prod_{ m : \mathbb{N}} m < n \rightarrow s\;m = 0$. 
 Note that we can decide $(s\;n = 0)\;+\;(s\;n = 1)$. 
 We take cases on this. 
-In the left case we simply apply $\mathtt{inr}$ to the fact that $s$ is constantly $0$ bellow $\mathtt{succ}\;n$ and we are done. 
+In the left case we simply apply $\mathtt{inr}$ to the fact that $s$ is constantly $0$ below $\mathtt{succ}\;n$ and we are done. 
 In the right we can use $n$ as the candidate for the triplet and then apply $\mathtt{inl}$ to the triplet. 
 
 We are done with defining $f$. 
@@ -832,33 +902,34 @@ In the left case we have $x_m < -\frac{1}{m}$.
 But then $\mathtt{abs}(x_l-x_m) > \frac{1}{l} + \frac{1}{m}$ this is in contradiction with our assumption that $x$ is a real number. 
 \end{proof}
 
-\chapter{UTT + CT + MP + LLPO}
+\chapter{Russian Mathematics under Univalence}
 In this chapter we present the main result of this text, which is showing that Univalent Type Theory is consistent with Church's thesis, Markov's principle and LLPO. 
 Markov's Principle is the following statement
 $$\Big(\prod_{n : \mathbb{N}}(P\; n + \neg P\; n)\Big) \rightarrow  \Big(\neg \prod_{n : \mathbb{N}}\neg P\; n\Big)\rightarrow \Big\lVert \sum_{n : \mathbb{N}} P\; n \Big\rVert$$
 where $P : \mathbb{N} \rightarrow \mathtt{Prop}$ is a family of propositions over $\mathbb{N}$. 
-Informally, Markov's Principle states that if we have a collection of decidable propositions and the fact that not all of them are false, then one of them must be true.
+Informally, Markov's Principle states that if we have a collection of decidable propositions and the fact that not all of them are false, then one of them must be true. 
 
 To reach the consistency result, we will work with models and results presented in \cite{1905.03014}. 
 First, some quick terminology. 
-A cwf (category with families) model of type theory is a categorical construction which `realizes' all data of formal TT presented in \ref{formalTT}. 
+A cwf (category with families) model of type theory is a categorical construction which `realizes' all data of formal TT presented in \Cref{formalTT}. 
 A detail of their construction that is of interest to us, is that any type over some context is `realized' in the cwf model as the set of its terms over the same context. 
 
 A quick overview of the overarching proof goes like this:\\
 Start with a model of ETT+CT+MP. 
 Show that this model satisfies a statement that will go by the name of IP'. 
-Construct, based on this model, another model of UTT+CT+MP+IP'. 
+Construct, based on the underlying structure of this model, another model of UTT+CT+MP+IP'. 
 Identify the null - with respect to LLPO - types of this model to retrieve a model of UTT+CT+MP+LLPO.\\
 We proceed with the actual proof. 
 
-As the first step towards our goal, we consider the cwf model built on top of category of internal cubical objects in $\mathbf{Asm}(\mathcal{K}_1)$. 
+As the first step towards our goal, we consider the cwf model built on top of the category of internal cubical objects in $\mathbf{Asm}(\mathcal{K}_1)$. 
 For the category of assemblies over Kleene's first model, $\mathbf{Asm}(\mathcal{K}_1)$, we direct the reader to Chapter 1 of \cite{vanOosten:2008:RVI:1816956}. 
 We call this model $\mathcal{E}$. 
 By Theorem 3.10 of \cite{1905.03014} $\mathcal{E}$ satisfies Assumption 3.1 of the same paper. 
 So it is a model of extensional type theory. 
-Furthermore, Church's Thesis and Markov's Principle hold in it, as shown in the proof of theorem 6.4.  of \cite{1905.03014}. \todo{should i argue more about this?} 
+Furthermore, Church's Thesis and Markov's Principle hold in it, as shown in the proof of theorem 6.4.  of \cite{1905.03014}. 
+%\todo{should i argue more about this?} 
 
-In addition to the above, $\mathcal{E}$ validates the following `Independence Principle' \todo{i claim, but don't I have to rationalize this?}
+In addition to the above, we expect, given Lemma 5.6 of \cite{rathjen2018lifschitz}, that $\mathcal{E}$ validates the following `Independence Principle'
 $$\bigg( \prod_{s : \mathbf{2}^\mathbb{N}} P\; s \rightarrow \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \Big\lVert \sum_{z : \mathbb{N}} Q\; s\; z\Big\rVert \bigg)$$
 $$\rightarrow \bigg( \prod_{s : \mathbf{2}^\mathbb{N}} P\; s \rightarrow  \Big\lVert \sum_{z:\mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow Q \; s\;z\Big\rVert \bigg)$$
 where $P: \mathbf{2}^\mathbb{N} \rightarrow \mathtt{Prop}$ and $Q : \mathbf{2}^\mathbb{N} \rightarrow \mathbb{N}\rightarrow \mathtt{Prop} $ are families of propositions. 
@@ -879,7 +950,7 @@ Let
 $$B : A \rightarrow \mathcal{U}$$
 $$B :\equiv \lambda\; a.\; \mathtt{p_{odd}}\; a + \mathtt{p_{even}}\; a$$
 \end{rem}
-We set as our new subgoal to reach an Orton-Pitts model, as seen in Chapter 3 of \cite{1905.03014}, which models UTT, CT and MP. 
+We set as our new subgoal to reach an Orton-Pitts model, as seen in Section 3 of \cite{1905.03014}, which models UTT, CT and MP. 
 We call this model to be constructed $\mathcal{E}'$. 
 Furthermore, we require that $\mathbb{N}$ is $\lVert B \rVert$-null in this model. 
 To make sure that this last requirement is met, we would like the following instance of IP to hold in it. 
@@ -895,7 +966,7 @@ To make sure that this last requirement is met, we would like the following inst
 	  \Big\lVert \sum_{z : \mathbb{N}} \Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{p : B\; a} k\; p = z \Big\rVert \bigg) \Bigg)
 \end{multline*}
 The fact that $\mathbb{N}$ is $\lVert B \rVert$-null, follows from this in Intensional Type Theory. 
-Our plan of action shall be to compromise and find a consequent of it, IP', weaker than IP in ETT but strong enough to imply $\lVert B \rVert$-nullness of $\mathbb{N}$ in UTT, that has the right form so that by Theorem 6.1 of \cite{1905.03014} we get our $\mathcal{E}'$ that satisfies IP'. 
+Our plan of action shall be to compromise and find a consequent of it, IP', weaker than IP in ETT but strong enough to imply $\lVert B \rVert$-nullness of $\mathbb{N}$ in UTT, that has the right form so that by Corollary 6.2 of \cite{1905.03014} we get our $\mathcal{E}'$ that satisfies IP'. 
 Note that we have been and will be working in ETT up until the construction of $\mathcal{E}'$ is finalized. 
 This is because we are proving results pertinent to $\mathcal{E}$. 
 
@@ -953,17 +1024,17 @@ $\mathcal{E}'$ is an Orton-Pitts model of UTT in which CT, MP and IP' hold.
 \end{prop}
 
 \section{Null types in $\mathcal{E}'$}
-The proofs in this section are all about $\lVert B \rVert$-nullness i.e. equivalence between function types (see Definition \ref{Bnull}). 
+The proofs in this section are all about $\lVert B \rVert$-nullness i.e. equivalence between function types (see \Cref{Bnull}). 
 We work in the context of Intensional Type Theory. 
 Our approach in showing that some $F: C\rightarrow D$ is a map with contractible fibers, is to provide for any $d :D$ (merely) some $c :C$ such that $f(c) = d$ and then show that such a $c$ is unique (its type is a proposition), where $C,D$ are said function types. 
 \begin{lem}\label{NisBnull}
-$\mathbb{N}$ is $\lVert B \rVert$-null in $\mathcal{E}$.
+$\mathbb{N}$ is $\lVert B \rVert$-null in $\mathcal{E}'$.
 \end{lem}
 \begin{proof}
 Given $a : A$ and $f : \lVert B\; a \rVert \rightarrow \mathbb{N}$ we need to prove that there exists unique $f' : \mathbf{1} \rightarrow \mathbb{N}$ through which $f$ factors, in the sense that $f = f' \circ g$, where $g : \lVert B\; a \rVert \rightarrow \mathbf{1}$ is the sole inhabitant of its function space. 
 Functions with $\mathbf{1}$ as their domain are constant. 
 We therefore need to find some $z : \mathbb{N}$ so that $\lambda\; \_.\; z$ is $f'$. 
-To that end, we will use IP' which we've proven true in $\mathcal{E}$. 
+To that end, we will use IP' which we've proven true in $\mathcal{E}'$. 
 We invoke it twice. 
 In both times, the first three arguments shall be the same. 
 The choice for the first argument, $a$, is evident. 
@@ -1055,16 +1126,12 @@ By function extensionality $h_1 = h_2$.
 But this contradicts $q$, so we reach $\bot$. 
 We've just proven $\tau : B\;a \rightarrow \bot$. 
 We still have to prove $h_1 = h_2$, the main goal. 
-By \ref{llponeg} we have $(B\; a \rightarrow \bot) \rightarrow \bot$ and by $\tau$ we get $\bot$. 
+By \Cref{llponeg} we have $(B\; a \rightarrow \bot) \rightarrow \bot$ and by $\tau$ we get $\bot$. 
 We conclude the proof by Ex Falso.
 \end{proof}
 
-\begin{cor}
-Similarly, $\mathbf{2}$ is $\lVert B \rVert$-null in $\mathcal{E}$. 
-\end{cor}
-
 \begin{lem}\label{coproductIsBnull}
-In $\mathcal{E}$ if $C, D$ are $\lVert B \rVert$-null then so is $C + D$.
+In $\mathcal{E}'$ if $C, D$ are $\lVert B \rVert$-null then so is $C + D$.
 \end{lem}
 \begin{proof}
 We need to show that for $f : \lVert B\; a\rVert \rightarrow C+D$ there exists unique $f' : \mathbf{1} \rightarrow C+D$ such that $f = f' \circ e$, where $e : \lVert B\; a\rVert \rightarrow \mathbf{1}$ is the sole inhabitant of its function space. 
@@ -1074,7 +1141,7 @@ We define $$g : C + D \rightarrow \mathbf{2}$$
 using components
 $$g_C :\equiv \lambda\; \_.\; 0 : C \rightarrow \mathbf{2}$$
 $$g_D :\equiv \lambda\; \_.\; 1 : D \rightarrow \mathbf{2}$$
-Recall that in $\mathcal{E}$ we have access to a witness of IP' which takes the following arguments in the form of a 4-product
+Recall that in $\mathcal{E}'$ we have access to a witness of IP' which takes the following arguments in the form of a 4-product
 \begin{align*}
 &a: &A
 \\
@@ -1091,7 +1158,7 @@ and returns
 $$\Big\lVert \sum_{z : \mathbf{2}}\Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{b : B\; a} g(\bar{f}\; b) = z \Big\rVert$$
 We provide this with the arguments required, two times, where $\bar{f}$ is $f$ composed with the truncation map $|\cdot| : B\; a \rightarrow \lVert B\; a\rVert$ and $\mathtt{isConst}(\bar{f})$ follows from composition with $|\cdot|$. 
 
-For the unnamed third argument we work as in the proof of \ref{NisBnull}. 
+For the unnamed third argument we work as in the proof of \Cref{NisBnull}. 
 Suppose that we have $\bar{s} : \mathbf{2}^\mathbb{N}$ equal to the odd or even subsequence of $a$ and always equal to $0$. 
 We take cases on whether it's equal to the odd or even subsequence. 
 Wlog suppose it's equal to the odd one. 
@@ -1119,7 +1186,7 @@ We take cases on this.
 Wlog propose $z_1$ as $z$. 
 We have to show that $\prod_{b : \lVert B\;a\rVert}g(f\;b)=z_1$. 
 Let $b : \lVert B\;a \rVert$. 
-Equality on $\mathbf{2}$ is a proposition, so the current goal $g(f\;b)=z_1$ is a proposition. 
+Equality on $\mathbf{2}$ is a proposition, as can be easily proven by induction on it, so the current goal $g(f\;b)=z_1$ is a proposition. 
 We can therefore act as if we have some $b' : B\;a$. 
 We take cases on this. 
 Wlog we only deal with the case where the odd subsequence $s_1$ is constant to $0$. 
@@ -1167,7 +1234,7 @@ We would like to have an $h : \lVert B\; a\rVert \rightarrow C$ such that $\math
 \begin{tikzcd}
                                                              & \mathbf{1} \arrow[rdd, "f'", dashed, bend left] \arrow[d, "h'"', dashed]              &                    &            \\
                                                              & C \arrow[rd, "\mathtt{inl}"]                                                          &                    &            \\
-B\; a \arrow[rr, "\bar{f}"', bend right=49] \arrow[r, "|*|"] & \lVert B\;a\rVert \arrow[r, "f"] \arrow[u, "h", dashed] \arrow[uu, "e", bend left=49] & C+D \arrow[r, "g"] & \mathbf{2}
+B\; a \arrow[rr, "\bar{f}"', bend right=49] \arrow[r, "|\cdot|"] & \lVert B\;a\rVert \arrow[r, "f"] \arrow[u, "h", dashed] \arrow[uu, "e", bend left=49] & C+D \arrow[r, "g"] & \mathbf{2}
 \end{tikzcd}
 \end{center}
 To that end we will first try to construct 
@@ -1215,24 +1282,61 @@ By 2.12.1 of \cite{hottbook} we have $(\mathtt{inl}\; a_1 = \mathtt{inl}\; a_2) 
 We can then deduce that $f'_C\circ e\; b = h\; b$. This concludes the proof of uniqueness of $h'$.
 
 \end{proof}
-
 \begin{lem}
-In $\mathcal{E}$ if $C$ is $\lVert B \rVert$-null then for any $c_1, c_2 : C$, the identity type $c_1=_C c_2 : \mathcal{U}$ is $\lVert B\rVert$-null. 
+$\mathbf{2}$ is $\lVert B \rVert$-null in $\mathcal{E}'$. 
 \end{lem}
 \begin{proof}
-Follows immediately from the fact that $\mathcal{L}_{\lVert B \rVert}$ is a modality and the fourth datum of Definition \ref{modality_definition}.
+Observe that if $\mathbf{2} \simeq (\mathbf{1} + \mathbf{1})$ then the goal would follow from \Cref{coproductIsBnull} and the fact that $\mathbf{1}$ is trivially $\lVert B \rVert$-null. 
+We therefore reduce the goal to providing this equivalence. 
+
+Consider $$f_A : \mathbf{1} \rightarrow \mathbf{2} : * \mapsto 0$$
+and 
+$$f_B : \mathbf{1} \rightarrow \mathbf{2} : * \mapsto 1$$
+We define
+$$h :\equiv \mathtt{ind}_{\mathbf{1} + \mathbf{1}}\;(\lambda\_.\;\mathbf{2})\;f_A\;f_B : (\mathbf{1} + \mathbf{1}) \rightarrow \mathbf{2}$$
+By the computation rules of the induction principle we have $h(\mathtt{inl}\; *) \equiv 0$ and $h(\mathtt{inr}\; *) \equiv 1$. 
+We will show that $h$ is part of an equivalence by showing that it has contractible fibers. 
+Let $y : \mathbf{2}$. 
+We need to show that 
+$$\sum_{x : \mathtt{fib}_h(y)}\prod_{z : \mathtt{fib}_h(y)}x = z$$
+Note that we can decide $(y = 0) + (y = 1)$. 
+Wlog assume $p : y = 0$. 
+We propose 
+$$x :\equiv (\mathtt{inl}\; *,\; \mathtt{idp}_0)$$
+We still have to show that for any $z : \mathtt{fib}_h\; y$, $x = z$. 
+By an easy induction on $\mathbf{1} + \mathbf{1}$ we can prove
+$$\xi : \prod_{a: \mathbf{1} + \mathbf{1}} \Big(\big(\sum_{c : \mathbf{1}} \mathtt{inl}\; c = a\big) + \big( \sum_{d:\mathbf{1}} \mathtt{inr}\; d = a \big) \Big)$$
+then
+$$\xi\; z.\mathtt{fst} : \big(\sum_{c : \mathbf{1}} \mathtt{inl}\; c = z.\mathtt{fst}\big) + \big( \sum_{d:\mathbf{1}} \mathtt{inr}\; d = z.\mathtt{fst} \big)$$
+We take cases on this coproduct. 
+The right case contradicts $z.\mathtt{snd} : h(z.\mathtt{fst}) =_\mathbf{2} 0$. 
+Assume the left case, $\bar{c} : \sum_{c : \mathbf{1}} \mathtt{inl}\; c = z.\mathtt{fst}$. 
+Since $c = *$, as inhabitants of $\mathbf{1}$, by $\mathtt{ap}_\mathtt{inl}$ and concatenation of paths we reach $z.\mathtt{fst} = x.\mathtt{fst}$. 
+We still need to show $z.\mathtt{snd} = x.\mathtt{snd}$. 
+This follows from Theorem 2.7.2 of \cite{hottbook} and the fact that $\mathbf{2}$ is a set i.e. equality on it is a proposition. 
 \end{proof}
 
-\section{CT + LLPO + UTT}
+\begin{lem}
+In $\mathcal{E}'$ if $C$ is $\lVert B \rVert$-null then for any $c_1, c_2 : C$, the identity type $c_1=_C c_2 : \mathcal{U}$ is $\lVert B\rVert$-null. 
+\end{lem}
+\begin{proof}
+Follows immediately from the fact that $\mathcal{L}_{\lVert B \rVert}$ is a modality and the fourth datum of \Cref{modality_definition}.
+\end{proof}
+
+\section{CT, LLPO and MP are consistent with Univalent Type Theory}\label{nullTypesModel}
+The proof of the main result of this text requires dealing with models of Type Theory. 
+Before considering models of TT, one might want to have a look at what Intensional Type Theory \textit{actually is}. 
+\Cref{formalTT} provides a short description of a formal system in which the informal derivations we do in the rest of this text are meant to be taking place. 
 
 We form a null types model $\mathcal{E}'_{\lVert B \rVert}$ as defined in Section 5 Definition 5.1 of \cite{1905.03014} based on $\mathcal{E}'$ from before. 
-The types of this model are the $\lVert B \rVert $-null types of $\mathcal{E}$. 
+The types of this model are the $\lVert B \rVert $-null types of $\mathcal{E}'$. 
 The witnesses of these types are also inherited from $\mathcal{E}'$. 
 Same for contexts. 
 We claim that this model of UTT satisfies CT, MP and LLPO. 
 To prove this claim we first need to procure some tools. 
 \begin{rem}
-When we say that the types and witnesses carry over, we mean that if $\Gamma \vdash_{\mathcal{E}'} A : \mathcal{U}$ and $A$ is $\lVert B \rVert$-null in $\mathcal{E}'$ then $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} \llbracket A\rrbracket^{\mathcal{E}'} : \mathcal{U}$ where $\llbracket A\rrbracket^{\mathcal{E}'}$ is the construct in $\mathcal{E}'$ that \textit{realizes} $\Gamma \vdash_{\mathcal{E}'} A : \mathcal{U}$.  
+When we say that the types and witnesses carry over, we mean that if $\Gamma \vdash_{\mathcal{E}'} A : \mathcal{U}$ and $A$ is $\lVert B \rVert$-null in $\mathcal{E}'$ then $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} \llbracket A\rrbracket^{\mathcal{E}'} : \mathcal{U}$ where $\llbracket A\rrbracket^{\mathcal{E}'}$ is the construct in $\mathcal{E}'$ that \textit{realizes} $\Gamma \vdash_{\mathcal{E}'} A : \mathcal{U}$. 
+We omit the index of $\mathcal{U}$, even while using the formal variant of TT, in the interest of readability.  
 \end{rem}
 \begin{lem}\label{wellPurported}
 The types $\mathbb{N}$, $\mathbf{2}$, $\mathbf{1}$ of $\mathcal{E}'$ carry over to $\mathcal{E}'_{\lVert B \rVert}$ and are each equal to their corresponding $\mathbb{N}$, $\mathbf{2}$, $\mathbf{1}$ of $\mathcal{E}'_{\lVert B \rVert}$ in $\mathcal{E}'_{\lVert B \rVert}$. 
@@ -1240,17 +1344,17 @@ Similarly, if $C$ is a $\lVert B \rVert$-null type in $\mathcal{E}'$ then identi
 Same for dependent products and sums, if in $\mathcal{E}'$ $C : D \rightarrow \mathcal{U}$ such that $C(d)$ is $\lVert B \rVert$-null for all $d : D$ then $\prod_{d:D}C(d)$ carries over to $\mathcal{E}'_{\lVert B \rVert}$ and equals its correspondent and if in addition $C$ is $\lVert B \rVert$-null too in $\mathcal{E}'$, then $\sum_{d:D} C(d)$ carries over and equals its correspondent too. 
 \end{lem}
 \begin{proof}
-The types $\mathbb{N}$ and $\mathbf{2}$ are $\lVert B \rVert$-null in $\mathcal{E}'$ as shown in \ref{NisBnull} and its corollary. 
+The types $\mathbb{N}$ and $\mathbf{2}$ are $\lVert B \rVert$-null in $\mathcal{E}'$ as shown in \Cref{NisBnull} and its corollary. 
 It's trivial to show that the unit type $\mathbf{1}$ is $\lVert B \rVert$-null too. 
-$\lVert B \rVert$-nullness of dependent products and sums under the assumptions above, follow from \ref{reflSubuniversePiTypes} and the fact that nullification is a modality and therefore forms a $\sum$-closed reflective subuniverse as seen in \ref{reflectiveSubuniverse}. 
-$\lVert B \rVert$-nullness of identity types follows once again from the fact that nullification is a modality and the fourth datum of \ref{modality_definition}. 
+$\lVert B \rVert$-nullness of dependent products and sums under the assumptions above, follow from \Cref{reflSubuniversePiTypes} and the fact that nullification is a modality and therefore forms a $\sum$-closed reflective subuniverse as seen in \Cref{reflectiveSubuniverse}. 
+$\lVert B \rVert$-nullness of identity types follows once again from the fact that nullification is a modality and the fourth datum of \Cref{modality_definition}. 
 
 We've proven that these types carry over to $\mathcal{E}'_{\lVert B \rVert}$. 
 What is left, is to show that they are equal to their corresponding construction in $\mathcal{E}'_{\lVert B \rVert}$, i.e. in the case of the dependent product we would have to show that for $C : D \rightarrow \mathcal{U}$, where $C$ and $D$ are types in $\mathcal{E}'_{\lVert B \rVert}$, the type $\llbracket \prod_{d:D}C(d) \rrbracket^{\mathcal{E}'}$ in $\mathcal{E}'_{\lVert B \rVert}$ is equal to the local $\prod_{d:D}C(d)$ in $\mathcal{E}'_{\lVert B \rVert}$. 
 
 Since we are working under univalence, equality follows from equivalence. 
 We can prove this using the data of these inductive types, constructors like $\mathtt{succ},\;0$ and the induction principles, which all carry over to $\mathcal{E}'_{\lVert B \rVert}$ since their types are $\lVert B \rVert$-null in $\mathcal{E}'$. 
-We omit the details on how done and direct those looking for more exposition on how this should be carried out to Section 5.4 of \cite{hottbook} which talks about universal properties of inductive types. 
+We omit the details on how this is done and direct those looking for more exposition on how this should be carried out to Section 5.4 of \cite{hottbook} which talks about universal properties of inductive types. 
 \end{proof}
 It should be mentioned that the above applies to coproducts too, whose case we work out in detail, to elucidate the more general case above. 
 % We would like to identify what type constructions in $\mathcal{E}'_{\lVert B \rVert}$ correspond to in $\mathcal{E}'$ and by this we mean the following. Suppose for example $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} C$ and 
@@ -1266,12 +1370,12 @@ $$\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} p : \big( (C +D) = \llbracket C
 \end{exmp}
 \begin{proof}
 Since $C, D$ are types in $\mathcal{E}'_{\lVert B \rVert}$, they must be $\lVert B \rVert$-null types in $\mathcal{E}'$. 
-By \ref{coproductIsBnull} we have that $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} \llbracket C + D\rrbracket^{\mathcal{E}'} : \mathcal{U}$. 
+By \Cref{coproductIsBnull} we have that $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} \llbracket C + D\rrbracket^{\mathcal{E}'} : \mathcal{U}$. 
 It only remains to show that $ \llbracket C + D\rrbracket^{\mathcal{E}'}$ is equal to $C+D$ in $\mathcal{E}'_{\lVert B \rVert}$. 
 Since this is a UTT model, by univalence it's enough to show that the types are equivalent. 
 % We reduce this to showing that $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} \llbracket C + D\rrbracket^{\mathcal{E}'} : \mathcal{U}$ has the data required for it to be the coproduct of $C$ and $D$ in $\mathcal{E}'_{\lVert B \rVert}$. 
 % Then by uniqueness it would follow that it's equivalent to $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} C +D : \mathcal{U}$. 
-The coproduct data of $ \llbracket C + D\rrbracket^{\mathcal{E}'}$ in $\mathcal{E}'$ are available in $\mathcal{E}'_{\lVert B \rVert}$, since their types must be $\lVert B \rVert$-null by \ref{reflSubuniversePiTypes}. 
+The coproduct data of $ \llbracket C + D\rrbracket^{\mathcal{E}'}$ in $\mathcal{E}'$ are available in $\mathcal{E}'_{\lVert B \rVert}$, since their types must be $\lVert B \rVert$-null by \Cref{reflSubuniversePiTypes}. 
 We name them $\mathtt{ind}_1$, $\mathtt{inl}_1$ and $\mathtt{inr}_1$ to distinguish them from those of $\Gamma \vdash_{\mathcal{E}'_{\lVert B \rVert}} C +D : \mathcal{U}$ whose we denote with $\mathtt{ind}_2$, $\mathtt{inl}_2$ and $\mathtt{inr}_2$. 
 It's easy to verify that 
 $$(\mathtt{ind}_2\;\mathtt{inl}_1\;\mathtt{inr}_1) : (C+D) \rightarrow \llbracket C + D\rrbracket^{\mathcal{E}'}$$
@@ -1289,8 +1393,8 @@ CT is the following type
 $$\prod_{f : \mathbb{N}\rightarrow \mathbb{N}} \Big\lVert \sum_{e : \mathbb{N}} \prod_{x : \mathbb{N}} \sum_{z : \mathbb{N}} T(e,x,z) \times U(z) = f(x) \Big\rVert$$
 which, after adopting the alias CT for the above type, would be the construct $\vdash_{\mathcal{E}'_{\lVert B \rVert}} \textnormal{CT} : \mathcal{U}$ in the model $\mathcal{E}'_{\lVert B \rVert}$. 
 %Since witnesses are carried over, it's enough to find a witness for $\vdash_{\mathcal{E}'} \llbracket\textnormal{CT}\rrbracket^{\mathcal{E}'_{\lVert B \rVert}} : \mathcal{U}$. 
-Note that $T$ and $U$ are both functions from $\mathbb{N}$ to $\mathbb{N}$, so the results in \ref{wellPurported} extend to them. 
-With this in mind, along with the general result of \ref{wellPurported} and Corollary 5.6 of \cite{1905.03014}, we can deduce, by induction on type formation, that there is a path $p$ in $\mathcal{E}'_{\lVert B \rVert}$ between 
+Note that $T$ and $U$ are both functions from $\mathbb{N}$ to $\mathbb{N}$, so the results in \Cref{wellPurported} extend to them. 
+With this in mind, along with the general result of \Cref{wellPurported} and Corollary 5.6 of \cite{1905.03014}, we can deduce, by induction on type formation, that there is a path $p$ in $\mathcal{E}'_{\lVert B \rVert}$ between 
 $$\vdash_{\mathcal{E}'_{\lVert B \rVert}} \textnormal{CT} : \mathcal{U}$$ 
 and the type 
 $$\vdash_{\mathcal{E}'_{\lVert B \rVert}} \bigg\llbracket \prod_{f : \mathbb{N}\rightarrow \mathbb{N}} \mathcal{L}_{\lVert B \rVert}\;\Big\lVert \sum_{e : \mathbb{N}} \prod_{x : \mathbb{N}} \sum_{z : \mathbb{N}} T(e,x,z) \times U(z) = f(x) \Big\rVert \bigg\rrbracket^{\mathcal{E}'} : \mathcal{U}$$
@@ -1299,7 +1403,7 @@ $$\vdash_{\mathcal{E}'} \prod_{f : \mathbb{N}\rightarrow \mathbb{N}} \mathcal{L}
 So we need only find a witness of this last type in $\mathcal{E}'$ which would carry over to the same type in $\mathcal{E}'_{\lVert B \rVert}$ and could be transported along $p$ to conclude the case of CT. 
 This type can be proved to follow from the interpretation of CT in $\mathcal{E}'$ 
 $$\vdash_{\mathcal{E}'} \textnormal{CT} : \mathcal{U}$$
-which we know to be inhabited by \ref{EPrime}. 
+which we know to be inhabited by \Cref{EPrime}. 
 
 For MP we follow exactly the same steps as for CT. 
 
@@ -1307,7 +1411,7 @@ For LLPO we first reduce proving
 $$\vdash_{\mathcal{E}'_{\lVert B \rVert}} \textnormal{LLPO} : \mathcal{U}$$
 to providing a witness for 
 $$a : A \vdash_{\mathcal{E}'_{\lVert B \rVert}} \lVert B\;a\rVert : \mathcal{U}$$
-where $\textnormal{LLPO} \equiv \prod_{a : A}\lVert B\;a \rVert$ for $A$ and $B$ presented in \ref{AandB}. 
+where $\textnormal{LLPO} \equiv \prod_{a : A}\lVert B\;a \rVert$ for $A$ and $B$ presented in \Cref{AandB}. 
 Then work as in the case for CT and prove a path $p$ between
 $$a : A \vdash_{\mathcal{E}'_{\lVert B \rVert}} \lVert B\;a\rVert : \mathcal{U}$$
 and
@@ -1316,7 +1420,7 @@ By Corollary 5.5 of \cite{1905.03014} we have a witness of the last type.
 We transport it over $p$ to conclude the proof. 
 \end{proof}
 
-% By \ref{NisBnull} we have that $\llbracket \mathbb{N} \rrbracket^{\mathcal{E}_{\lVert B \rVert}} = \llbracket \mathbb{N} \rrbracket^\mathcal{E}$. 
+% By \Cref{NisBnull} we have that $\llbracket \mathbb{N} \rrbracket^{\mathcal{E}_{\lVert B \rVert}} = \llbracket \mathbb{N} \rrbracket^\mathcal{E}$. 
 % Let $\mathcal{L}_{\lVert B \rVert} : \mathcal{U} \rightarrow \mathcal{U}$ be the $\lVert B \rVert$-nullification operator on $\mathcal{E}$. 
 % On $\mathcal{E}_{\lVert B \rVert}$, dependend products, dependent sums and identity on naturals are all inherited from $\mathcal{E}$, while propositional truncation $\llbracket \lVert \cdot \rVert \rrbracket^{\mathcal{E}_{\lVert B \rVert}}$ is $\mathcal{L}_{\lVert B \rVert} \lVert\cdot \rVert $ on $\mathcal{E}$.
 
@@ -1326,7 +1430,7 @@ We transport it over $p$ to conclude the proof.
 % It's trivial to construct an inhabitant, in $\mathcal{E}$, of the above type using a witness of CT, which we know to be true in $\mathcal{E}$. 
 
 % We shall now have a look at the interpretation of LLPO in $\mathcal{E}_{\lVert B \rVert}$. 
-% Recall the full definition \ref{LLPO} of LLPO
+% Recall the full definition \Cref{LLPO} of LLPO
 % $$\prod_{a : A}\lVert \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst}) \rVert$$
 % where $$A :\equiv \sum_{a: \mathbf{2}^\mathbb{N}}\mathtt{atMost1one}\;a$$
 % Since $\mathtt{atMost1one}$ is formed using $\mathbb{N}$, $\mathbf{2}$, equality on naturals and $\mathbf{2}$, dependent sum and product, all of which are preserved under modalities, we have that the interpretation of $\mathtt{atMost1one}$ in $\mathcal{E}_{\lVert B \rVert}$ is the same type as in $\mathcal{E}$. 
@@ -1339,14 +1443,25 @@ We transport it over $p$ to conclude the proof.
 % We once again utilize our shorthand $B\; a \equiv \mathtt{p_{odd}}(a.\mathtt{fst}) + \mathtt{p_{even}}(a.\mathtt{fst})$. 
 % Note that $\mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$ is $\lVert B \rVert$-null, which means that we have the following equivalence
 % $$\big(\mathcal{L}_{\lVert B \rVert}\; \lVert B\;a\rVert\big) \simeq \big(\lVert B\; a \rVert \rightarrow \mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert\big)$$
-% So it is enough to prove $\lVert B\; a \rVert \rightarrow \mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$, for which we already have a witness in the form of the first datum of Definition \ref{modality_definition}, since $\mathcal{L}_{\lVert B \rVert}$ is a modality. 
+% So it is enough to prove $\lVert B\; a \rVert \rightarrow \mathcal{L}_{\lVert B \rVert}\;\lVert B\; a \rVert$, for which we already have a witness in the form of the first datum of Definition \Cref{modality_definition}, since $\mathcal{L}_{\lVert B \rVert}$ is a modality. 
 
 % Therefore, $\mathcal{E}_{\lVert B \rVert}$ is a model of univalent type theory where both CT and LLPO hold.
+\chapter{Conclusion}
+It was already shown in \cite{1905.03014} that Church's Thesis and Markov's Principle are consistent with Univalent Type Theory. 
+Adopting LLPO in the above composite theory, it being a considerable source of non-constructivity, could raise worries of contradiction. 
+Worries are eased as CT and LLPO have been shown in \cite{rathjen2018lifschitz} to be consistent in the setting of Constructive Set Theory. 
+Worries are finally laid to rest as we produce a non-trivial (the empty type is not inhabited) model of UTT, LLPO, CT and MP. 
 
-\chapter*{Appendix}
+We've essentially advanced a tiny bit the investigation of how many assumptions about `choice' one can get away with, in a theory that includes CT, and still remain consistent. 
+%\chapter*{Appendix}
+\appendix
+%\renewcommand{\thesection}{\Alph{subsection}}
+\appendixpage
+\addappheadtotoc
+\chapter{Constructive Arithmetic}
 Following \cite{bridges_richman_1987_2} we develop a constructive theory of rational and real numbers.
 \section{Rational numbers}
-We define the rationals as $\mathbb{Q} :\equiv \sum_{n,m: \mathbb{I}}m \neq 0$ where $m$ is the denominator and $n$ the numerator. 
+We define the rationals as $\mathbb{Q} :\equiv \sum_{n,m: \mathbb{I}}m \neq 0$ where $\mathbb{I}$ is the type of integers (may be defined as the product of $\mathbf{2}$ and $\mathbb{N}$), $m$ is the denominator and $n$ the numerator. 
 We now need to codify the usual notion of equality of rationals into type theory. 
 We define it as the infix predicate
 $$\doteq\; :\equiv \prod_{q_1, q_2 : \mathbb{Q}} (q_1.\mathtt{fst} \cdot q_2.\mathtt{snd}) = (q_2.\mathtt{fst} \cdot q_1.\mathtt{snd})$$
@@ -1376,7 +1491,8 @@ $$\doteq\;:\equiv \prod_{x,y : \mathbb{R}} \prod_{n : \mathbb{N}} \mathtt{abs}\b
 This, like the rational dot equality, is what we mean when talk about equality between reals, not the type theoretic primitive. 
 
 We define what it means for a real number to be \textbf{positive}
-$$\mathtt{positive} :\equiv \prod_{x: \mathbb{R}} \sum_{n : \mathbb{N}} x.\mathtt{fst}(n) > \frac{1}{n}$$
+$$\mathtt{positive}  :\mathbb{R} \rightarrow \mathcal{U}$$
+$$\mathtt{positive} :\equiv \lambda(x: \mathbb{R}).\; \sum_{n : \mathbb{N}} x.\mathtt{fst}(n) > \frac{1}{n}$$
 
 We define the order predicate `$<$' on reals with infix notation
 $$x<y\; :\equiv \mathtt{positive}\big( \mathtt{abs}(y-x) \big)$$
@@ -1390,6 +1506,63 @@ $$x \leq y :\equiv \prod_{n : \mathbb{N}} \big( y.\mathtt{fst}(n) - x.\mathtt{fs
 % \begin{prop}[Apartness]
 % For $x,y : \mathbb{R}$ if $x\;\#\;y$ then for any $z:\mathbb{R}$ we have $(x\;\#\;z) + (y\;\#\;z)$
 % \end{prop}
+\chapter{Formal Type Theory}\label{formalTT}
+Building blocks of the formal system will be juxtaposed against their informal counterparts. 
+We direct those looking for a full description to Appendices A.1 and A.2 of \cite{hottbook}. 
+When working informally, at any given point we have a collection of assumptions about variables and their typings that are available to be used in completing the next step of our derivation. 
+This is captured by the \textit{context} which is a list of typings $x_1 : A_1,\; x_2 : A_2,\;\ldots,\;x_n : A_n$ of variables $x_i$ and their types $A_i$. 
+Each $x_i$ must be distinct. 
+\begin{exmp}
+As one would guess
+$$x_1 : \mathbf{2},\; x_2 : \mathbf{2},\; x_3 : (x_1=_\mathbf{2} x_2)$$
+is a legitimate context. 
+\end{exmp}
+
+The deductive system of TT is a sort of a sequent calculus where we infer sequents called \textit{judgments} which come in three forms.
+
+The first one is $\Gamma \vdash a : A$ where $\Gamma$ is a context and $a : A$ the statement that $a$ is a term of type $A$. 
+Both $a$ and $A$ are composed exclusively by \textit{terms over} $\Gamma$. 
+By terms over $\Gamma$ we mean terms that can appear in the right hand side of valid judgments with $\Gamma$ as the left hand side, e.g. $b$ is a term over $\Gamma$ if $\Gamma \vdash b : B$ can be inferred in our system. 
+
+The second form is $\Gamma \vdash a_1 \equiv a_2 : A$ and is the formalization of the statement $a_1 \equiv a_2$ for $a_1, a_2 : A$. 
+
+The rules of inferrence prescribe how we are allowed to combine said terms and derive valid judgments. 
+The judgment $\Gamma \vdash a  : A$ corresponds to the exact step of an informal derivation where we construct the witness $a : A$ using terms over $\Gamma$ which we constructed in earlier steps of the same derivation. 
+As one might expect, the deductive system is populated with inference rules that allow us to deduce valid judgments from collections of others; to illustrate
+$$\frac{J_1,J_2,\ldots,J_n}{J}$$
+All the constructions and rules described in \Cref{informalTT} should and can be transcribed in this form. 
+Note that some parts of \Cref{informalTT} need not be formalized separately but can instead be special cases of one another. 
+As an example, with this in mind, in our system, non-dependent functions are just special cases of dependent functions and formally we do not distinguish between the two. 
+Specifically, families of types $B : A\rightarrow \mathcal{U}$ which we presuppose in our informal treatment of dependent products, are formally expressed by types over contexts $a : A \vdash B$. 
+Another example is the product type which is formalized as a dependent sum type. 
+
+The third form of judgments asserts the correctness of a context. 
+We write it as $\Gamma\; \mathtt{ctx}$. 
+There are also two rules that let us build valid contexts. 
+One affirming the empty context's validity and can be the root of a deduction tree
+$$\frac{~}{\cdot\; \mathtt{ctx}}$$
+and one which lets us extend a given context $\Gamma$ with \textit{a type over it} (a term which, under the assumptions in $\Gamma$, can be inferred to be of type $\mathcal{U}_i$ for some $i : \mathbb{N}$)
+$$\frac{\Gamma \vdash A : \mathcal{U}_i}{(\Gamma,\; x: A)\; \mathtt{ctx}}$$
+where $x$ must differ from all variables in $\Gamma$. 
+\begin{exmp}
+Consider the case of constructing a function. 
+Suppose that the current context is $\Gamma,\;x : A$ where $x$ is a variable. 
+If we can deduce that $b : B$ (where $b, B$ might not be ground terms but instead contain variables like $x$ or those in $\Gamma$) then this corresponds to a valid judgment $\Gamma,\;x :A \vdash b : B$. 
+Formally, this is captured by the rule
+$$\frac{\Gamma,\;x : A \vdash b : B}{\Gamma \vdash \lambda(x : A).b : \prod_{x : A}B}$$
+Note that the function and its type $\prod_{x : A}B$ are allowed to be dependent, as we allowed $b$ and $B$ to be open terms containing variables, that is why there is no point in specifying $B(x)$. 
+\end{exmp} 
+\begin{exmp}
+Suppose, like in the previous example that we are in the situation captured by the judgment $\Gamma,\;x :A \vdash b : B$. Suppose that we also have a term $a$ over $\Gamma$ i.e. $\Gamma \vdash a : A$. 
+Then we should be able to deduce that application of $\lambda(x : A).\;b$ on $a$ would be judgmentally equal to $b[a/x]$ which is the result of replacing all occurences of $x$ in $b$ with $a$. 
+Also both should be of type $B[a/x]$. 
+These facts are captured by the following three judgments
+$$\frac{\Gamma,\;x : A \vdash b : B,\qquad \Gamma \vdash a : A}{\Gamma \vdash \big(\lambda(x : A).b\big)(a) : B[a/x]}$$
+$$\frac{\Gamma,\;x : A \vdash b : B,\qquad \Gamma \vdash a : A}{\Gamma \vdash b[a/x] : B[a/x]}$$
+$$\frac{\Gamma,\;x : A \vdash b : B,\qquad \Gamma \vdash a : A}{\Gamma \vdash \Big(\big(\lambda(x : A).b\big)(a) \equiv b[a/x]\Big) : B[a/x]}$$
+
+The formal system has enough rules to enable deducing all the properties of judgmental equality we mentioned in the definition of identity types.
+\end{exmp}
 
 \printbibliography
 
