@@ -116,7 +116,43 @@ A short introduction to Type Theory is provided.
 Fragments of RUSS are then formalized inside it. 
 A construction that follows closely Van Oosten's generalization of Lifschitz' Realizability is carried out to culminate with a consistency result; that of our selection of RUSS axioms under HoTT. 
 
-\chapter{Type Theory}
+\tableofcontents
+
+\chapter{Introduction}
+Russian Mathematics (RUSS) is a school of constructive mathematics in which computability plays a central role. 
+For reference, consider an axiomatization of RUSS on top of Bishop's Mathematics \cite{bridges_richman_1987_1}. 
+Practitioners of RUSS often have an extended array of axioms to pick from in addition to the aforementioned axiomatization. 
+This thesis focuses on a variant of RUSS with the axioms of Church's Thesis, Markov's Principle and the Lesser Limited Principle of Omniscience (LLPO) with the aim of proving that this theory, when formalized in Homotopy Type Theory (HoTT), is consistent. 
+That is, we first formalize the above in a fragment of the variant of Martin-L\"of's Type Theory (TT) with axiom of Univalence presented in \cite{hottbook}. 
+We then show that the resulting theory has a model. 
+To achieve this, using a model of TT from \cite{1905.03014}, which satisfies univalence, Church's Thesis and Markov's Principle, as a starting point, we follow a method inspired by the generalization of Lifschitz' Realizability to toposes described in \cite{lifRealGeneralOosten}. 
+Essentially, the construction on the effective topos involves defining a morphism $j : \Omega \rightarrow \Omega$ with certain properties, where $\Omega$ is the subobject classifier of the topos. 
+Then a process called `sheafification' based on $j$ is carried out to reach the desired subtopos. 
+Analogously, in the words of Section 3.3 of \cite{1706.07526}, our $\Omega$ in TT is what we call the `subuniverse of propositions' $\mathtt{Prop}$, then $j$ is a `nullification operator' based on LLPO and sheafification is nullification on the family of all types of the form $j(X)$ for types $X$ such that $j(X)$ holds true (the type inhabited). 
+
+As a sidenote, in the rest of this text we always refer to Univalent Type Theory (UTT) instead Homotopy Type Theory. 
+This is because we want to stress the fact that the fragment of Type Theory we work with is rather barebones. 
+Normally HoTT is founded on top of TT by extending it with the axiom of Univalence and a handful of higher inductive types. 
+Our UTT assumes Univalence but we don't bother to equip it with all the usual higher inductive types. 
+With this in mind, maybe swapping HoTT for UTT in the title would make it more accurate. 
+
+\section{Structure of the Thesis}
+This thesis can be divided into two parts. 
+The second part constitutes the main result of this thesis. 
+The first part is meant to provide the necessary foundation for the reader to be able to follow the argumentation in the second part. 
+
+The first one starts with \Cref{ChapterTT} which provides a short introduction to a variant of Martin-L\"of's Type Theory. 
+\Cref{ChapterModalities} introduces modalities and nullification which are the most important tools in our disposal. 
+The following \cref{ChapterComputability,ChapterLLPO} formalize a bit of Recursion Theory and the Lesser Limited Principle of Omniscience in Type Theory. 
+Some exposition is also provided when it comes to the latter, as well as some motivating results that justify our interest in it. 
+
+The second part is \Cref{RUSS}. 
+This one can be further divided into two parts. 
+The prologue of the chapter, up to and including \Cref{EPrime}, comprises an amendment of a fragment of \cite{1905.03014} and works towards procuring an intermediate model. 
+The reader not familiar with \cite{1905.03014} might be inclined to have only a cursive look at this prologue. 
+The rest of the chapter, in which we extract a model of the desired theory from `inside' the intermediate model, is self-contained. 
+
+\chapter{Type Theory}\label{ChapterTT}
 %\section{Introduction}
 Martin-L\"of's intensional \textit{Type Theory} is a formal language and deductive system, that is self sufficient in the sense that it need not be formulated as a collection of axioms on top of some other formal system like First Order Logic, instead its deductive system can be built on top of its own formal language. 
 The version of it that we will be considering in this text is the one used in \cite{hottbook}. 
@@ -138,7 +174,7 @@ Type Theory is rich in type formation rules that gives us the breadth required t
 %This section constitutes an informal treatment of Type Theory. 
 In this section we go over all the types of Type Theory we need. 
 When working out proofs in TT, we use the constructs presented here. 
-Nevertheless, this presentation is meant to reflect a formal system like the one in \Cref{formalTT}. 
+Nevertheless, this is an informal presentation meant to reflect a formal system like the one in \Cref{formalTT}. 
 We have the following list of types at our disposal.
 \begin{itemize}
 	\item Given types $A, B : \mathcal{U}$ we can define the type $A \rightarrow B : \mathcal{U}$ of \textbf{functions} from $A$ to $B$. 
@@ -445,7 +481,7 @@ This approach is called `propositions as mere propositions' in \cite{hottbook}.
 Note that the above are all chosen so that they preserve mere propositions, e.g. $A\times B$ is a mere proposition. 
 The use of the above notation is interchangeable in the sections to follow. 
 We will try to specify whether a type is \textit{merely} or \textit{actually} inhabited to avoid ambiguity whenever needed. 
-\chapter{Modalities}
+\chapter{Modalities}\label{ChapterModalities}
 In this chapter we introduce \textit{modalities}, their definition and important results about them, adapted from \cite{1706.07526} and Section 7.7 of \cite{hottbook}. 
 %Under the view of types as $(\infty, 1)$-categories, functions between them are functors. 
 %We can then view the universe $\mathcal{U}$ itslef as a category. 
@@ -620,7 +656,7 @@ If $\bigcirc$ is a nullification at a family of mere propositions, then the subu
 The significance of this lies in that it establishes an equivalence between $\mathcal{U}_{\mathcal{L}_B}$ and $\mathcal{L}_B' \mathcal{U}_{\mathcal{L}_B}$ in $\mathcal{U}'$ where $\mathcal{U} : \mathcal{U}'$. 
 This equivalence will come in handy later in \Cref{nullTypesModel}, when we will inductively apply $\mathcal{L}_B$ to a type's construction hoping for the resulting type to be equivalent to the one we started with, or at least similar enough.
 
-\chapter{Computability}
+\chapter{Computability}\label{ChapterComputability}
 We quickly have a look at a spoonful of Recursion theory which we formalize in Type theory. 
 The reader is expected to be somewhat familiar with Turing machines, as we will not be delving into their technical details. 
 %Instead, we follow a similar approach to that of \cite{bridges_richman_1987} and assume an effective enumeration of 
@@ -646,7 +682,7 @@ In other words, Church's thesis assures us that for every $f : \mathbb{N} \right
 For a more complete development of Recursion Theory in a constructive setting, we point to \cite{recursionInHA} and \cite{bridges_richman_1987_1} which use intuitionistic arithmetic and Bishop's constructive mathematics, respectively, as the foundation. 
 This chapter was inspired by the latter. 
 
-\chapter{The Lesser Limited Principle of Omniscience}
+\chapter{The Lesser Limited Principle of Omniscience}\label{ChapterLLPO}
 We define the Lesser Limited Principle of Omniscience, which we view as an integral axiom of our theory of Russian Mathematics. 
 The rest of the chapter, which the reader may skip as it does not come up again, is dedicated to providing background information on LLPO. 
 More specifically, we are interested in clarifying how much `non-constructive power' we get by adopting it. 
@@ -902,7 +938,7 @@ In the left case we have $x_m < -\frac{1}{m}$.
 But then $\mathtt{abs}(x_l-x_m) > \frac{1}{l} + \frac{1}{m}$ this is in contradiction with our assumption that $x$ is a real number. 
 \end{proof}
 
-\chapter{Russian Mathematics under Univalence}
+\chapter{Russian Mathematics under Univalence}\label{RUSS}
 In this chapter we present the main result of this text, which is showing that Univalent Type Theory is consistent with Church's thesis, Markov's principle and LLPO. 
 Markov's Principle is the following statement
 $$\Big(\prod_{n : \mathbb{N}}(P\; n + \neg P\; n)\Big) \rightarrow  \Big(\neg \prod_{n : \mathbb{N}}\neg P\; n\Big)\rightarrow \Big\lVert \sum_{n : \mathbb{N}} P\; n \Big\rVert$$
@@ -1023,7 +1059,7 @@ So, given that CT, MP and IP' are in the right form required by Theorem 6.1 of \
 $\mathcal{E}'$ is an Orton-Pitts model of UTT in which CT, MP and IP' hold.
 \end{prop}
 
-\section{Null types in $\mathcal{E}'$}
+\section{Null types in $\mathcal{E}'$}\label{SectionNullTypesInE}
 The proofs in this section are all about $\lVert B \rVert$-nullness i.e. equivalence between function types (see \Cref{Bnull}). 
 We work in the context of Intensional Type Theory. 
 Our approach in showing that some $F: C\rightarrow D$ is a map with contractible fibers, is to provide for any $d :D$ (merely) some $c :C$ such that $f(c) = d$ and then show that such a $c$ is unique (its type is a proposition), where $C,D$ are said function types. 
