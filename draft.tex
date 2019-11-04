@@ -110,31 +110,34 @@
 %\end{titlepage}
 %\hypersetup{pageanchor=true}
 %Below is an example of the problem environment
-\chapter*{Abstract}
-This thesis explores a potential development of the constructive tradition of Russian Mathematics (RUSS) inside Homotopy Type Theory (HoTT). 
+%\chapter*{Abstract}
+\begin{abstract}
+This thesis explores a potential development of the constructive tradition of Russian Constructive Mathematics (RUSS) inside Homotopy Type Theory (HoTT). 
 A short introduction to Type Theory is provided. 
 Fragments of RUSS are then formalized inside it. 
 A construction that follows closely Van Oosten's generalization of Lifschitz' Realizability is carried out to culminate with a consistency result; that of our selection of RUSS axioms under HoTT. 
+\end{abstract}
 
 \tableofcontents
 
 \chapter{Introduction}
-Russian Mathematics (RUSS) is a school of constructive mathematics in which computability plays a central role. 
+Russian Constructive Mathematics (RUSS) is a school of constructive mathematics in which computability plays a central role. 
 For reference, consider an axiomatization of RUSS on top of Bishop's Mathematics \cite{bridges_richman_1987_1}. 
 Practitioners of RUSS often have an extended array of axioms to pick from in addition to the aforementioned axiomatization. 
 This thesis focuses on a variant of RUSS with the axioms of Church's Thesis, Markov's Principle and the Lesser Limited Principle of Omniscience (LLPO) with the aim of proving that this theory, when formalized in Homotopy Type Theory (HoTT), is consistent. 
+(Note that unlike the first two axioms, traditionally LLPO is not an axiom of RUSS, yet we choose to include it in our theory.) 
 That is, we first formalize the above in a fragment of the variant of Martin-L\"of's Type Theory (TT) with axiom of Univalence presented in \cite{hottbook}. 
 We then show that the resulting theory has a model. 
-To achieve this, using a model of TT from \cite{1905.03014}, which satisfies univalence, Church's Thesis and Markov's Principle, as a starting point, we follow a method inspired by the generalization of Lifschitz' Realizability to toposes described in \cite{lifRealGeneralOosten}. 
+To achieve this, using a model of TT from \cite{1905.03014}, which satisfies univalence, Church's Thesis and Markov's Principle, as a starting point, we follow a method inspired by the generalization of Lifschitz' Realizability to toposes described in \cite{lifRealGeneralOosten}, where the Lifschitz realizability subtopos is presented as the topos of sheaves over a local operator. 
 Essentially, the construction on the effective topos involves defining a morphism $j : \Omega \rightarrow \Omega$ with certain properties, where $\Omega$ is the subobject classifier of the topos. 
 Then a process called `sheafification' based on $j$ is carried out to reach the desired subtopos. 
-Analogously, in the words of Section 3.3 of \cite{1706.07526}, our $\Omega$ in TT is what we call the `subuniverse of propositions' $\mathtt{Prop}$, then $j$ is a `nullification operator' based on LLPO and sheafification is nullification on the family of all types of the form $j(X)$ for types $X$ such that $j(X)$ holds true (the type inhabited). 
+Analogously, in the words of Section 3.3 of \cite{1706.07526}, our $\Omega$ in TT is what we call the `subuniverse of propositions' $\mathtt{Prop}$, then sheafification corresponds to nullification in our case. 
 
 As a sidenote, in the rest of this text we always refer to Univalent Type Theory (UTT) instead Homotopy Type Theory. 
 This is because we want to stress the fact that the fragment of Type Theory we work with is rather barebones. 
 Normally HoTT is founded on top of TT by extending it with the axiom of Univalence and a handful of higher inductive types. 
 Our UTT assumes Univalence but we don't bother to equip it with all the usual higher inductive types. 
-With this in mind, maybe swapping HoTT for UTT in the title would make it more accurate. 
+Nevertheless, we expect it to be possible, in accordance with Remark 3.23 of \cite{1706.07526}, for the model of UTT that we are constructing to inherit higher inductive types from the source model.
 
 \section{Structure of the Thesis}
 This thesis can be divided into two parts. 
@@ -160,7 +163,7 @@ This chapter presents, in a concise manner, definitions and results found in cha
 
 Central to Type Theory is the notion of \textit{Type}. Every term $a$ in Type Theory we come across, must lie in some type $A$, which we denote as $a : A$. 
 Types themselves are terms of \textit{Universes}, which are types and terms themselves. 
-To avoid impredicativity we assume a countable hierarchy of universes $\mathcal{U}_1,\mathcal{U}_2,\mathcal{U}_3,\ldots$ which is cummulative i.e. every universe includes all previous universes and their types. 
+To avoid impredicativity we assume a countable hierarchy of universes $\mathcal{U}_1,\mathcal{U}_2,\mathcal{U}_3,\ldots$ which is cumulative i.e. every universe includes all previous universes and their types. 
 While working in type theory we usually simplify our view of this hierarchy and pick some $\mathcal{U}$, of arbitrary index that we do not specify, to use as our workspace. 
 %Note that the relation $:$ is transitive, so $a : A$ and $A : B$ imply $a : B$. 
 %This induces the cummulative hierarchy shape of the universe of types $\mathcal{U}$, wherein every level of the universe includes all lower levels and their types.
@@ -683,7 +686,7 @@ For a more complete development of Recursion Theory in a constructive setting, w
 This chapter was inspired by the latter. 
 
 \chapter{The Lesser Limited Principle of Omniscience}\label{ChapterLLPO}
-We define the Lesser Limited Principle of Omniscience, which we view as an integral axiom of our theory of Russian Mathematics. 
+We define the Lesser Limited Principle of Omniscience, which we append to our theory of Russian Constructive Mathematics. 
 The rest of the chapter, which the reader may skip as it does not come up again, is dedicated to providing background information on LLPO. 
 More specifically, we are interested in clarifying how much `non-constructive power' we get by adopting it. 
 
@@ -849,7 +852,7 @@ In both cases we have $G.\mathtt{fst} (e, 2z + j) = 1$.
 We conclude the proof by providing $G.\mathtt{fst}$ as the first component and the product of $G.\mathtt{snd}$ with $Q\; G.\mathtt{fst}$ as the second.
 \end{proof}
 The following theorem and its proof are adapted from Corollary 1.6 of \cite{bridges_richman_1987_1}. 
-\begin{thm}
+\begin{thm}\label{ACCandCTandLLPOimplyBottom}
 %In the context of HoTT, 
 $$ACC \times CT \times LLPO \rightarrow \bot$$
 \end{thm}
@@ -938,7 +941,7 @@ In the left case we have $x_m < -\frac{1}{m}$.
 But then $\mathtt{abs}(x_l-x_m) > \frac{1}{l} + \frac{1}{m}$ this is in contradiction with our assumption that $x$ is a real number. 
 \end{proof}
 
-\chapter{Russian Mathematics under Univalence}\label{RUSS}
+\chapter{Russian Constructive Mathematics under Univalence}\label{RUSS}
 In this chapter we present the main result of this text, which is showing that Univalent Type Theory is consistent with Church's thesis, Markov's principle and LLPO. 
 Markov's Principle is the following statement
 $$\Big(\prod_{n : \mathbb{N}}(P\; n + \neg P\; n)\Big) \rightarrow  \Big(\neg \prod_{n : \mathbb{N}}\neg P\; n\Big)\rightarrow \Big\lVert \sum_{n : \mathbb{N}} P\; n \Big\rVert$$
@@ -1015,13 +1018,13 @@ We drop the truncation around $\lVert \sum_{z : \mathbb{N}} \prod_{p : B\; a} k\
 \\ &\_ :
 \begin{split}
 \bigg( \prod_{\bar{s} : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2 \cdot n)\big) + \big(\prod_{n : \mathbb{N}} \bar{s}(n) = a(2\cdot n +1)\big) \Big) \rightarrow \\
-	\quad \Big(\prod_{n : \mathbb{N}}\bar{s}\; n = 0 \Big) \rightarrow  \sum_{\bar{z} : \mathbb{N}} \prod_{p : B\; a} k\; p = \bar{z}  \bigg)
+	\quad \Big(\prod_{n : \mathbb{N}}\bar{s}\; n = 0 \Big) \rightarrow  \sum_{\bar{z} : \mathbb{N}} \prod_{p : B\; a} h.\mathtt{fst}\; p = \bar{z}  \bigg)
 \end{split}
 \\
 &r : & \sum_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) + \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big) \Big)
 \end{align*}
 and has return type
-$$\Big\lVert \sum_{z : \mathbb{N}}\Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{p : B\; a} k\; p = z \Big\rVert$$
+$$\Big\lVert \sum_{z : \mathbb{N}}\Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{p : B\; a} h.\mathtt{fst}\; p = z \Big\rVert$$
 The observant reader should have noticed that the disjunctions in the third and fourth arguments have been replaced with coproducts. 
 This seemingly makes the unnamed third argument weaker which would have the undesirable effect of potentially strengthening IP' beyond IP. 
 Luckily the consequent of $\_$ is a mere proposition which means that swapping disjunction for coproduct does not actually change the strength of the argument. 
@@ -1075,7 +1078,7 @@ We invoke it twice.
 In both times, the first three arguments shall be the same. 
 The choice for the first argument, $a$, is evident. 
 
-We provide the composition $f \circ |\cdot| : B\; a \rightarrow \mathbb{N}$ as $k$ of second argument. 
+We provide the composition $f \circ |\cdot| : B\; a \rightarrow \mathbb{N}$ as $h.\mathtt{fst}$ of second argument. 
 We need to provide a witness for the second part of $h$, $\mathtt{isConst(f \circ |\cdot|)}$. 
 Let $q_1,q_2 : B\;a$. 
 We need to show that $f\;|q_1| = f\; |q_2|$. 
@@ -1087,7 +1090,7 @@ We take cases on this coproduct.
 Wlog suppose that $\prod_{n : \mathbb{N}} \bar{s}(n) = a(2 \cdot n)$. 
 We can use this to construct a witness $\mathtt{evenSubseqIsZero} : B\;a$. 
 We then put forward $f\;|\mathtt{evenSubseqIsZero}|$ as $\bar{z}$. 
-Recall that we've set $k$ to be $f\circ |\cdot|$.
+Recall that we've set $h.\mathtt{fst}$ to be $f\circ |\cdot|$.
 We need to show that for arbitrary $p : B\;a $, we have $f\; |p| = f\;|\mathtt{evenSubseqIsZero}|$. 
 This follows from $\lVert B\;a\rVert$ being a proposition and action on paths. 
 
@@ -1191,8 +1194,8 @@ Recall that in $\mathcal{E}'$ we have access to a witness of IP' which takes the
 &r : & \sum_{s : \mathbf{2}^\mathbb{N}} \Big(\big(\prod_{n : \mathbb{N}} s(n) = a(2 \cdot n)\big) + \big(\prod_{n : \mathbb{N}} s(n) = a(2\cdot n +1)\big)
 \end{align*}
 and returns
-$$\Big\lVert \sum_{z : \mathbf{2}}\Big(\prod_{n : \mathbb{N}}s\; n = 0 \Big) \rightarrow \prod_{b : B\; a} g(\bar{f}\; b) = z \Big\rVert$$
-We provide this with the arguments required, two times, where $\bar{f}$ is $f$ composed with the truncation map $|\cdot| : B\; a \rightarrow \lVert B\; a\rVert$ and $\mathtt{isConst}(\bar{f})$ follows from composition with $|\cdot|$. 
+$$\Big\lVert \sum_{z : \mathbf{2}}\Big(\prod_{n : \mathbb{N}}r.\mathtt{fst}\; n = 0 \Big) \rightarrow \prod_{b : B\; a} g(\bar{f}\; b) = z \Big\rVert$$
+We provide this with the arguments required, two times, where $\bar{f}$ in the return type (shorthand for $h.\mathtt{fst}$) is $f$ composed with the truncation map $|\cdot| : B\; a \rightarrow \lVert B\; a\rVert$ and $\mathtt{isConst}(\bar{f})$ follows from composition with $|\cdot|$. 
 
 For the unnamed third argument we work as in the proof of \Cref{NisBnull}. 
 Suppose that we have $\bar{s} : \mathbf{2}^\mathbb{N}$ equal to the odd or even subsequence of $a$ and always equal to $0$. 
@@ -1455,6 +1458,10 @@ $$a : A \vdash_{\mathcal{E}'_{\lVert B \rVert}} \big\llbracket \mathcal{L}_{\lVe
 By Corollary 5.5 of \cite{1905.03014} we have a witness of the last type. 
 We transport it over $p$ to conclude the proof. 
 \end{proof}
+With the above theorem in mind along with \Cref{ACCandCTandLLPOimplyBottom} we can deduce the following corollary. 
+\begin{cor}
+ACC does not hold in $\mathcal{E}'_{\lVert B \rVert}$.
+\end{cor}
 
 % By \Cref{NisBnull} we have that $\llbracket \mathbb{N} \rrbracket^{\mathcal{E}_{\lVert B \rVert}} = \llbracket \mathbb{N} \rrbracket^\mathcal{E}$. 
 % Let $\mathcal{L}_{\lVert B \rVert} : \mathcal{U} \rightarrow \mathcal{U}$ be the $\lVert B \rVert$-nullification operator on $\mathcal{E}$. 
